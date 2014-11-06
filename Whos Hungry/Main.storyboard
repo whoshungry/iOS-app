@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -80,7 +80,7 @@
         <!--Map View Controller-->
         <scene sceneID="gH0-aB-ir6">
             <objects>
-                <viewController id="Ewj-zQ-idc" customClass="MapViewController" sceneMemberID="viewController">
+                <viewController title="Map View Controller" id="Ewj-zQ-idc" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5J2-H0-XW5"/>
                         <viewControllerLayoutGuide type="bottom" id="wKy-kg-fYb"/>
@@ -88,14 +88,6 @@
                     <view key="view" contentMode="scaleToFill" id="vdU-NB-dSm">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gilad" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lv8-VN-HE5">
-                                <rect key="frame" x="267" y="176" width="41" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
@@ -106,18 +98,29 @@
             </objects>
             <point key="canvasLocation" x="849" y="355"/>
         </scene>
-        <!--explore-->
+        <!--Main View Controller-->
         <scene sceneID="Ke6-Wf-Qlx">
             <objects>
-                <viewController id="pae-8W-Jcf" customClass="MainViewController" sceneMemberID="viewController">
+                <viewController title="Main View Controller" id="pae-8W-Jcf" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nnZ-3d-bkH"/>
                         <viewControllerLayoutGuide type="bottom" id="Rme-Ag-e0m"/>
                     </layoutGuides>
-                
-                    <navigationItem key="navigationItem" title="explore" id="kqN-zK-BPh">
-                        <barButtonItem key="leftBarButtonItem" title="menu" id="8tX-U3-7hI"/>
-                        <barButtonItem key="rightBarButtonItem" title="pencil" id="jjd-Ce-nbM"/>
+                    <view key="view" contentMode="scaleToFill" id="Xnu-0X-Xif">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Main Page" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XEH-d1-SFP">
+                                <rect key="frame" x="279" y="298" width="82" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="kqN-zK-BPh">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="jjd-Ce-nbM"/>
                     </navigationItem>
                     <connections>
                         <segue destination="Ewj-zQ-idc" kind="show" identifier="mainToMapSegue" id="KrX-wc-USq"/>
@@ -127,10 +130,10 @@
             </objects>
             <point key="canvasLocation" x="862" y="1129"/>
         </scene>
-        <!--Vote View Controller-->
+        <!--View Controller-->
         <scene sceneID="8gu-Bx-C7S">
             <objects>
-                <viewController id="7Vz-TI-5PY" customClass="VoteViewController" sceneMemberID="viewController">
+                <viewController id="7Vz-TI-5PY" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="p3Q-vn-WtD"/>
                         <viewControllerLayoutGuide type="bottom" id="cck-y3-b6P"/>
@@ -153,10 +156,10 @@
             </objects>
             <point key="canvasLocation" x="861" y="1887"/>
         </scene>
-        <!--Lobby View Controller-->
+        <!--Create Lobby View Controller-->
         <scene sceneID="pKo-Si-fqS">
             <objects>
-                <viewController id="al3-eM-JUg" customClass="LobbyViewController" sceneMemberID="viewController">
+                <viewController title="Create Lobby View Controller" id="al3-eM-JUg" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="xAg-Pc-UKE"/>
                         <viewControllerLayoutGuide type="bottom" id="5qU-77-zYg"/>
@@ -164,10 +167,10 @@
                     <view key="view" contentMode="scaleToFill" id="EmK-TH-r5o">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-        <!--Create Lobby View Controller-->
+                        <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="create lobby" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4PD-9e-NUW">
                                 <rect key="frame" x="279" y="282" width="95" height="21"/>
-                <viewController title="Create Lobby View Controller" id="al3-eM-JUg" sceneMemberID="viewController">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -182,7 +185,7 @@
         <!--Summary View Controller-->
         <scene sceneID="GpY-RV-WFx">
             <objects>
-                <viewController id="wgV-7D-ZgK" customClass="SummaryViewController" sceneMemberID="viewController">
+                <viewController title="Summary View Controller" id="wgV-7D-ZgK" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pkQ-DL-h1l"/>
                         <viewControllerLayoutGuide type="bottom" id="pY2-bQ-eaX"/>
@@ -193,7 +196,7 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Summary" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="04o-Zd-AGh">
                                 <rect key="frame" x="279" y="262" width="74" height="21"/>
-                <viewController title="Summary View Controller" id="wgV-7D-ZgK" sceneMemberID="viewController">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -215,8 +218,3 @@
         <segue reference="Lan-aP-ZDp"/>
     </inferredMetricsTieBreakers>
 </document>
-    <resources>
-        <image name="final login image.png" width="246" height="263"/>
-        <image name="login-button-small-pressed.png" width="151" height="43"/>
-        <image name="login-button-small.png" width="151" height="43"/>
-    </resources>
