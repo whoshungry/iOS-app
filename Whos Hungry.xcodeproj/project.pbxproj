@@ -27,6 +27,7 @@
 		1B9713D51A0B362700A2F46E /* login-button-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B9713CF1A0B362700A2F46E /* login-button-small@2x.png */; };
 		1B9713D61A0B362700A2F46E /* owlintro.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B9713D01A0B362700A2F46E /* owlintro.png */; };
 		1B9713D81A0B365100A2F46E /* final login image.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B9713D71A0B365100A2F46E /* final login image.png */; };
+		1B9713DC1A0B3A8E00A2F46E /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B9713DB1A0B3A8E00A2F46E /* UIImage+Resize.m */; };
 		C36C41371A0B206600F37668 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41361A0B206600F37668 /* main.m */; };
 		C36C413A1A0B206600F37668 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41391A0B206600F37668 /* AppDelegate.m */; };
 		C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C413C1A0B206600F37668 /* LoginViewController.m */; };
@@ -72,6 +73,8 @@
 		1B9713CF1A0B362700A2F46E /* login-button-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login-button-small@2x.png"; sourceTree = "<group>"; };
 		1B9713D01A0B362700A2F46E /* owlintro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = owlintro.png; sourceTree = "<group>"; };
 		1B9713D71A0B365100A2F46E /* final login image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final login image.png"; sourceTree = "<group>"; };
+		1B9713DA1A0B3A8E00A2F46E /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		1B9713DB1A0B3A8E00A2F46E /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		C36C41311A0B206600F37668 /* Whos Hungry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whos Hungry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C36C41351A0B206600F37668 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C36C41361A0B206600F37668 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -162,9 +165,19 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		1B9713D91A0B3A7300A2F46E /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				1B9713DA1A0B3A8E00A2F46E /* UIImage+Resize.h */,
+				1B9713DB1A0B3A8E00A2F46E /* UIImage+Resize.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		C36C41281A0B206600F37668 = {
 			isa = PBXGroup;
 			children = (
+				1B9713D91A0B3A7300A2F46E /* Categories */,
 				1B9713CA1A0B35F500A2F46E /* Images */,
 				1B9713991A0B2A3600A2F46E /* Frameworks */,
 				C36C41331A0B206600F37668 /* Whos Hungry */,
@@ -346,6 +359,7 @@
 				C36C415F1A0B232600F37668 /* MapViewController.m in Sources */,
 				C36C41371A0B206600F37668 /* main.m in Sources */,
 				C36C41681A0B235300F37668 /* VoteViewController.m in Sources */,
+				1B9713DC1A0B3A8E00A2F46E /* UIImage+Resize.m in Sources */,
 				C36C415C1A0B231B00F37668 /* MainViewController.m in Sources */,
 				C36C41621A0B233900F37668 /* LobbyViewController.m in Sources */,
 				C36C41651A0B234200F37668 /* SummaryViewController.m in Sources */,
