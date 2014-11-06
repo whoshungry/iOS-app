@@ -116,15 +116,21 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NPD-Ow-2Vg">
+                                <rect key="frame" x="16" y="28" width="77" height="30"/>
+                                <state key="normal" title="Go to map!">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Ewj-zQ-idc" kind="show" id="6Cm-KZ-IyK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="kqN-zK-BPh">
                         <barButtonItem key="rightBarButtonItem" title="Item" id="jjd-Ce-nbM"/>
                     </navigationItem>
-                    <connections>
-                        <segue destination="Ewj-zQ-idc" kind="show" identifier="mainToMapSegue" id="KrX-wc-USq"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RsM-xV-Txx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
