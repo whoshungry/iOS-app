@@ -19,6 +19,8 @@
 		C36C41621A0B233900F37668 /* LobbyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41611A0B233900F37668 /* LobbyViewController.m */; };
 		C36C41651A0B234200F37668 /* SummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41641A0B234200F37668 /* SummaryViewController.m */; };
 		C36C41681A0B235300F37668 /* VoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41671A0B235300F37668 /* VoteViewController.m */; };
+		C36C416C1A0B2B7000F37668 /* HootGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C416A1A0B2B7000F37668 /* HootGroupCell.m */; };
+		C36C416D1A0B2B7000F37668 /* HootGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,9 @@
 		C36C41641A0B234200F37668 /* SummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SummaryViewController.m; sourceTree = "<group>"; };
 		C36C41661A0B235300F37668 /* VoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteViewController.h; sourceTree = "<group>"; };
 		C36C41671A0B235300F37668 /* VoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoteViewController.m; sourceTree = "<group>"; };
+		C36C41691A0B2B7000F37668 /* HootGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HootGroupCell.h; sourceTree = "<group>"; };
+		C36C416A1A0B2B7000F37668 /* HootGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HootGroupCell.m; sourceTree = "<group>"; };
+		C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HootGroupCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +106,9 @@
 				C36C413B1A0B206600F37668 /* LoginViewController.h */,
 				C36C413C1A0B206600F37668 /* LoginViewController.m */,
 				C36C413E1A0B206600F37668 /* Main.storyboard */,
+				C36C41691A0B2B7000F37668 /* HootGroupCell.h */,
+				C36C416A1A0B2B7000F37668 /* HootGroupCell.m */,
+				C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */,
 				C36C41601A0B233900F37668 /* LobbyViewController.h */,
 				C36C41611A0B233900F37668 /* LobbyViewController.m */,
 				C36C41631A0B234200F37668 /* SummaryViewController.h */,
@@ -225,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C36C41401A0B206600F37668 /* Main.storyboard in Resources */,
+				C36C416D1A0B2B7000F37668 /* HootGroupCell.xib in Resources */,
 				C36C41451A0B206600F37668 /* LaunchScreen.xib in Resources */,
 				C36C41421A0B206600F37668 /* Images.xcassets in Resources */,
 			);
@@ -245,6 +254,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */,
+				C36C416C1A0B2B7000F37668 /* HootGroupCell.m in Sources */,
 				C36C413A1A0B206600F37668 /* AppDelegate.m in Sources */,
 				C36C415F1A0B232600F37668 /* MapViewController.m in Sources */,
 				C36C41371A0B206600F37668 /* main.m in Sources */,
