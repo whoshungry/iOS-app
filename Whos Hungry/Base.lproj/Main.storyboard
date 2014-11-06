@@ -98,6 +98,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="pae-8W-Jcf" kind="show" identifier="mapToMainSegue" id="Lan-aP-ZDp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xEy-6c-6Wo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -116,6 +119,9 @@
                         <barButtonItem key="leftBarButtonItem" title="menu" id="8tX-U3-7hI"/>
                         <barButtonItem key="rightBarButtonItem" title="pencil" id="jjd-Ce-nbM"/>
                     </navigationItem>
+                    <connections>
+                        <segue destination="Ewj-zQ-idc" kind="show" identifier="mainToMapSegue" id="KrX-wc-USq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RsM-xV-Txx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -205,6 +211,9 @@
         <image name="login-button-small-pressed.png" width="151" height="43"/>
         <image name="login-button-small.png" width="151" height="43"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Lan-aP-ZDp"/>
+    </inferredMetricsTieBreakers>
 </document>
     <resources>
         <image name="final login image.png" width="246" height="263"/>
