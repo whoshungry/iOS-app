@@ -9,11 +9,16 @@
 /* Begin PBXBuildFile section */
 		C36C41371A0B206600F37668 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41361A0B206600F37668 /* main.m */; };
 		C36C413A1A0B206600F37668 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41391A0B206600F37668 /* AppDelegate.m */; };
-		C36C413D1A0B206600F37668 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C413C1A0B206600F37668 /* ViewController.m */; };
+		C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C413C1A0B206600F37668 /* LoginViewController.m */; };
 		C36C41401A0B206600F37668 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C36C413E1A0B206600F37668 /* Main.storyboard */; };
 		C36C41421A0B206600F37668 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C36C41411A0B206600F37668 /* Images.xcassets */; };
 		C36C41451A0B206600F37668 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C36C41431A0B206600F37668 /* LaunchScreen.xib */; };
 		C36C41511A0B206600F37668 /* Whos_HungryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41501A0B206600F37668 /* Whos_HungryTests.m */; };
+		C36C415C1A0B231B00F37668 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C415B1A0B231B00F37668 /* MainViewController.m */; };
+		C36C415F1A0B232600F37668 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C415E1A0B232600F37668 /* MapViewController.m */; };
+		C36C41621A0B233900F37668 /* LobbyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41611A0B233900F37668 /* LobbyViewController.m */; };
+		C36C41651A0B234200F37668 /* SummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41641A0B234200F37668 /* SummaryViewController.m */; };
+		C36C41681A0B235300F37668 /* VoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41671A0B235300F37668 /* VoteViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +37,24 @@
 		C36C41361A0B206600F37668 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C36C41381A0B206600F37668 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C36C41391A0B206600F37668 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		C36C413B1A0B206600F37668 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		C36C413C1A0B206600F37668 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		C36C413B1A0B206600F37668 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		C36C413C1A0B206600F37668 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		C36C413F1A0B206600F37668 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C36C41411A0B206600F37668 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C36C41441A0B206600F37668 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		C36C414A1A0B206600F37668 /* Whos HungryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Whos HungryTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C36C414F1A0B206600F37668 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C36C41501A0B206600F37668 /* Whos_HungryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Whos_HungryTests.m; sourceTree = "<group>"; };
+		C36C415A1A0B231B00F37668 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		C36C415B1A0B231B00F37668 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		C36C415D1A0B232600F37668 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		C36C415E1A0B232600F37668 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		C36C41601A0B233900F37668 /* LobbyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LobbyViewController.h; sourceTree = "<group>"; };
+		C36C41611A0B233900F37668 /* LobbyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LobbyViewController.m; sourceTree = "<group>"; };
+		C36C41631A0B234200F37668 /* SummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SummaryViewController.h; sourceTree = "<group>"; };
+		C36C41641A0B234200F37668 /* SummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SummaryViewController.m; sourceTree = "<group>"; };
+		C36C41661A0B235300F37668 /* VoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteViewController.h; sourceTree = "<group>"; };
+		C36C41671A0B235300F37668 /* VoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoteViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,9 +98,19 @@
 			children = (
 				C36C41381A0B206600F37668 /* AppDelegate.h */,
 				C36C41391A0B206600F37668 /* AppDelegate.m */,
-				C36C413B1A0B206600F37668 /* ViewController.h */,
-				C36C413C1A0B206600F37668 /* ViewController.m */,
+				C36C413B1A0B206600F37668 /* LoginViewController.h */,
+				C36C413C1A0B206600F37668 /* LoginViewController.m */,
 				C36C413E1A0B206600F37668 /* Main.storyboard */,
+				C36C41601A0B233900F37668 /* LobbyViewController.h */,
+				C36C41611A0B233900F37668 /* LobbyViewController.m */,
+				C36C41631A0B234200F37668 /* SummaryViewController.h */,
+				C36C41641A0B234200F37668 /* SummaryViewController.m */,
+				C36C41661A0B235300F37668 /* VoteViewController.h */,
+				C36C41671A0B235300F37668 /* VoteViewController.m */,
+				C36C415A1A0B231B00F37668 /* MainViewController.h */,
+				C36C415B1A0B231B00F37668 /* MainViewController.m */,
+				C36C415D1A0B232600F37668 /* MapViewController.h */,
+				C36C415E1A0B232600F37668 /* MapViewController.m */,
 				C36C41411A0B206600F37668 /* Images.xcassets */,
 				C36C41431A0B206600F37668 /* LaunchScreen.xib */,
 				C36C41341A0B206600F37668 /* Supporting Files */,
@@ -219,9 +244,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C36C413D1A0B206600F37668 /* ViewController.m in Sources */,
+				C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */,
 				C36C413A1A0B206600F37668 /* AppDelegate.m in Sources */,
+				C36C415F1A0B232600F37668 /* MapViewController.m in Sources */,
 				C36C41371A0B206600F37668 /* main.m in Sources */,
+				C36C41681A0B235300F37668 /* VoteViewController.m in Sources */,
+				C36C415C1A0B231B00F37668 /* MainViewController.m in Sources */,
+				C36C41621A0B233900F37668 /* LobbyViewController.m in Sources */,
+				C36C41651A0B234200F37668 /* SummaryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
