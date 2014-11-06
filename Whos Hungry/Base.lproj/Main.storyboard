@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
@@ -16,19 +18,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Facebook Login" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w7N-PR-6OX">
-                                <rect key="frame" x="300" y="260" width="124" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W30-cq-qYh">
+                                <rect key="frame" x="175" y="520" width="250" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="W30-cq-qYh" secondAttribute="height" multiplier="25:6" id="HzC-Tx-e9a"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" size="button"/>
+                                <inset key="contentEdgeInsets" minX="44" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Log In" backgroundImage="login-button-small.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="disabled" backgroundImage="login-button-small.png"/>
+                                <state key="selected" title="Login" backgroundImage="login-button-small-pressed.png"/>
+                                <state key="highlighted" backgroundImage="login-button-small-pressed.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginWithFacebook:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0Gp-Vv-yuT"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="final login image.png" translatesAutoresizingMaskIntoConstraints="NO" id="bt8-5Z-kJD">
+                                <rect key="frame" x="43" y="20" width="514" height="394"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="bt8-5Z-kJD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="27" id="Ceb-jr-B5J"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="W30-cq-qYh" secondAttribute="bottom" constant="20" id="ZJt-9H-Ll8"/>
+                            <constraint firstAttribute="centerY" secondItem="bt8-5Z-kJD" secondAttribute="centerY" constant="83" id="cYc-pt-4cV"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="bt8-5Z-kJD" secondAttribute="trailing" constant="27" id="k5g-CR-ccQ"/>
+                            <constraint firstItem="W30-cq-qYh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="100" id="neb-pI-wHj"/>
+                            <constraint firstItem="bt8-5Z-kJD" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="nsc-Me-jxp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="W30-cq-qYh" secondAttribute="trailing" constant="100" id="qnO-BR-YO3"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <segue destination="zCp-ye-fgq" kind="show" identifier="mainScreenSegue" id="lKP-gu-0e7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-631" y="1129"/>
+            <point key="canvasLocation" x="-608" y="1129"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="KwR-R9-N2f">
@@ -46,10 +77,10 @@
             </objects>
             <point key="canvasLocation" x="126" y="1124"/>
         </scene>
-        <!--View Controller-->
+        <!--Map View Controller-->
         <scene sceneID="gH0-aB-ir6">
             <objects>
-                <viewController id="Ewj-zQ-idc" sceneMemberID="viewController">
+                <viewController title="Map View Controller" id="Ewj-zQ-idc" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5J2-H0-XW5"/>
                         <viewControllerLayoutGuide type="bottom" id="wKy-kg-fYb"/>
@@ -72,10 +103,10 @@
             </objects>
             <point key="canvasLocation" x="849" y="355"/>
         </scene>
-        <!--View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="Ke6-Wf-Qlx">
             <objects>
-                <viewController id="pae-8W-Jcf" sceneMemberID="viewController">
+                <viewController title="Main View Controller" id="pae-8W-Jcf" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nnZ-3d-bkH"/>
                         <viewControllerLayoutGuide type="bottom" id="Rme-Ag-e0m"/>
@@ -127,10 +158,10 @@
             </objects>
             <point key="canvasLocation" x="861" y="1887"/>
         </scene>
-        <!--View Controller-->
+        <!--Create Lobby View Controller-->
         <scene sceneID="pKo-Si-fqS">
             <objects>
-                <viewController id="al3-eM-JUg" sceneMemberID="viewController">
+                <viewController title="Create Lobby View Controller" id="al3-eM-JUg" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="xAg-Pc-UKE"/>
                         <viewControllerLayoutGuide type="bottom" id="5qU-77-zYg"/>
@@ -153,10 +184,10 @@
             </objects>
             <point key="canvasLocation" x="1615" y="1124"/>
         </scene>
-        <!--View Controller-->
+        <!--Summary View Controller-->
         <scene sceneID="GpY-RV-WFx">
             <objects>
-                <viewController id="wgV-7D-ZgK" sceneMemberID="viewController">
+                <viewController title="Summary View Controller" id="wgV-7D-ZgK" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pkQ-DL-h1l"/>
                         <viewControllerLayoutGuide type="bottom" id="pY2-bQ-eaX"/>
@@ -180,4 +211,9 @@
             <point key="canvasLocation" x="2290" y="1117"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="final login image.png" width="246" height="263"/>
+        <image name="login-button-small-pressed.png" width="151" height="43"/>
+        <image name="login-button-small.png" width="151" height="43"/>
+    </resources>
 </document>
