@@ -80,7 +80,7 @@
         <!--Map View Controller-->
         <scene sceneID="gH0-aB-ir6">
             <objects>
-                <viewController title="Map View Controller" id="Ewj-zQ-idc" sceneMemberID="viewController">
+                <viewController title="Map View Controller" id="Ewj-zQ-idc" customClass="MapViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5J2-H0-XW5"/>
                         <viewControllerLayoutGuide type="bottom" id="wKy-kg-fYb"/>
@@ -88,9 +88,15 @@
                     <view key="view" contentMode="scaleToFill" id="vdU-NB-dSm">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="fzy-v5-DMz">
+                                <rect key="frame" x="0.0" y="16" width="600" height="584"/>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="mapView" destination="fzy-v5-DMz" id="JGf-q7-zfj"/>
                         <segue destination="pae-8W-Jcf" kind="show" identifier="mapToMainSegue" id="Lan-aP-ZDp"/>
                     </connections>
                 </viewController>
@@ -101,7 +107,7 @@
         <!--Main View Controller-->
         <scene sceneID="Ke6-Wf-Qlx">
             <objects>
-                <viewController title="Main View Controller" id="pae-8W-Jcf" sceneMemberID="viewController">
+                <viewController title="Main View Controller" id="pae-8W-Jcf" customClass="MainViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nnZ-3d-bkH"/>
                         <viewControllerLayoutGuide type="bottom" id="Rme-Ag-e0m"/>
@@ -116,15 +122,6 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NPD-Ow-2Vg">
-                                <rect key="frame" x="16" y="28" width="77" height="30"/>
-                                <state key="normal" title="Go to map!">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="Ewj-zQ-idc" kind="show" id="6Cm-KZ-IyK"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
