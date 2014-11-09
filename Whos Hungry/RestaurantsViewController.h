@@ -1,0 +1,39 @@
+//
+//  RestaurantsViewController.h
+//  Who's Hungry
+//
+//  Created by administrator on 10/19/14.
+//  Copyright (c) 2014 Who's Hungry. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import "RestaurantCell.h"
+
+#import <Parse/Parse.h>
+#import <ParseFacebookUtils/PFFacebookUtils.h>
+#import <FacebookSDK/FacebookSDK.h>
+
+
+#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+
+@interface RestaurantsViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate>
+
+@property CLLocationManager *locationManager;
+@property CLLocationCoordinate2D currentCentre;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property CLLocation *currentLocation;
+@property BOOL locationFound;
+@property int currenDist;
+@property NSMutableArray* tickedIndexPaths;
+
+@property (weak, nonatomic) IBOutlet UITableView *restaurantsTable;
+@property NSMutableArray* allPlaces;
+
+- (IBAction)doneTapped:(id)sender;
+
+@property int selectionCount;
+@property BOOL isSelected;
+@property BOOL isAdmin;
+@end
