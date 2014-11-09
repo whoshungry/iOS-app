@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MainViewController : UIViewController
+@interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIButton *friendsBtn;
+@property (weak, nonatomic) IBOutlet UIButton *publicBtn;
+
+- (IBAction)friendsBtnPressed:(id)sender;
+- (IBAction)publicBtnPressed:(id)sender;
 
 @end
