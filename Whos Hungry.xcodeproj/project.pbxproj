@@ -84,7 +84,7 @@
 		C36C416C1A0B2B7000F37668 /* HootGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C416A1A0B2B7000F37668 /* HootGroupCell.m */; };
 		C36C416D1A0B2B7000F37668 /* HootGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */; };
 		C36C416F1A0B3B3100F37668 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C36C416E1A0B3B3100F37668 /* FacebookSDK.framework */; };
-		C36C41711A0B3DD800F37668 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C36C41701A0B3DD800F37668 /* Main.storyboard */; };
+		C3B510A81A132F29003B78FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3B510A71A132F29003B78FF /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -219,7 +219,7 @@
 		C36C416A1A0B2B7000F37668 /* HootGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HootGroupCell.m; sourceTree = "<group>"; };
 		C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HootGroupCell.xib; sourceTree = "<group>"; };
 		C36C416E1A0B3B3100F37668 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
-		C36C41701A0B3DD800F37668 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		C3B510A71A132F29003B78FF /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,7 +411,6 @@
 		C36C41331A0B206600F37668 /* Whos Hungry */ = {
 			isa = PBXGroup;
 			children = (
-				C36C41701A0B3DD800F37668 /* Main.storyboard */,
 				C36C41381A0B206600F37668 /* AppDelegate.h */,
 				C36C41391A0B206600F37668 /* AppDelegate.m */,
 				C36C413B1A0B206600F37668 /* LoginViewController.h */,
@@ -419,6 +418,7 @@
 				C36C41691A0B2B7000F37668 /* HootGroupCell.h */,
 				C36C416A1A0B2B7000F37668 /* HootGroupCell.m */,
 				C31398181A12EFF200DE18EC /* HootLobby.h */,
+				C3B510A71A132F29003B78FF /* Main.storyboard */,
 				C31398191A12EFF200DE18EC /* HootLobby.m */,
 				C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */,
 				C36C41601A0B233900F37668 /* LobbyViewController.h */,
@@ -560,6 +560,7 @@
 				1B9713D81A0B365100A2F46E /* final login image.png in Resources */,
 				1BF5C7471A0F4198006D4D00 /* thisguy.png in Resources */,
 				1B9713D61A0B362700A2F46E /* owlintro.png in Resources */,
+				C3B510A81A132F29003B78FF /* Main.storyboard in Resources */,
 				1B9713D11A0B362700A2F46E /* AustinLocation.gpx in Resources */,
 				1BF5C6281A0EDD42006D4D00 /* drinks.png in Resources */,
 				1B9713D31A0B362700A2F46E /* login-button-small-pressed@2x.png in Resources */,
@@ -569,7 +570,6 @@
 				1BF5C6261A0EDD42006D4D00 /* coffee.jpeg in Resources */,
 				1BF5C6391A0EF10B006D4D00 /* jennifer.jpg in Resources */,
 				1BF5C63B1A0EF2A1006D4D00 /* chipotle.JPG in Resources */,
-				C36C41711A0B3DD800F37668 /* Main.storyboard in Resources */,
 				1BF5C4F11A0EAD8D006D4D00 /* friendsicon.png in Resources */,
 				1BF5C7451A0F3FC9006D4D00 /* 02_blurred_backgrounds.jpg in Resources */,
 				1BF5C6351A0EEF83006D4D00 /* dinnerPressed.jpeg in Resources */,
