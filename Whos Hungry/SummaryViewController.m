@@ -57,7 +57,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
         authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
         
-        NSLog(@"we in here");
         self.mapView.showsUserLocation = YES;
         [locationManager startUpdatingLocation];
         
@@ -112,7 +111,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 -(HootLobby *)loadCustomObjectWithKey:(NSString*)key
 {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSData *myEncodedObject = [prefs objectForKey:key ];
+    NSData *myEncodedObject = [prefs objectForKey:key];
     HootLobby *obj = (HootLobby *)[NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
     return obj;
 }
