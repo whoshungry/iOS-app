@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "RestaurantCell.h"
-
+#import "HootLobby.h"
 #import <Parse/Parse.h>
 #import <ParseFacebookUtils/PFFacebookUtils.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -38,5 +38,6 @@
 @property BOOL isAdmin;
 
 @property NSMutableArray* restaurantIdArray;
+@property NSString* facebookId;
 
 @end

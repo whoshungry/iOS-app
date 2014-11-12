@@ -9,6 +9,9 @@
 #import "SummaryViewController.h"
 #import "UIImage+Resize.h"
 
+#define LOBBY_KEY  @"currentlobby"
+static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
+
 @interface SummaryViewController (){
     CLLocationCoordinate2D restaurantCoor;
 }
@@ -27,6 +30,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _currentLobby = [HootLobby new];
+    _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+    if (!_currentLobby) {
+        NSLog(@"Current Lobby is empty");
+        _currentLobby = [HootLobby new];
+    }
+    else{
+        NSLog(@"Current Lobby has DATA!");
+        NSLog(@"%@", _currentLobby);
+        [self createAPIGroup];
+        
+    }
     
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
@@ -77,54 +93,81 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     NSLog(@"New Location %f %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
     [locationManager stopUpdatingLocation];
-    /*CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(newLocation.coordinate.latitude, newLocation.coordinate.longitude);
-     PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLatitude:coordinate.latitude
-     longitude:coordinate.longitude];
-     
-     PFQuery *query = [PFQuery queryWithClassName:@"User"];
-     [query getObjectInBackgroundWithId:[[PFUser currentUser] objectId] block:^(PFObject *user, NSError *error) {
-     user[@"location"] = geoPoint;
-     NSLog(@"new loca is %f %f", geoPoint.latitude, geoPoint.longitude);
-     [user saveInBackground];
-     }];*/
+
     
 }
 
-/*- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
-    
-    static NSString* AnnotationIdentifier = @"Annotation";
-    MKPinAnnotationView *pinView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationIdentifier];
-    
-    if (!pinView) {
-        MKPinAnnotationView *customPinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationIdentifier];
-        if (annotation == mapView.userLocation) {
-            if (FBSession.activeSession.isOpen)
-            {
-                [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                    NSString *facebookID = result[@"id"];
-                    NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
-                    customPinView.image = [UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)];
-                }];
-                
-            }
-        } else {
-            customPinView.image = [UIImage imageWithImage:[UIImage imageNamed:@"final thumbnail"] scaledToSize:CGSizeMake(30.0, 30.0)];
-        }
-        customPinView.animatesDrop = NO;
-        customPinView.canShowCallout = YES;
-        customPinView.draggable = YES;
-        
-        return customPinView;
-        
-    } else {
-        pinView.annotation = annotation;
-    }
-    
-    return pinView;
-}*/
 
 - (IBAction)goHome:(id)sender {
     [locationManager stopUpdatingLocation];
+}
+
+-(void)saveCustomObject:(HootLobby *)object
+{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSData *myEncodedObject = [NSKeyedArchiver archivedDataWithRootObject:object];
+    [prefs setObject:myEncodedObject forKey:LOBBY_KEY];
+}
+
+-(HootLobby *)loadCustomObjectWithKey:(NSString*)key
+{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSData *myEncodedObject = [prefs objectForKey:key ];
+    HootLobby *obj = (HootLobby *)[NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
+    return obj;
+}
+
+-(void) createAPIGroup {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString* facebookString = @"";
+    for (int i = 0; i < _currentLobby.facebookbInvitatitions.count; i++) {
+        if (i != _currentLobby.facebookbInvitatitions.count - 1) {
+            facebookString = [facebookString stringByAppendingString:_currentLobby.facebookbInvitatitions[i]];
+            facebookString = [facebookString stringByAppendingString:@","];
+        }
+        else{
+            facebookString = [facebookString stringByAppendingString:_currentLobby.facebookbInvitatitions[i]];
+            
+        }
+    }
+    NSLog(@"user_id is %@", _currentLobby.facebookId);
+    NSLog(@"invitations is %@", facebookString);
+    
+    NSDictionary *params = @{@"user_id": _currentLobby.facebookId,
+                             @"invitations" : facebookString};
+    [manager POST:[NSString stringWithFormat:@"%@apis/create_group", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        [self createAPIVoteWithGroupId:responseObject[@"group_id"]];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
+- (void) createAPIVoteWithGroupId:(NSString*)groupId{
+    NSString* restaurantString = @"";
+    for (int i = 0; i < _currentLobby.placesIdArray.count; i++) {
+        if (i != _currentLobby.placesIdArray.count - 1) {
+            restaurantString = [restaurantString stringByAppendingString:_currentLobby.placesIdArray[i]];
+            restaurantString = [restaurantString stringByAppendingString:@","];
+        }
+        else{
+            restaurantString = [restaurantString stringByAppendingString:_currentLobby.placesIdArray[i]];
+            
+        }
+    }
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *params = @{@"user_id": _currentLobby.facebookId,
+                             @"group_id": groupId,
+                             @"vote_type": _currentLobby.voteType,
+                             @"expiration_time": _currentLobby.expirationTime,
+                             @"restaurants": restaurantString};
+    [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 }
 
 @end

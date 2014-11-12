@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import "HootLobby.h"
 
 @interface LobbyViewController : UIViewController <FBFriendPickerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *lunchBtn;
@@ -22,5 +23,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *whenButton;
 
 @property (retain, nonatomic) FBFriendPickerViewController *friendPickerController;
+
+@property (strong, nonatomic) NSString* voteType;
+@property (strong, nonatomic) NSDate* whenDate;
 
 @end

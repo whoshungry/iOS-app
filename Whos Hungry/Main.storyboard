@@ -70,11 +70,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="5sy-76-9Fh">
+=======
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="5sy-76-9Fh">
+>>>>>>> 516b0bb3952ee1eff467eaa74f5f3f1431f633c0
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="5sy-76-9Fh" firstAttribute="leading" secondItem="Xnu-0X-Xif" secondAttribute="leadingMargin" id="0rm-Yc-zli"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5sy-76-9Fh" secondAttribute="trailing" id="D5B-Kw-xsL"/>
+                            <constraint firstItem="dvS-DE-vBn" firstAttribute="top" secondItem="5sy-76-9Fh" secondAttribute="bottom" id="LDC-bq-MAV"/>
+                            <constraint firstItem="5sy-76-9Fh" firstAttribute="top" secondItem="kAh-Hn-DIK" secondAttribute="bottom" id="WPU-IQ-VxN"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="explore" id="kqN-zK-BPh">
                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="Nxr-f4-C1h">
