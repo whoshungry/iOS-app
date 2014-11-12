@@ -30,20 +30,21 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                             user:(id<FBGraphUser>)user {
     NSString *firstTime = [[NSUserDefaults standardUserDefaults]
                              stringForKey:@"firstTime"];
-    if (firstTime == nil) {
-        NSLog(@"user id is :%@", user.id);
+    //if (firstTime == nil) {
+        NSLog(@"user id is :%@", user.objectID);
+        NSLog(@"username is %@", user.name);
         NSString *pushToken = [[NSUserDefaults standardUserDefaults]
                                  stringForKey:@"pushToken"];
         [self registerUser:user andPushID:pushToken];
-    }
+    //}
 }
 
 -(void) registerUser:(id<FBGraphUser>)user andPushID:(NSString *)pushID{
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *params = @{
-                             @"username": user.username,
+                             @"username": user.name,
                              @"push_id":pushID,
-                             @"facebook_id" : user.id,
+                             @"facebook_id" : user.objectID,
                              @"os_type" : @"IOS"};
     [manager POST:[NSString stringWithFormat:@"%@apis/register", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
