@@ -9,6 +9,7 @@
 #import "RestaurantsViewController.h"
 
 #define GOOGLE_API_KEY @"AIzaSyAdB2MtdRCGDZNfIcd-uR22hkmCmniA6Oc"
+#define LOBBY_KEY  @"currentlobby"
 
 @interface RestaurantsViewController ()
 
@@ -21,33 +22,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _restaurantIdArray = [NSMutableArray new];
-    
-    /*PFUser *currentUser = [PFUser currentUser];
-    PFQuery *query = [PFQuery queryWithClassName:@"Group"];
-    [query getObjectInBackgroundWithId:[currentUser[@"group"] objectId] block:^(PFObject *group, NSError *error) {
-        NSLog(@"object ID is = %@", [currentUser username]);
-        //NSLog(@"Admin ID is = %@", group[@"adminID"]);
-        if ([[currentUser username] isEqualToString:group[@"adminID"]]) {
-            NSLog(@"I'M AN ADMIN");
-            _isAdmin = TRUE;
-            
-
-            //Get the places from GOOGLE API --> COMPLETE
-            //Create Group with restaurants --> COMPLETE
-            //Send PUSH notifications to Friends --> COMPLETE
-        }
-        else{
-            NSLog(@"I'M NOT ADMIN");
-            _isAdmin = FALSE;
-            
-            //Retrieve RESTAURANTS and make sure we update the votes (not create votes again)
-            //Retrieve time Remaining and place it at the top of the viewcontroller (if less than 30 seconds add 30 seconds
-            //Try to add a 1-second-interrupt to modify the timer on top of view controller
-        }
-        _isAdmin = TRUE;   //THIS IS A TEST CASE
-        [self initRestaurants];
-    }];*/
-    
 
     [self initRestaurants];
 }
@@ -120,13 +94,7 @@
         response = [_allPlaces objectAtIndex:k];
         [tempDictionary setObject:@(0) forKey:[response objectForKey:@"name"]];
     }
-    /*PFUser *currentUser = [PFUser currentUser];
-    PFQuery *query = [PFQuery queryWithClassName:@"Group"];
-    [query getObjectInBackgroundWithId:[currentUser[@"group"] objectId] block:^(PFObject *group, NSError *error) {
-        group[@"votes"] = tempDictionary;
-        group[@"restaurants"] = _allPlaces;
-        [group saveInBackground];
-    }];*/
+
     [self.restaurantsTable reloadData];
 }
 
@@ -140,13 +108,7 @@
         _locationFound = TRUE;
         [self queryGooglePlaces:@"food"];
     }
-    /*NSLog(@"going through it man %@", locations[0]);
-    if (_isAdmin && !_locationFound) {
-        _currentLocation = locations[0];
-        _currentCentre = _currentLocation.coordinate;
-        _locationFound = TRUE;
-        [self queryGooglePlaces:@"food"];
-    }*/
+
 }
 
 # pragma mark - tableView methods
@@ -275,53 +237,71 @@
 }
 
 - (IBAction)doneTapped:(id)sender {
-     //[(UINavigationController *)self.presentingViewController  popViewControllerAnimated:NO];
     [self.locationManager stopUpdatingLocation];
-     [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
     
-    /*if (_isAdmin) {
-        if (self.tickedIndexPaths.count == 3) {
-            NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-            // This loop goes through every place of the 15 places in the list
-            for (int i = 0; i < _allPlaces.count; i++) {
-                NSDictionary *response = [_allPlaces objectAtIndex:i];
-                
-                //This loop goes through the 3 selected cells and checks if the current cell from the above loop was selected
-                for (int k = 0 ; k < _tickedIndexPaths.count; k++){
-                    _isSelected = FALSE;
-                    RestaurantCell *tempCell = [_restaurantsTable cellForRowAtIndexPath:_tickedIndexPaths[k]];
-                    if(response[@"name"] == tempCell.name.text){
-                        [dictionary setObject:@(1) forKey:[response objectForKey:@"name"]];
-                        _isSelected = TRUE;
-                    }
-                }
-                if (!_isSelected) {
-                    [dictionary setObject:@(0) forKey:[response objectForKey:@"name"]];
-                }
-            }
+    
+    ///////////
+    //Retrieving FB user Id
+    if (FBSession.activeSession.isOpen)
+    {
+        [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            _facebookId = result[@"id"];
+            NSLog(@"FB ID is: %@", _facebookId);
             
-            PFUser* currentUser = [PFUser currentUser];
-            // update group info to include when and lobby length
-            PFQuery *query = [PFQuery queryWithClassName:@"Group"];
-            [query getObjectInBackgroundWithId:[currentUser[@"group"] objectId] block:^(PFObject *group, NSError *error) {
-                if (!group[@"votes"]) {
-                    group[@"votes"] = dictionary;
-                    group[@"restaurants"] = _allPlaces;
-                }
-                [group saveInBackground];
-            }];
-            [self performSegueWithIdentifier:@"mapSegue" sender:nil];
-        }
+            HootLobby* tempLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+            if (!tempLobby) {
+                NSLog(@"Current Lobby is empty");
+                tempLobby = [HootLobby new];
+                tempLobby.facebookId = _facebookId;
+                [self saveCustomObject:tempLobby];
+            }
+            else{
+                NSLog(@"Current Lobby has DATA!");
+                tempLobby.facebookId = _facebookId;
+                [self saveCustomObject:tempLobby];
+            }
+        }];
+        
     }
     
-    //IF it is not an Admin
+    //transfer restaurantsIdArray to hootLobby
+    //transfer facebookId to HootLobby
+    
+    HootLobby* tempLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+    if (!tempLobby) {
+        NSLog(@"Current Lobby is empty");
+        tempLobby = [HootLobby new];
+        tempLobby.placesIdArray = _restaurantIdArray;
+        [self saveCustomObject:tempLobby];
+    }
     else{
-            
-    }*/
+        NSLog(@"Current Lobby has DATA!");
+        tempLobby.placesIdArray = _restaurantIdArray;
+        [self saveCustomObject:tempLobby];
+    }
+    
 
-        //Add alert to tell Admin that friends have been notified and they have X amount of time to reply.
-        //If not admin, tell friends that votes have been casted and wait till lobby is closed
 }
+
+-(void)saveCustomObject:(HootLobby *)object
+{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSData *myEncodedObject = [NSKeyedArchiver archivedDataWithRootObject:object];
+    [prefs setObject:myEncodedObject forKey:LOBBY_KEY];
+}
+
+-(HootLobby *)loadCustomObjectWithKey:(NSString*)key
+{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSData *myEncodedObject = [prefs objectForKey:key ];
+    HootLobby *obj = (HootLobby *)[NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
+    return obj;
+}
+
+
+
+
 
 
 @end

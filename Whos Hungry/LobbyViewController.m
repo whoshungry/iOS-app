@@ -10,8 +10,9 @@
 #import "ActionSheetDatePicker.h"
 #import "SummaryViewController.h"
 
+#define LOBBY_KEY  @"currentlobby"
+
 @interface LobbyViewController () {
-    NSDate *whenDate;
     int lobbylength;
     
     UIDatePicker *theDatePicker;
@@ -27,7 +28,7 @@
     [self lunchBtnPressed:nil];
     
     NSDate *thirtyMinsLater = [[NSDate date] dateByAddingTimeInterval:60*30];
-    whenDate = thirtyMinsLater;
+    _whenDate = thirtyMinsLater;
     
     UIBarButtonItem *inviteFriendsBtn = [[UIBarButtonItem alloc]
                                    initWithTitle:@"Invite Friends"
@@ -38,6 +39,24 @@
 }
 
 -(IBAction)inviteFriends:(id)sender {
+    //Transfer WhenTime to HootLobby
+    //Transfer voteType to HootLobby
+    HootLobby* tempLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+    if (!tempLobby) {
+        tempLobby = [HootLobby new];
+        NSLog(@"Current Lobby is empty");
+        tempLobby.expirationTime = _whenDate;
+        tempLobby.voteType = _voteType;
+        [self saveCustomObject:tempLobby];
+    }
+    else{
+        NSLog(@"Current Lobby has DATA!");
+        tempLobby.expirationTime = _whenDate;
+        tempLobby.voteType = _voteType;
+        [self saveCustomObject:tempLobby];
+    }
+    
+    
     if (!FBSession.activeSession.isOpen) {
         // if the session is closed, then we open it here, and establish a handler for state changes
         [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"user_friends"]
@@ -81,7 +100,20 @@
     NSMutableArray *chosenFriends = [NSMutableArray new];
     
     for (id<FBGraphUser> user in self.friendPickerController.selection) {
-        [chosenFriends addObject:user];
+        [chosenFriends addObject:user.id];
+    }
+    
+    HootLobby* tempLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+    if (!tempLobby) {
+        NSLog(@"Current Lobby is empty");
+        tempLobby = [HootLobby new];
+        tempLobby.facebookbInvitatitions = chosenFriends;
+        [self saveCustomObject:tempLobby];
+    }
+    else{
+        NSLog(@"Current Lobby has DATA!");
+        tempLobby.facebookbInvitatitions = chosenFriends;
+        [self saveCustomObject:tempLobby];
     }
     
     if (chosenFriends.count > 0) {
@@ -108,12 +140,12 @@
 
 
 - (IBAction)chooseWhenDate:(id)sender {
-    [ActionSheetDatePicker showPickerWithTitle:@"" datePickerMode:UIDatePickerModeTime selectedDate:whenDate doneBlock:^(ActionSheetDatePicker *picker, id selectionDate, id origin) {
+    [ActionSheetDatePicker showPickerWithTitle:@"" datePickerMode:UIDatePickerModeTime selectedDate:_whenDate doneBlock:^(ActionSheetDatePicker *picker, id selectionDate, id origin) {
         NSLog(@"when date is %@", selectionDate);
-        whenDate = (NSDate *)selectionDate;
+        _whenDate = (NSDate *)selectionDate;
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"HH:mm"];
-        NSString *formattedDateString = [dateFormatter stringFromDate:whenDate];
+        NSString *formattedDateString = [dateFormatter stringFromDate:_whenDate];
         NSLog(@"formattedDateString: %@", formattedDateString);
         [_whenButton setTitle:[NSString stringWithFormat:@"When: %@", formattedDateString] forState:UIControlStateNormal];
     } cancelBlock:nil origin:sender];
@@ -126,6 +158,7 @@
     [self.dinnerBtn setImage: [UIImage imageNamed:@"dinner"] forState:UIControlStateNormal];
     [self.coffeeBtn setImage: [UIImage imageNamed:@"coffee.jpeg"] forState:UIControlStateNormal];
     [self.drinksBtn setImage: [UIImage imageNamed:@"drinks"] forState:UIControlStateNormal];
+    _voteType = @"lunch";
 }
 
 - (IBAction)dinnerBtnPressed:(id)sender {
@@ -133,6 +166,7 @@
     [self.dinnerBtn setImage: [UIImage imageNamed:@"dinnerPressed.jpeg"] forState:UIControlStateNormal];
     [self.coffeeBtn setImage: [UIImage imageNamed:@"coffee.jpeg"] forState:UIControlStateNormal];
     [self.drinksBtn setImage: [UIImage imageNamed:@"drinks"] forState:UIControlStateNormal];
+    _voteType = @"dinner";
 }
 
 - (IBAction)coffeeBtnPressed:(id)sender {
@@ -140,6 +174,7 @@
     [self.dinnerBtn setImage: [UIImage imageNamed:@"dinner"] forState:UIControlStateNormal];
     [self.coffeeBtn setImage: [UIImage imageNamed:@"coffeePressed.jpeg"] forState:UIControlStateNormal];
     [self.drinksBtn setImage: [UIImage imageNamed:@"drinks"] forState:UIControlStateNormal];
+    _voteType = @"coffee";
 }
 
 - (IBAction)drinksBtnPressed:(id)sender {
@@ -147,6 +182,22 @@
     [self.dinnerBtn setImage: [UIImage imageNamed:@"dinner"] forState:UIControlStateNormal];
     [self.coffeeBtn setImage: [UIImage imageNamed:@"coffee.jpeg"] forState:UIControlStateNormal];
     [self.drinksBtn setImage: [UIImage imageNamed:@"drinksPressed"] forState:UIControlStateNormal];
+    _voteType = @"drinks";
+}
+
+-(void)saveCustomObject:(HootLobby *)object
+{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSData *myEncodedObject = [NSKeyedArchiver archivedDataWithRootObject:object];
+    [prefs setObject:myEncodedObject forKey:LOBBY_KEY];
+}
+
+-(HootLobby *)loadCustomObjectWithKey:(NSString*)key
+{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSData *myEncodedObject = [prefs objectForKey:key ];
+    HootLobby *obj = (HootLobby *)[NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
+    return obj;
 }
 
 
