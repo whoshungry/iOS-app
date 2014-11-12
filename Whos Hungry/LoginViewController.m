@@ -7,7 +7,10 @@
 //
 
 #import "LoginViewController.h"
-#import <Parse/Parse.h>
+#import "AFNetworking.h"
+#import "AFHTTPRequestOperation.h"
+
+static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 @interface LoginViewController ()
 
@@ -25,10 +28,34 @@
 //fetched the facebook info
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
                             user:(id<FBGraphUser>)user {
-    NSLog(@"user id is :%@", user.id);
-    if (user != nil) {
-        [self performSegueWithIdentifier:@"mainScreenSegue" sender:self];
+    NSString *firstTime = [[NSUserDefaults standardUserDefaults]
+                             stringForKey:@"firstTime"];
+    if (firstTime == nil) {
+        NSLog(@"user id is :%@", user.id);
+        NSString *pushToken = [[NSUserDefaults standardUserDefaults]
+                                 stringForKey:@"pushToken"];
+        [self registerUser:user andPushID:pushToken];
     }
+}
+
+-(void) registerUser:(id<FBGraphUser>)user andPushID:(NSString *)pushID{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *params = @{
+                             @"username": user.username,
+                             @"push_id":pushID,
+                             @"facebook_id" : user.id,
+                             @"os_type" : @"IOS"};
+    [manager POST:[NSString stringWithFormat:@"%@apis/register", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
+- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
+    [[NSUserDefaults standardUserDefaults] setObject:@"nah" forKey:@"firstTime"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self performSegueWithIdentifier:@"mainScreenSegue" sender:self];
 }
 
 // Logged-out user experience
