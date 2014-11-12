@@ -8,14 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
-#import <Parse/Parse.h>
-#import <ParseFacebookUtils/PFFacebookUtils.h>
 
 @interface LoginViewController : UIViewController <FBLoginViewDelegate>
 
-@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicator;
-
-- (IBAction)loginWithFacebook:(id)sender;
+@property (weak, nonatomic) IBOutlet FBLoginView *loginButton;
 
 @end
 
