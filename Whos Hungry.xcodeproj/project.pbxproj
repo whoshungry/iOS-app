@@ -69,6 +69,7 @@
 		1BF5C7431A0F040C006D4D00 /* SWActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF5C73B1A0F040C006D4D00 /* SWActionSheet.m */; };
 		1BF5C7451A0F3FC9006D4D00 /* 02_blurred_backgrounds.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1BF5C7441A0F3FC9006D4D00 /* 02_blurred_backgrounds.jpg */; };
 		1BF5C7471A0F4198006D4D00 /* thisguy.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BF5C7461A0F4198006D4D00 /* thisguy.png */; };
+		C313981A1A12EFF200DE18EC /* HootLobby.m in Sources */ = {isa = PBXBuildFile; fileRef = C31398191A12EFF200DE18EC /* HootLobby.m */; };
 		C36C41371A0B206600F37668 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41361A0B206600F37668 /* main.m */; };
 		C36C413A1A0B206600F37668 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41391A0B206600F37668 /* AppDelegate.m */; };
 		C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C413C1A0B206600F37668 /* LoginViewController.m */; };
@@ -190,6 +191,8 @@
 		1BF5C73B1A0F040C006D4D00 /* SWActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWActionSheet.m; sourceTree = "<group>"; };
 		1BF5C7441A0F3FC9006D4D00 /* 02_blurred_backgrounds.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 02_blurred_backgrounds.jpg; sourceTree = "<group>"; };
 		1BF5C7461A0F4198006D4D00 /* thisguy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thisguy.png; sourceTree = "<group>"; };
+		C31398181A12EFF200DE18EC /* HootLobby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HootLobby.h; sourceTree = "<group>"; };
+		C31398191A12EFF200DE18EC /* HootLobby.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HootLobby.m; sourceTree = "<group>"; };
 		C36C41311A0B206600F37668 /* Whos Hungry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whos Hungry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C36C41351A0B206600F37668 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C36C41361A0B206600F37668 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -415,6 +418,8 @@
 				C36C413C1A0B206600F37668 /* LoginViewController.m */,
 				C36C41691A0B2B7000F37668 /* HootGroupCell.h */,
 				C36C416A1A0B2B7000F37668 /* HootGroupCell.m */,
+				C31398181A12EFF200DE18EC /* HootLobby.h */,
+				C31398191A12EFF200DE18EC /* HootLobby.m */,
 				C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */,
 				C36C41601A0B233900F37668 /* LobbyViewController.h */,
 				C36C41611A0B233900F37668 /* LobbyViewController.m */,
@@ -595,6 +600,7 @@
 			files = (
 				1BF5C73F1A0F040C006D4D00 /* ActionSheetDistancePicker.m in Sources */,
 				1BF5C6161A0EB7D0006D4D00 /* AFURLConnectionOperation.m in Sources */,
+				C313981A1A12EFF200DE18EC /* HootLobby.m in Sources */,
 				C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */,
 				1BF5C6151A0EB7D0006D4D00 /* AFSecurityPolicy.m in Sources */,
 				C36C416C1A0B2B7000F37668 /* HootGroupCell.m in Sources */,
