@@ -111,8 +111,15 @@
     [ActionSheetDatePicker showPickerWithTitle:@"" datePickerMode:UIDatePickerModeTime selectedDate:whenDate doneBlock:^(ActionSheetDatePicker *picker, id selectionDate, id origin) {
         NSLog(@"when date is %@", selectionDate);
         whenDate = (NSDate *)selectionDate;
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"HH:mm"];
+        NSString *formattedDateString = [dateFormatter stringFromDate:whenDate];
+        NSLog(@"formattedDateString: %@", formattedDateString);
+        [_whenButton setTitle:[NSString stringWithFormat:@"When: %@", formattedDateString] forState:UIControlStateNormal];
     } cancelBlock:nil origin:sender];
 }
+
+
 
 - (IBAction)lunchBtnPressed:(id)sender {
     [self.lunchBtn setImage: [UIImage imageNamed:@"lunchPressed.jpeg"] forState:UIControlStateNormal];

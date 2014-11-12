@@ -36,4 +36,7 @@
 @property int selectionCount;
 @property BOOL isSelected;
 @property BOOL isAdmin;
+
+@property NSMutableArray* restaurantIdArray;
+
 @end

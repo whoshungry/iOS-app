@@ -11,7 +11,7 @@
 #import "AFNetworking.h"
 #import "AFHTTPRequestOperation.h"
 
-static NSString * const BaseURLString = @"http://54.215.240.73:3000/apis/";
+static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 @interface MainViewController ()
 
@@ -25,15 +25,18 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/apis/";
     self.tableView.dataSource = self;
     
     //[self testAPIGroup];
+    [self testAPIRegister];
+    
 }
 
 -(void) testAPIRegister {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *params = @{@"username": @"Gilad Oved",
+    NSDictionary *params = @{
+                             @"username": @"Gilad Oved",
                              @"facebook_id" : @"10205081533016987",
                              @"expiration_date": @"2016-10-31T23:58:49.846Z",
                              @"access_token": @"CAALLA0rdSeABAAWZBGe0J91YCm2dZBgCwtnrMKvZC0LxCO7kojwNX4LBH0E3fIaAtacFfGgemBYywyabMGMYEe7TIoNLR4gQAOxO3AzWQBTASJ9jxOxd8pN2L8HCVHrZCDfn1QZAhtmsmWM5ozztcC60oQNHOzZBMH1snWbrFQ8cw7UszUmJXwTl4xQY3o2NCB2v30w1gHR6t5UoKkZBvum4Xa5cbKSSirjpXRZALHQGJkrZAGjT8YT8v"};
-    [manager POST:[NSString stringWithFormat:@"%@register", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@apis/register", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

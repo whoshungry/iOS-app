@@ -20,6 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _restaurantIdArray = [NSMutableArray new];
     
     /*PFUser *currentUser = [PFUser currentUser];
     PFQuery *query = [PFQuery queryWithClassName:@"Group"];
@@ -67,15 +68,13 @@
     self.mapView.delegate = self;
     
     CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
-    if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
-        authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
+    if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
         authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
         
         [self.locationManager startUpdatingLocation];
         self.mapView.showsUserLocation = YES;
     }
 
-    //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]]];
     // Do any additional setup after loading the view.
     self.restaurantsTable.backgroundColor = [UIColor clearColor];
     self.restaurantsTable.opaque = NO;
@@ -175,6 +174,10 @@
     
     cell.backgroundColor = [UIColor clearColor];
     
+
+    
+    //////////
+    //Load image into the cell
     dispatch_queue_t concurrentQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(concurrentQueue, ^{
         NSDictionary *photoDict = [[response objectForKey:@"photos"] objectAtIndex:0];
@@ -191,6 +194,9 @@
     });
     
     cell.name.text = response[@"name"];
+    
+    /////////
+    //Price level signs
     int priceLevel = [[response objectForKey:@"price_level"] intValue];
     if (!priceLevel) {
         priceLevel = 3;
@@ -200,20 +206,26 @@
         priceString = [priceString stringByAppendingString:@"$"];
     }
     cell.price.text = priceString;
+    
+    ///////////
+    //Loading distance from current location
     NSDictionary* loc  = [[NSDictionary alloc] init];
     loc = [response objectForKey:@"geometry"];
     NSDictionary* locTwo  = [[NSDictionary alloc] init];
-    locTwo = loc[@"location"
-                 ];
+    locTwo = loc[@"location"];
     CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[locTwo[@"lat"] doubleValue] longitude:(CLLocationDegrees)[locTwo[@"lng"] doubleValue]];
     //NSLog(@"Latitude %@ and Longitude %@", locTwo[@"lat"], locTwo[@"lng"]);
     CLLocation* userLocation = [[CLLocation alloc] initWithLatitude:_currentCentre.latitude longitude:_currentCentre.longitude];
     float distance = [placeLocation distanceFromLocation:userLocation] / 1609.0;
     cell.distance.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
     
+    
+    ///////////
+    //Add or remove checkmark
     if([self.tickedIndexPaths containsObject:indexPath])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        [_restaurantIdArray addObject:response[@"id"]];
     }
     else
     {
@@ -226,21 +238,45 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    //If cell is not already in list of checkmark
     if(![self.tickedIndexPaths containsObject:indexPath]){
+        
+        //If it is an there is less than 3 selected, just add it to the array
         if (_selectionCount < 3) {
             [self.tickedIndexPaths addObject:indexPath];
             _selectionCount++;
         }
-    }//tickedIndexPaths is an array
+        
+        //If it is the 4th to be selected, remove the first from the array and shift the rest and add this one in first location
+        else if (_selectionCount == 3){
+            id object = [self.tickedIndexPaths objectAtIndex:1];
+            [self.tickedIndexPaths removeObjectAtIndex:0];
+            [self.tickedIndexPaths insertObject:object atIndex:0];
+            object = [self.tickedIndexPaths objectAtIndex:2];
+            [self.tickedIndexPaths removeObjectAtIndex:1];
+            [self.tickedIndexPaths insertObject:object atIndex:1];
+            [self.tickedIndexPaths removeObjectAtIndex:2];
+            [self.tickedIndexPaths insertObject:indexPath atIndex:2];
+        }
+    }
+    
+    //If cell is already selected, deselect it.
     else{
         [self.tickedIndexPaths removeObject:indexPath];
         _selectionCount--;
     }
+    
+    //////////
+    //Reset array of restaurant id's
+    [_restaurantIdArray removeAllObjects];
+    
+    //reload data again to display checkmarks
     [self.restaurantsTable reloadData];
 }
 
 - (IBAction)doneTapped:(id)sender {
      //[(UINavigationController *)self.presentingViewController  popViewControllerAnimated:NO];
+    [self.locationManager stopUpdatingLocation];
      [self dismissViewControllerAnimated:YES completion:nil];
     
     /*if (_isAdmin) {

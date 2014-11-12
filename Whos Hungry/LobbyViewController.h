@@ -19,6 +19,7 @@
 - (IBAction)coffeeBtnPressed:(id)sender;
 - (IBAction)drinksBtnPressed:(id)sender;
 - (IBAction)chooseWhenDate:(id)sender;
+@property (strong, nonatomic) IBOutlet UIButton *whenButton;
 
 @property (retain, nonatomic) FBFriendPickerViewController *friendPickerController;
 
