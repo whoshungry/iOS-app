@@ -24,7 +24,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 
-    [self testAPIRegister];
+    //[self testAPIRegister];
 }
 
 -(void) testAPIGroup {
