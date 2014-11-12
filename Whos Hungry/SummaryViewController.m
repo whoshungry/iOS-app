@@ -76,7 +76,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     NSLog(@"New Location %f %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
-    
+    [locationManager stopUpdatingLocation];
     /*CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(newLocation.coordinate.latitude, newLocation.coordinate.longitude);
      PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLatitude:coordinate.latitude
      longitude:coordinate.longitude];
