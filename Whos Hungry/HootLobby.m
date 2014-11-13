@@ -12,7 +12,6 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
-    
     //Encode properties, other class variables, etc
     [encoder encodeObject:_facebookId forKey:@"facebookId"];
     [encoder encodeObject:_facebookbInvitatitions forKey:@"facebookInvitations"];

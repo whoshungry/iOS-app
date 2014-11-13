@@ -10,8 +10,6 @@
 
 @interface HootLobby : NSObject
 
-
-
 @property (strong, nonatomic) NSString* facebookId;
 @property (strong, nonatomic) NSMutableArray* facebookbInvitatitions;
 @property (strong, nonatomic) NSDate* expirationTime;

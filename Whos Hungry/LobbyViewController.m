@@ -9,6 +9,7 @@
 #import "LobbyViewController.h"
 #import "ActionSheetDatePicker.h"
 #import "SummaryViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define LOBBY_KEY  @"currentlobby"
 
@@ -17,6 +18,7 @@
     
     UIDatePicker *theDatePicker;
     UIView *pickerView;
+    UIColor *greenColor;
 }
 
 @end
@@ -25,7 +27,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self lunchBtnPressed:nil];
+    
+    greenColor = [UIColor colorWithRed:(91.0/255.0) green:(186.0/255.0) blue:(71.0/255.0) alpha:1.0];
     
     NSDate *thirtyMinsLater = [[NSDate date] dateByAddingTimeInterval:60*30];
     _whenDate = thirtyMinsLater;
@@ -36,6 +39,11 @@
                                    target:self
                                    action:@selector(inviteFriends:)];
     self.navigationItem.rightBarButtonItem = inviteFriendsBtn;
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self lunchBtnPressed:nil];
 }
 
 -(IBAction)inviteFriends:(id)sender {
@@ -100,7 +108,7 @@
     NSMutableArray *chosenFriends = [NSMutableArray new];
     
     for (id<FBGraphUser> user in self.friendPickerController.selection) {
-        [chosenFriends addObject:user.id];
+        [chosenFriends addObject:user.objectID];
     }
     
     HootLobby* tempLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
@@ -117,9 +125,10 @@
     }
     
     if (chosenFriends.count > 0) {
-        [self fillTextBoxAndDismiss:text];
+        [self presentSummaryVC];
     } else {
-        [self fillTextBoxAndDismiss:@"<None>"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Select Friends!" message:@"You have to select some friends first!" delegate:nil cancelButtonTitle: @"OK" otherButtonTitles:nil];
+        [alert show];
     }
 }
 
@@ -127,9 +136,8 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)fillTextBoxAndDismiss:(NSString *)text {
+- (void)presentSummaryVC {
     SummaryViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryViewController"];
-    
     [self.friendPickerController presentViewController:vc animated:YES completion:nil];
 }
 
@@ -137,7 +145,6 @@
 {
     return YES;
 }
-
 
 - (IBAction)chooseWhenDate:(id)sender {
     [ActionSheetDatePicker showPickerWithTitle:@"" datePickerMode:UIDatePickerModeTime selectedDate:_whenDate doneBlock:^(ActionSheetDatePicker *picker, id selectionDate, id origin) {
@@ -151,37 +158,51 @@
     } cancelBlock:nil origin:sender];
 }
 
-
-
 - (IBAction)lunchBtnPressed:(id)sender {
-    [self.lunchBtn setImage: [UIImage imageNamed:@"lunchPressed.jpeg"] forState:UIControlStateNormal];
-    [self.dinnerBtn setImage: [UIImage imageNamed:@"dinner"] forState:UIControlStateNormal];
-    [self.coffeeBtn setImage: [UIImage imageNamed:@"coffee.jpeg"] forState:UIControlStateNormal];
-    [self.drinksBtn setImage: [UIImage imageNamed:@"drinks"] forState:UIControlStateNormal];
+    self.lunchBtn.layer.borderColor = greenColor.CGColor;
+    self.lunchBtn.layer.borderWidth = 3.0f;
+    self.dinnerBtn.layer.borderColor = greenColor.CGColor;
+    self.dinnerBtn.layer.borderWidth = 0.0f;
+    self.coffeeBtn.layer.borderColor = greenColor.CGColor;
+    self.coffeeBtn.layer.borderWidth = 0.0f;
+    self.drinksBtn.layer.borderColor = greenColor.CGColor;
+    self.drinksBtn.layer.borderWidth = 0.0f;
     _voteType = @"lunch";
 }
 
 - (IBAction)dinnerBtnPressed:(id)sender {
-    [self.lunchBtn setImage: [UIImage imageNamed:@"lunch.gif"] forState:UIControlStateNormal];
-    [self.dinnerBtn setImage: [UIImage imageNamed:@"dinnerPressed.jpeg"] forState:UIControlStateNormal];
-    [self.coffeeBtn setImage: [UIImage imageNamed:@"coffee.jpeg"] forState:UIControlStateNormal];
-    [self.drinksBtn setImage: [UIImage imageNamed:@"drinks"] forState:UIControlStateNormal];
+    self.lunchBtn.layer.borderColor = greenColor.CGColor;
+    self.lunchBtn.layer.borderWidth = 0.0f;
+    self.dinnerBtn.layer.borderColor = greenColor.CGColor;
+    self.dinnerBtn.layer.borderWidth = 3.0f;
+    self.coffeeBtn.layer.borderColor = greenColor.CGColor;
+    self.coffeeBtn.layer.borderWidth = 0.0f;
+    self.drinksBtn.layer.borderColor = greenColor.CGColor;
+    self.drinksBtn.layer.borderWidth = 0.0f;
     _voteType = @"dinner";
 }
 
 - (IBAction)coffeeBtnPressed:(id)sender {
-    [self.lunchBtn setImage: [UIImage imageNamed:@"lunch.gif"] forState:UIControlStateNormal];
-    [self.dinnerBtn setImage: [UIImage imageNamed:@"dinner"] forState:UIControlStateNormal];
-    [self.coffeeBtn setImage: [UIImage imageNamed:@"coffeePressed.jpeg"] forState:UIControlStateNormal];
-    [self.drinksBtn setImage: [UIImage imageNamed:@"drinks"] forState:UIControlStateNormal];
+    self.lunchBtn.layer.borderColor = greenColor.CGColor;
+    self.lunchBtn.layer.borderWidth = 0.0f;
+    self.dinnerBtn.layer.borderColor = greenColor.CGColor;
+    self.dinnerBtn.layer.borderWidth = 0.0f;
+    self.coffeeBtn.layer.borderColor = greenColor.CGColor;
+    self.coffeeBtn.layer.borderWidth = 3.0f;
+    self.drinksBtn.layer.borderColor = greenColor.CGColor;
+    self.drinksBtn.layer.borderWidth = 0.0f;
     _voteType = @"coffee";
 }
 
 - (IBAction)drinksBtnPressed:(id)sender {
-    [self.lunchBtn setImage: [UIImage imageNamed:@"lunch.gif"] forState:UIControlStateNormal];
-    [self.dinnerBtn setImage: [UIImage imageNamed:@"dinner"] forState:UIControlStateNormal];
-    [self.coffeeBtn setImage: [UIImage imageNamed:@"coffee.jpeg"] forState:UIControlStateNormal];
-    [self.drinksBtn setImage: [UIImage imageNamed:@"drinksPressed"] forState:UIControlStateNormal];
+    self.lunchBtn.layer.borderColor = greenColor.CGColor;
+    self.lunchBtn.layer.borderWidth = 0.0f;
+    self.dinnerBtn.layer.borderColor = greenColor.CGColor;
+    self.dinnerBtn.layer.borderWidth = 0.0f;
+    self.coffeeBtn.layer.borderColor = greenColor.CGColor;
+    self.coffeeBtn.layer.borderWidth = 0.0f;
+    self.drinksBtn.layer.borderColor = greenColor.CGColor;
+    self.drinksBtn.layer.borderWidth = 3.0f;
     _voteType = @"drinks";
 }
 
