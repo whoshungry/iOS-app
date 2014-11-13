@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B0ED5191A1544EE00639614 /* updownvote.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B0ED5181A1544EE00639614 /* updownvote.xib */; };
+		1B0ED51C1A15459A00639614 /* downvote.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B0ED51A1A15459A00639614 /* downvote.png */; };
+		1B0ED51D1A15459A00639614 /* upvote.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B0ED51B1A15459A00639614 /* upvote.png */; };
+		1B0ED5201A15485100639614 /* UpDownVoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0ED51F1A15485100639614 /* UpDownVoteView.m */; };
 		1B9713B41A0B32F700A2F46E /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9713B21A0B32F700A2F46E /* Parse.framework */; };
 		1B9713B51A0B32F700A2F46E /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9713B31A0B32F700A2F46E /* ParseFacebookUtils.framework */; };
 		1B9713B71A0B330C00A2F46E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9713B61A0B330C00A2F46E /* AudioToolbox.framework */; };
@@ -98,6 +102,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1B0ED5181A1544EE00639614 /* updownvote.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = updownvote.xib; sourceTree = "<group>"; };
+		1B0ED51A1A15459A00639614 /* downvote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downvote.png; sourceTree = "<group>"; };
+		1B0ED51B1A15459A00639614 /* upvote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upvote.png; sourceTree = "<group>"; };
+		1B0ED51E1A15485100639614 /* UpDownVoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpDownVoteView.h; sourceTree = "<group>"; };
+		1B0ED51F1A15485100639614 /* UpDownVoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpDownVoteView.m; sourceTree = "<group>"; };
 		1B9713B21A0B32F700A2F46E /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		1B9713B31A0B32F700A2F46E /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
 		1B9713B61A0B330C00A2F46E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -277,6 +286,8 @@
 		1B9713CA1A0B35F500A2F46E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				1B0ED51A1A15459A00639614 /* downvote.png */,
+				1B0ED51B1A15459A00639614 /* upvote.png */,
 				1BF5C7461A0F4198006D4D00 /* thisguy.png */,
 				1BF5C7441A0F3FC9006D4D00 /* 02_blurred_backgrounds.jpg */,
 				1BF5C63A1A0EF2A1006D4D00 /* chipotle.JPG */,
@@ -435,6 +446,9 @@
 				1BF5C62B1A0EDEB6006D4D00 /* RestaurantCell.m */,
 				1BF5C62C1A0EDEB6006D4D00 /* RestaurantsViewController.h */,
 				1BF5C62D1A0EDEB6006D4D00 /* RestaurantsViewController.m */,
+				1B0ED51E1A15485100639614 /* UpDownVoteView.h */,
+				1B0ED51F1A15485100639614 /* UpDownVoteView.m */,
+				1B0ED5181A1544EE00639614 /* updownvote.xib */,
 				C36C41411A0B206600F37668 /* Images.xcassets */,
 				C36C41431A0B206600F37668 /* LaunchScreen.xib */,
 				C36C41341A0B206600F37668 /* Supporting Files */,
@@ -558,6 +572,7 @@
 				1BF5C6361A0EEF83006D4D00 /* drinksPressed.png in Resources */,
 				1BF5C4EB1A0EA751006D4D00 /* pencil.png in Resources */,
 				1B9713D81A0B365100A2F46E /* final login image.png in Resources */,
+				1B0ED51C1A15459A00639614 /* downvote.png in Resources */,
 				1BF5C7471A0F4198006D4D00 /* thisguy.png in Resources */,
 				1B9713D61A0B362700A2F46E /* owlintro.png in Resources */,
 				1B9713D11A0B362700A2F46E /* AustinLocation.gpx in Resources */,
@@ -571,6 +586,7 @@
 				1BF5C63B1A0EF2A1006D4D00 /* chipotle.JPG in Resources */,
 				C36C41711A0B3DD800F37668 /* Main.storyboard in Resources */,
 				1BF5C4F11A0EAD8D006D4D00 /* friendsicon.png in Resources */,
+				1B0ED51D1A15459A00639614 /* upvote.png in Resources */,
 				1BF5C7451A0F3FC9006D4D00 /* 02_blurred_backgrounds.jpg in Resources */,
 				1BF5C6351A0EEF83006D4D00 /* dinnerPressed.jpeg in Resources */,
 				1BF5C6271A0EDD42006D4D00 /* dinner.png in Resources */,
@@ -580,6 +596,7 @@
 				1B9713D21A0B362700A2F46E /* login-button-small-pressed.png in Resources */,
 				1B9713D51A0B362700A2F46E /* login-button-small@2x.png in Resources */,
 				1BF5C4ED1A0EACBE006D4D00 /* chiptole.png in Resources */,
+				1B0ED5191A1544EE00639614 /* updownvote.xib in Resources */,
 				1B9713D41A0B362700A2F46E /* login-button-small.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -601,6 +618,7 @@
 				1BF5C73F1A0F040C006D4D00 /* ActionSheetDistancePicker.m in Sources */,
 				1BF5C6161A0EB7D0006D4D00 /* AFURLConnectionOperation.m in Sources */,
 				C313981A1A12EFF200DE18EC /* HootLobby.m in Sources */,
+				1B0ED5201A15485100639614 /* UpDownVoteView.m in Sources */,
 				C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */,
 				1BF5C6151A0EB7D0006D4D00 /* AFSecurityPolicy.m in Sources */,
 				C36C416C1A0B2B7000F37668 /* HootGroupCell.m in Sources */,
