@@ -187,7 +187,7 @@
     if([self.tickedIndexPaths containsObject:indexPath])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        [_restaurantIdArray addObject:response[@"id"]];
+        [_restaurantIdArray addObject:response[@"place_id"]];
     }
     else
     {

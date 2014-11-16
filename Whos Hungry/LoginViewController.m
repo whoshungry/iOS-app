@@ -40,6 +40,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 }
 
 -(void) registerUser:(id<FBGraphUser>)user andPushID:(NSString *)pushID{
+    /*
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *params = @{
                              @"username": user.name,
@@ -51,6 +52,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
+     */
 }
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {

@@ -11,6 +11,10 @@
 
 #define LOBBY_KEY  @"currentlobby"
 static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
+#define GOOGLE_API_KEY @"AIzaSyAdB2MtdRCGDZNfIcd-uR22hkmCmniA6Oc"
+
+
+
 
 @interface SummaryViewController (){
     CLLocationCoordinate2D restaurantCoor;
@@ -30,17 +34,22 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _allPlaces = [NSMutableArray new];
     
     _currentLobby = [HootLobby new];
     _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+    
+    //HootLobby doesn't exist
     if (!_currentLobby) {
         NSLog(@"Current Lobby is empty");
         _currentLobby = [HootLobby new];
     }
+    //HootLobby exists
     else{
         NSLog(@"Current Lobby has DATA!");
         NSLog(@"%@", _currentLobby);
         [self createAPIGroup];
+        [self loadSummary];
         
     }
     
@@ -73,6 +82,12 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 }
 
 
+- (IBAction)goHome:(id)sender {
+    [locationManager stopUpdatingLocation];
+}
+
+#pragma mark - Location methods
+
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     NSLog(@"updated! %@", userLocation);
@@ -97,9 +112,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 }
 
 
-- (IBAction)goHome:(id)sender {
-    [locationManager stopUpdatingLocation];
-}
+#pragma mark - NSUserDefaults methods
 
 -(void)saveCustomObject:(HootLobby *)object
 {
@@ -115,6 +128,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     HootLobby *obj = (HootLobby *)[NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
     return obj;
 }
+
+#pragma mark - AWS API methods
 
 -(void) createAPIGroup {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -168,5 +183,48 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"Error: %@", error);
     }];
 }
+
+- (void)loadSummary{
+    //Goes through all place_id's and stores them in _allPlaces array
+    for (int i = 0; i < _currentLobby.placesIdArray.count; i++) {
+        [self queryGooglePlacesWithPlaceId:_currentLobby.placesIdArray[i]];
+    }
+    
+}
+
+-(void) queryGooglePlacesWithPlaceId:(NSString*)placeId{
+    NSLog(@"going through google places!!!");
+    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?placeid=%@&key=%@",placeId,GOOGLE_API_KEY];
+    NSURL *googleRequestURL=[NSURL URLWithString:url];
+    
+    // Retrieve the results of the URL.
+    dispatch_async(kBgQueue, ^{
+        NSData* data = [NSData dataWithContentsOfURL: googleRequestURL];
+        NSLog(@"data found is :%@", data);
+        [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
+    });
+}
+
+-(void)fetchedData:(NSData *)responseData {
+    //parse out the json data
+    NSLog(@"fetched data is @!!:!!");
+    NSError* error;
+    NSDictionary* json = [NSJSONSerialization
+                          JSONObjectWithData:responseData
+                          
+                          options:kNilOptions
+                          error:&error];
+    
+    
+    //NSLog(@"JSON is %@",json);
+    //The results from Google will be an array obtained from the NSDictionary object with the key "results".
+    NSArray* place = [json objectForKey:@"result"];
+    [_allPlaces addObject:place];
+    
+    //NSLog(@"places is %@",place);
+}
+
+
+
 
 @end
