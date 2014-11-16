@@ -12,6 +12,7 @@
 #define LOBBY_KEY  @"currentlobby"
 static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 #define GOOGLE_API_KEY @"AIzaSyAdB2MtdRCGDZNfIcd-uR22hkmCmniA6Oc"
+#define GOOGLE_API_KEY_TWO @"AIzaSyBBQSs-ALwZ3Za7nioFPYXsByMDsMFq-68"
 
 
 
@@ -35,7 +36,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 - (void)viewDidLoad {
     [super viewDidLoad];
     _allPlaces = [NSMutableArray new];
-    
+    _restaurantTable = [UITableView new];
     _currentLobby = [HootLobby new];
     _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
     
@@ -50,6 +51,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"%@", _currentLobby);
         [self createAPIGroup];
         [self loadSummary];
+        [_restaurantTable reloadData];
         
     }
     
@@ -194,7 +196,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 -(void) queryGooglePlacesWithPlaceId:(NSString*)placeId{
     NSLog(@"going through google places!!!");
-    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?placeid=%@&key=%@",placeId,GOOGLE_API_KEY];
+    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?placeid=%@&key=%@",placeId,GOOGLE_API_KEY_TWO];
     NSURL *googleRequestURL=[NSURL URLWithString:url];
     
     // Retrieve the results of the URL.
@@ -224,7 +226,31 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     //NSLog(@"places is %@",place);
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _currentLobby.placesIdArray.count;
+}
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 150;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *simpleTableIdentifier = @"UpDownVoteView";
+    
+    UpDownVoteView *cell = (UpDownVoteView *)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    if (cell == nil)
+    {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"updownvote" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"index path is: ");
+}
 
 
 @end

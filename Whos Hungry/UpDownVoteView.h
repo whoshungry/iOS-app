@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UpDownVoteView : UIView
+@interface UpDownVoteView : UITableViewCell
 @property (nonatomic, assign) int votes;
 @property (nonatomic, assign) BOOL voted;
 
 @property (weak, nonatomic) IBOutlet UIButton *upBtn;
 @property (weak, nonatomic) IBOutlet UIButton *downBtn;
 @property (weak, nonatomic) IBOutlet UILabel *voteLbl;
+@property (strong, nonatomic) IBOutlet UILabel *restaurantLabel;
+@property (strong, nonatomic) IBOutlet UILabel *distanceLabel;
 - (IBAction)voteUp:(id)sender;
 - (IBAction)voteDown:(id)sender;
 

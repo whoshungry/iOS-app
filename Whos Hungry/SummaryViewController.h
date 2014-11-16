@@ -17,6 +17,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "AFNetworking.h"
 #import "AFHTTPRequestOperation.h"
+#import "UpDownVoteView.h"
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
@@ -27,6 +28,7 @@
 
 @property (strong, nonatomic) HootLobby* currentLobby;
 @property (strong, nonatomic) NSMutableArray* allPlaces;
+@property (strong, nonatomic) IBOutlet UITableView *restaurantTable;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 - (IBAction)goHome:(id)sender;

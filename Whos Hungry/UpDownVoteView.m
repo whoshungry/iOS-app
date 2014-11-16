@@ -14,6 +14,7 @@
     if (!self.voted) {
         self.voted = YES;
         self.votes++;
+        self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
         self.upBtn.enabled = NO;
     }
 }
@@ -22,14 +23,9 @@
     if (!self.voted) {
         self.voted = YES;
         self.votes--;
+        self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
         self.downBtn.enabled = NO;
     }
 }
-
--(void) setVotes:(int)votes {
-    self.votes = votes;
-    self.voteLbl.text = [NSString stringWithFormat:@"%i", votes];
-}
-
 
 @end
