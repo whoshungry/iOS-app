@@ -261,7 +261,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zdg-g4-0NK">
-                                <rect key="frame" x="280" y="10" width="41" height="30"/>
+                                <rect key="frame" x="280" y="17" width="41" height="30"/>
                                 <state key="normal" title="Home">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -302,11 +302,13 @@
                             <constraint firstAttribute="trailing" secondItem="IcT-nh-l8n" secondAttribute="trailing" id="EZU-s1-eBY"/>
                             <constraint firstItem="Gu5-7R-QQ8" firstAttribute="top" secondItem="KgG-Ag-qZe" secondAttribute="bottom" constant="8" id="EnK-kQ-cp6"/>
                             <constraint firstAttribute="trailing" secondItem="LYI-yY-8GR" secondAttribute="trailing" id="Hz7-Vz-McV"/>
+                            <constraint firstAttribute="centerX" secondItem="zdg-g4-0NK" secondAttribute="centerX" id="IzM-Ku-cct"/>
                             <constraint firstAttribute="centerX" secondItem="LYI-yY-8GR" secondAttribute="centerX" id="J1O-0W-SzS"/>
                             <constraint firstAttribute="trailing" secondItem="Gu5-7R-QQ8" secondAttribute="trailing" id="LWh-wD-4hG"/>
                             <constraint firstItem="KgG-Ag-qZe" firstAttribute="top" secondItem="IcT-nh-l8n" secondAttribute="bottom" constant="114" id="Q7O-yA-bT2"/>
                             <constraint firstItem="LYI-yY-8GR" firstAttribute="top" secondItem="3AZ-H2-4ZW" secondAttribute="topMargin" id="SxV-lw-WhE"/>
                             <constraint firstItem="IcT-nh-l8n" firstAttribute="top" secondItem="3AZ-H2-4ZW" secondAttribute="topMargin" id="ZWd-Sf-boY"/>
+                            <constraint firstItem="zdg-g4-0NK" firstAttribute="top" secondItem="3AZ-H2-4ZW" secondAttribute="topMargin" constant="17" id="aQv-sb-heL"/>
                             <constraint firstAttribute="centerX" secondItem="KgG-Ag-qZe" secondAttribute="centerX" id="eQ7-eI-8Gk"/>
                             <constraint firstItem="Gu5-7R-QQ8" firstAttribute="top" secondItem="KgG-Ag-qZe" secondAttribute="bottom" constant="8" id="elm-8a-hgS"/>
                             <constraint firstItem="Gu5-7R-QQ8" firstAttribute="leading" secondItem="3AZ-H2-4ZW" secondAttribute="leading" id="f0F-0c-jWm"/>

@@ -13,7 +13,7 @@
 static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 #define GOOGLE_API_KEY @"AIzaSyAdB2MtdRCGDZNfIcd-uR22hkmCmniA6Oc"
 #define GOOGLE_API_KEY_TWO @"AIzaSyBBQSs-ALwZ3Za7nioFPYXsByMDsMFq-68"
-
+#define GOOGLE_API_KEY_THREE @"AIzaSyA6gixyCg9D-9nEJ8q7PQJiJ9Nk5LzcltI"
 
 
 
@@ -36,7 +36,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 - (void)viewDidLoad {
     [super viewDidLoad];
     _allPlaces = [NSMutableArray new];
-    _restaurantTable = [UITableView new];
+    _indexPathArray = [NSMutableArray new];
+    //_restaurantTable = [UITableView new];
     _currentLobby = [HootLobby new];
     _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
     
@@ -49,9 +50,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     else{
         NSLog(@"Current Lobby has DATA!");
         NSLog(@"%@", _currentLobby);
-        [self createAPIGroup];
+        //[self createAPIGroup];
         [self loadSummary];
-        [_restaurantTable reloadData];
+        //[_restaurantTable reloadData];
         
     }
     
@@ -108,6 +109,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     NSLog(@"New Location %f %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
+    _currentLocation = newLocation;
     [locationManager stopUpdatingLocation];
 
     
@@ -191,12 +193,22 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     for (int i = 0; i < _currentLobby.placesIdArray.count; i++) {
         [self queryGooglePlacesWithPlaceId:_currentLobby.placesIdArray[i]];
     }
-    
+}
+
+-(void)loadRestaurantNames{
+    //[_restaurantTable reloadData];
+    for (int j = 0; j < _indexPathArray.count; j++) {
+        UpDownVoteView *tempCell = [UpDownVoteView new];
+        NSIndexPath *tempIndex = _indexPathArray[j];
+        tempCell = (UpDownVoteView*)[_restaurantTable cellForRowAtIndexPath:tempIndex];
+        //UpDownVoteView *cell = [self.restaurantTable cellForRowAtIndexPath:_indexPathArray[j]];
+        tempCell.restaurantLabel.text = _allPlaces[j][@"name"];
+    }
 }
 
 -(void) queryGooglePlacesWithPlaceId:(NSString*)placeId{
     NSLog(@"going through google places!!!");
-    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?placeid=%@&key=%@",placeId,GOOGLE_API_KEY_TWO];
+    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?placeid=%@&key=%@",placeId,GOOGLE_API_KEY_THREE];
     NSURL *googleRequestURL=[NSURL URLWithString:url];
     
     // Retrieve the results of the URL.
@@ -221,8 +233,12 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     //NSLog(@"JSON is %@",json);
     //The results from Google will be an array obtained from the NSDictionary object with the key "results".
     NSArray* place = [json objectForKey:@"result"];
-    [_allPlaces addObject:place];
     
+    [_allPlaces addObject:place];
+    if (_allPlaces.count == _currentLobby.placesIdArray.count) {
+        //[self loadRestaurantNames];
+        [_restaurantTable reloadData];
+    }
     //NSLog(@"places is %@",place);
 }
 
@@ -245,6 +261,14 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         cell = [nib objectAtIndex:0];
     }
     [cell layoutIfNeeded];
+    [_indexPathArray addObject:indexPath];
+    if (_allPlaces.count == _currentLobby.placesIdArray.count) {
+        CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
+        float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
+        cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
+        cell.restaurantLabel.text = _allPlaces[indexPath.row][@"name"];
+        
+    }
     
     return cell;
 }
