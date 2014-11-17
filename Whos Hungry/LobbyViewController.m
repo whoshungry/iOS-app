@@ -101,7 +101,7 @@
 }
 
 - (void)facebookViewControllerDoneWasPressed:(id)sender {
-    NSMutableString *text = [[NSMutableString alloc] init];
+    //NSMutableString *text = [[NSMutableString alloc] init];
     
     // we pick up the users from the selection, and create a string that we use to update the text view
     // at the bottom of the display; note that self.selection is a property inherited from our base class

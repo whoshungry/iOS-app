@@ -11,9 +11,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rHK-vb-Im3">
-                    <rect key="frame" x="569" y="36" width="21" height="42"/>
+                    <rect key="frame" x="555" y="36" width="49" height="42"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="21" id="GOF-ZQ-CqO"/>
+                        <constraint firstAttribute="width" constant="49" id="GOF-ZQ-CqO"/>
                         <constraint firstAttribute="height" constant="42" id="qVg-d7-WhZ"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="36"/>
@@ -76,7 +76,7 @@
                 <constraint firstAttribute="bottom" secondItem="rHK-vb-Im3" secondAttribute="bottom" constant="35" id="BA6-8l-wWO"/>
                 <constraint firstItem="rHK-vb-Im3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="36" id="CMM-80-Ohv"/>
                 <constraint firstAttribute="trailing" secondItem="1KN-OT-BAB" secondAttribute="trailing" constant="21" id="Dye-ub-jfJ"/>
-                <constraint firstAttribute="trailing" secondItem="rHK-vb-Im3" secondAttribute="trailing" constant="35" id="MWj-Fd-tGw"/>
+                <constraint firstAttribute="trailing" secondItem="rHK-vb-Im3" secondAttribute="trailing" constant="21" id="MWj-Fd-tGw"/>
                 <constraint firstItem="pk9-9x-xEM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="73" id="UNL-QY-haw"/>
                 <constraint firstItem="FxR-po-ELd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="28" id="Uaq-z3-u4H"/>
                 <constraint firstAttribute="trailing" secondItem="pk9-9x-xEM" secondAttribute="trailing" constant="21" id="dwl-00-nuC"/>

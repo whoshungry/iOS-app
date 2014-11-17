@@ -278,6 +278,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
         cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
         cell.restaurantLabel.text = _allPlaces[indexPath.row][@"name"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
     }
     
