@@ -10,7 +10,9 @@
 
 @interface UpDownVoteView : UITableViewCell
 @property (nonatomic, assign) int votes;
-@property (nonatomic, assign) BOOL voted;
+//@property (nonatomic, assign) BOOL voted;
+@property (nonatomic, assign) int state;
+
 
 @property (weak, nonatomic) IBOutlet UIButton *upBtn;
 @property (weak, nonatomic) IBOutlet UIButton *downBtn;

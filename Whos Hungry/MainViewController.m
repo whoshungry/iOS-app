@@ -23,15 +23,14 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [super viewDidLoad];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
-    //[self testAPIGroup];
+
+    [self getGroups];
 }
 
--(void) testAPIGroup {
+-(void) getGroups {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *params = @{@"user_id": @"10205081533016987",
-                             @"invitations" : @"10154793475270002,10154793475270003,10154793475270004"};
-    [manager POST:[NSString stringWithFormat:@"%@create_group", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSDictionary *params = @{@"user_id": @"10205081533016987"};
+    [manager POST:[NSString stringWithFormat:@"%@apis/show_lobby_friend", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
