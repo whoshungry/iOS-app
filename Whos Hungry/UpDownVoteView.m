@@ -14,6 +14,8 @@
     self.state++;
     if (self.state == 0) {
         self.votes++;
+        self.upBtn.enabled = YES;
+        self.downBtn.enabled = YES;
     } else if (self.state == 1) {
         self.upBtn.enabled = NO;
         self.downBtn.enabled = YES;
@@ -29,6 +31,8 @@
         self.downBtn.enabled = NO;
         self.votes--;
     } else if (self.state == 0) {
+        self.upBtn.enabled = YES;
+        self.downBtn.enabled = YES;
         self.votes--;
     }
     self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
