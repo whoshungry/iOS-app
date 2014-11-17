@@ -164,7 +164,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     [manager POST:[NSString stringWithFormat:@"%@apis/create_group", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
-        [self createAPIVoteWithGroupId:responseObject[@"group_id"]];
+//        //[self createAPIVoteWithGroupId:responseObject[@"group_id"]];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
