@@ -50,7 +50,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     else{
         NSLog(@"Current Lobby has DATA!");
         NSLog(@"%@", _currentLobby);
-        //[self createAPIGroup];
+        [self createAPIGroup];
         [self loadSummary];
         //[_restaurantTable reloadData];
         
@@ -86,7 +86,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 
 - (IBAction)goHome:(id)sender {
-    [locationManager stopUpdatingLocation];
+    //[locationManager stopUpdatingLocation];
 }
 
 #pragma mark - Location methods

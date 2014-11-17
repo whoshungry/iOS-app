@@ -142,11 +142,12 @@
     
     //////////
     //Load image into the cell
+    /*
     dispatch_queue_t concurrentQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(concurrentQueue, ^{
         NSDictionary *photoDict = [[response objectForKey:@"photos"] objectAtIndex:0];
         NSString *photoRef = [photoDict objectForKey:@"photo_reference"];
-        NSString *urlStr = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", photoRef, GOOGLE_API_KEY_TWO];
+        NSString *urlStr = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", photoRef, GOOGLE_API_KEY_THREE];
         NSURL * imageURL = [NSURL URLWithString:urlStr];
         
         NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
@@ -156,7 +157,7 @@
             cell.image.image = image;
         });
     });
-    
+    */
     cell.name.text = response[@"name"];
     
     /////////
@@ -189,11 +190,13 @@
     if([self.tickedIndexPaths containsObject:indexPath])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        [cell setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:228.0/255.0 blue:171.0/255.0 alpha:1.0]];
         [_restaurantIdArray addObject:response[@"place_id"]];
     }
     else
     {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        
     }
     return cell;
 }
