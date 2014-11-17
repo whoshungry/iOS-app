@@ -52,8 +52,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"%@", _currentLobby);
         [self createAPIGroup];
         [self loadSummary];
+        NSLog(@"%@", _currentLobby);
+        [self createAPIGroup];
         //[_restaurantTable reloadData];
-        
     }
     
     locationManager = [[CLLocationManager alloc] init];
@@ -166,7 +167,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     [manager POST:[NSString stringWithFormat:@"%@apis/create_group", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
-//        //[self createAPIVoteWithGroupId:responseObject[@"group_id"]];
+        [self createAPIVoteWithGroupId:responseObject[@"group_id"]];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -225,7 +226,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     // Retrieve the results of the URL.
     dispatch_async(kBgQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL: googleRequestURL];
-        NSLog(@"data found is :%@", data);
+        //NSLog(@"data found is :%@", data);
         [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
     });
 }

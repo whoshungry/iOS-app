@@ -31,6 +31,8 @@
         self.downBtn.enabled = NO;
         self.votes--;
     } else if (self.state == 0) {
+        self.upBtn.enabled = YES;
+        self.downBtn.enabled = YES;
         self.votes--;
         self.upBtn.enabled = YES;
         self.downBtn.enabled = YES
