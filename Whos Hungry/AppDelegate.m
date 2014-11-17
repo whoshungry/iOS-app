@@ -27,8 +27,17 @@
     [PFFacebookUtils initializeFacebook];*/
     NSLog(@"Registering for push notifications...");
     
-    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
+    {
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        
+    }
+    else
+    {
+        [application registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+    }
     
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];

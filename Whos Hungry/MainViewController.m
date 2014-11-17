@@ -48,10 +48,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                 NSString *facebookId = [groups objectAtIndex:i][@"admin_user"];
                 __block NSString *facebookName;
                 if (facebookId) {
-                    NSDictionary* params = [NSDictionary dictionaryWithObject:@"id,gender,name" forKey:@"fields"];
-                    [[FBRequest requestWithGraphPath:[NSString stringWithFormat:@"%@",facebookId] parameters:params HTTPMethod:nil] startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                        NSLog(@"aight got it: %@", result);
-                    }];
+                    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture", facebookId]];
+                    NSData *data = [NSData dataWithContentsOfURL:url];
+                    UIImage *image = [UIImage imageWithData:data];
+                    [hostImages addObject:image];
                 }
                 NSLog(@"ost immmagier:  %li", hostImages.count);
                 NSDate *expectedDate = [groups objectAtIndex:i][@"expected_time"];
@@ -108,10 +108,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     cell.whereLabel.text = @"Chipotle";
     cell.whenLabel.text = [NSString stringWithFormat:@"7:3%li", (long)indexPath.row];
     cell.titleLabel.text = chosenLobby.voteType;
-    cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you ;)", @"Jennifer Aniston"];
+    cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you ;)", chosenLobby.facebookName];
     cell.backgroundImage.image = [UIImage imageNamed:@"chipotle.JPG"];
-    cell.friendsImage.image = [UIImage imageNamed:@"friendsicon"];
-    cell.hostImage.image = [UIImage imageNamed:@"friendsicon"];
+    cell.friendsImage.image = hostImages[indexPath.row];
+    //cell.hostImage.image = hostImages[indexPath.row];
     //NSLog(@"cell isi :%@ ", cell);
     
     return cell;
