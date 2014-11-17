@@ -30,6 +30,7 @@
 		1B9713D61A0B362700A2F46E /* owlintro.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B9713D01A0B362700A2F46E /* owlintro.png */; };
 		1B9713D81A0B365100A2F46E /* final login image.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B9713D71A0B365100A2F46E /* final login image.png */; };
 		1B9713DC1A0B3A8E00A2F46E /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B9713DB1A0B3A8E00A2F46E /* UIImage+Resize.m */; };
+		1BD830641A197CA6006F0789 /* final thumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BD830631A197CA6006F0789 /* final thumbnail.png */; };
 		1BF5C4EB1A0EA751006D4D00 /* pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BF5C4EA1A0EA751006D4D00 /* pencil.png */; };
 		1BF5C4ED1A0EACBE006D4D00 /* chiptole.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BF5C4EC1A0EACBE006D4D00 /* chiptole.png */; };
 		1BF5C4EF1A0EAD17006D4D00 /* nickcage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1BF5C4EE1A0EAD17006D4D00 /* nickcage.jpg */; };
@@ -127,6 +128,7 @@
 		1B9713D71A0B365100A2F46E /* final login image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final login image.png"; sourceTree = "<group>"; };
 		1B9713DA1A0B3A8E00A2F46E /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
 		1B9713DB1A0B3A8E00A2F46E /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
+		1BD830631A197CA6006F0789 /* final thumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final thumbnail.png"; sourceTree = "<group>"; };
 		1BF5C4EA1A0EA751006D4D00 /* pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pencil.png; sourceTree = "<group>"; };
 		1BF5C4EC1A0EACBE006D4D00 /* chiptole.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chiptole.png; sourceTree = "<group>"; };
 		1BF5C4EE1A0EAD17006D4D00 /* nickcage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = nickcage.jpg; sourceTree = "<group>"; };
@@ -401,6 +403,7 @@
 		C36C41281A0B206600F37668 = {
 			isa = PBXGroup;
 			children = (
+				1BD830631A197CA6006F0789 /* final thumbnail.png */,
 				1B9713D91A0B3A7300A2F46E /* Categories */,
 				1B9713CA1A0B35F500A2F46E /* Images */,
 				1B9713991A0B2A3600A2F46E /* Frameworks */,
@@ -531,7 +534,7 @@
 				TargetAttributes = {
 					C36C41301A0B206600F37668 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = EG6KUET88S;
+						DevelopmentTeam = L2JS3CUT43;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 0;
@@ -540,6 +543,7 @@
 					};
 					C36C41491A0B206600F37668 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = L2JS3CUT43;
 						TestTargetID = C36C41301A0B206600F37668;
 					};
 				};
@@ -575,6 +579,7 @@
 				1B0ED51C1A15459A00639614 /* downvote.png in Resources */,
 				1BF5C7471A0F4198006D4D00 /* thisguy.png in Resources */,
 				1B9713D61A0B362700A2F46E /* owlintro.png in Resources */,
+				1BD830641A197CA6006F0789 /* final thumbnail.png in Resources */,
 				1B9713D11A0B362700A2F46E /* AustinLocation.gpx in Resources */,
 				1BF5C6281A0EDD42006D4D00 /* drinks.png in Resources */,
 				1B9713D31A0B362700A2F46E /* login-button-small-pressed@2x.png in Resources */,
@@ -769,6 +774,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -788,6 +794,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (

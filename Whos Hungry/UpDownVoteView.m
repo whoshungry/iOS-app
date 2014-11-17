@@ -11,21 +11,27 @@
 @implementation UpDownVoteView
 
 - (IBAction)voteUp:(id)sender {
-    if (!self.voted) {
-        self.voted = YES;
+    self.state++;
+    if (self.state == 0) {
         self.votes++;
-        self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
+    } else if (self.state == 1) {
         self.upBtn.enabled = NO;
+        self.downBtn.enabled = YES;
+        self.votes++;
     }
+    self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
 }
 
 - (IBAction)voteDown:(id)sender {
-    if (!self.voted) {
-        self.voted = YES;
-        self.votes--;
-        self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
+    self.state--;
+    if (self.state == -1) {
+        self.upBtn.enabled = YES;
         self.downBtn.enabled = NO;
+        self.votes--;
+    } else if (self.state == 0) {
+        self.votes--;
     }
+    self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
 }
 
 @end

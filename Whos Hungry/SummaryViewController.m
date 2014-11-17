@@ -151,11 +151,22 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSLog(@"user_id is %@", _currentLobby.facebookId);
     NSLog(@"invitations is %@", facebookString);
     
+    NSDate *startDate = [NSDate new];
+    NSDate *endDate = _currentLobby.expirationTime;
+    NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+    unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
+    NSDateComponents *components = [gregorian components:unitFlags fromDate:startDate
+                                                  toDate:endDate options:0];
+    NSInteger minsLeft = [components minute];
+    
     NSDictionary *params = @{@"user_id": _currentLobby.facebookId,
+                             //@"timeleft" : @(minsLeft),
+                             //@"expiration date" : _currentLobby.expirationTime,
                              @"invitations" : facebookString};
+    
     [manager POST:[NSString stringWithFormat:@"%@apis/create_group", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
-        [self createAPIVoteWithGroupId:responseObject[@"group_id"]];
+//        //[self createAPIVoteWithGroupId:responseObject[@"group_id"]];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
