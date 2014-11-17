@@ -257,32 +257,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="02_blurred_backgrounds.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="IcT-nh-l8n">
-                                <rect key="frame" x="16" y="0.0" width="317" height="211"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="191" image="02_blurred_backgrounds.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="IcT-nh-l8n">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Yousef wants to eat you up at lunch" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYI-yY-8GR">
-                                <rect key="frame" x="0.0" y="0.0" width="348" height="211"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thisguy.png" translatesAutoresizingMaskIntoConstraints="NO" id="Gef-eM-cr4">
-                                <rect key="frame" x="16" y="219" width="50" height="50"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thisguy.png" translatesAutoresizingMaskIntoConstraints="NO" id="vkU-dx-2IP">
-                                <rect key="frame" x="74" y="219" width="50" height="50"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thisguy.png" translatesAutoresizingMaskIntoConstraints="NO" id="lfh-7B-Axt">
-                                <rect key="frame" x="132" y="219" width="50" height="50"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="+ 1 more" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tZv-fc-MPD">
-                                <rect key="frame" x="190" y="233" width="69" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.29803922772407532" green="0.29803922772407532" blue="0.29803922772407532" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zdg-g4-0NK">
-                                <rect key="frame" x="154" y="9" width="41" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zdg-g4-0NK">
+                                <rect key="frame" x="280" y="10" width="41" height="30"/>
                                 <state key="normal" title="Home">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -293,23 +272,56 @@
                                 </connections>
                             </button>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="235-Q8-6dq"/>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KgG-Ag-qZe">
-                                <rect key="frame" x="82" y="272" width="185" height="56"/>
-                                <color key="backgroundColor" red="0.29803922772407532" green="0.29803922772407532" blue="0.29803922772407532" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Invite more friends">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Gu5-7R-QQ8">
-                                <rect key="frame" x="0.0" y="336" width="300" height="300"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Gu5-7R-QQ8">
+                                <rect key="frame" x="0.0" y="328" width="600" height="272"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="wgV-7D-ZgK" id="qL1-Vc-vEN"/>
                                     <outlet property="delegate" destination="wgV-7D-ZgK" id="CP6-HN-yZL"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KgG-Ag-qZe">
+                                <rect key="frame" x="181" y="264" width="238" height="56"/>
+                                <color key="backgroundColor" red="0.29803922772407532" green="0.29803922772407532" blue="0.29803922772407532" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Invite more friends">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Yousef wants to eat you up at lunch" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYI-yY-8GR">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="LYI-yY-8GR" firstAttribute="leading" secondItem="3AZ-H2-4ZW" secondAttribute="leading" id="0jq-SR-LZU"/>
+                            <constraint firstItem="GiY-qH-HRN" firstAttribute="top" secondItem="KgG-Ag-qZe" secondAttribute="bottom" constant="280" id="4UZ-Rh-fVB"/>
+                            <constraint firstItem="GiY-qH-HRN" firstAttribute="top" secondItem="IcT-nh-l8n" secondAttribute="bottom" constant="450" id="5I7-Qr-R3G"/>
+                            <constraint firstAttribute="trailing" secondItem="IcT-nh-l8n" secondAttribute="trailing" id="EZU-s1-eBY"/>
+                            <constraint firstItem="Gu5-7R-QQ8" firstAttribute="top" secondItem="KgG-Ag-qZe" secondAttribute="bottom" constant="8" id="EnK-kQ-cp6"/>
+                            <constraint firstAttribute="trailing" secondItem="LYI-yY-8GR" secondAttribute="trailing" id="Hz7-Vz-McV"/>
+                            <constraint firstAttribute="centerX" secondItem="LYI-yY-8GR" secondAttribute="centerX" id="J1O-0W-SzS"/>
+                            <constraint firstAttribute="trailing" secondItem="Gu5-7R-QQ8" secondAttribute="trailing" id="LWh-wD-4hG"/>
+                            <constraint firstItem="KgG-Ag-qZe" firstAttribute="top" secondItem="IcT-nh-l8n" secondAttribute="bottom" constant="114" id="Q7O-yA-bT2"/>
+                            <constraint firstItem="LYI-yY-8GR" firstAttribute="top" secondItem="3AZ-H2-4ZW" secondAttribute="topMargin" id="SxV-lw-WhE"/>
+                            <constraint firstItem="IcT-nh-l8n" firstAttribute="top" secondItem="3AZ-H2-4ZW" secondAttribute="topMargin" id="ZWd-Sf-boY"/>
+                            <constraint firstAttribute="centerX" secondItem="KgG-Ag-qZe" secondAttribute="centerX" id="eQ7-eI-8Gk"/>
+                            <constraint firstItem="Gu5-7R-QQ8" firstAttribute="top" secondItem="KgG-Ag-qZe" secondAttribute="bottom" constant="8" id="elm-8a-hgS"/>
+                            <constraint firstItem="Gu5-7R-QQ8" firstAttribute="leading" secondItem="3AZ-H2-4ZW" secondAttribute="leading" id="f0F-0c-jWm"/>
+                            <constraint firstItem="GiY-qH-HRN" firstAttribute="top" secondItem="Gu5-7R-QQ8" secondAttribute="bottom" id="i5b-cL-fYn"/>
+                            <constraint firstItem="GiY-qH-HRN" firstAttribute="top" secondItem="LYI-yY-8GR" secondAttribute="bottom" constant="450" id="kqY-cM-aSL"/>
+                            <constraint firstItem="IcT-nh-l8n" firstAttribute="leading" secondItem="3AZ-H2-4ZW" secondAttribute="leading" id="rqO-Kb-Eme"/>
+                            <constraint firstAttribute="centerX" secondItem="IcT-nh-l8n" secondAttribute="centerX" id="szg-5c-dL8"/>
+                            <constraint firstAttribute="centerX" secondItem="Gu5-7R-QQ8" secondAttribute="centerX" id="tXn-g4-3EQ"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="elm-8a-hgS"/>
+                                <exclude reference="tXn-g4-3EQ"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="8vi-rE-1Ka"/>
                     <connections>
@@ -319,7 +331,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XCE-Iq-Rn3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2320" y="1063"/>
+            <point key="canvasLocation" x="2321" y="1707"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qpl-19-Wdl">
@@ -418,7 +430,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ftH-sh-3Zp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2320" y="1777"/>
+            <point key="canvasLocation" x="2321" y="2401"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="V0O-YW-TwU">
@@ -445,7 +457,6 @@
         <image name="drinks.png" width="128" height="128"/>
         <image name="final login image.png" width="246" height="263"/>
         <image name="lunch.gif" width="1200" height="1200"/>
-        <image name="thisguy.png" width="240" height="240"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="g8t-bX-AwB"/>

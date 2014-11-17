@@ -232,7 +232,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    return 100;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -244,6 +244,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"updownvote" owner:self options:nil];
         cell = [nib objectAtIndex:0];
     }
+    [cell layoutIfNeeded];
     
     return cell;
 }
