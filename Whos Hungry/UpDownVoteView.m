@@ -34,6 +34,9 @@
         self.upBtn.enabled = YES;
         self.downBtn.enabled = YES;
         self.votes--;
+        self.upBtn.enabled = YES;
+        self.downBtn.enabled = YES
+        ;
     }
     self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
 }
