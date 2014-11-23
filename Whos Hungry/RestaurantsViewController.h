@@ -27,6 +27,7 @@
 @property BOOL locationFound;
 @property int currenDist;
 @property NSMutableArray* tickedIndexPaths;
+@property (strong, nonatomic) NSString* voteType;
 
 @property (weak, nonatomic) IBOutlet UITableView *restaurantsTable;
 @property NSMutableArray* allPlaces;

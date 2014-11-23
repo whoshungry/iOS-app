@@ -10,6 +10,7 @@
 #import "ActionSheetDatePicker.h"
 #import "SummaryViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "RestaurantsViewController.h"
 
 #define LOBBY_KEY  @"currentlobby"
 
@@ -204,6 +205,17 @@
     self.drinksBtn.layer.borderColor = greenColor.CGColor;
     self.drinksBtn.layer.borderWidth = 3.0f;
     _voteType = @"drinks";
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    
+    
+    if ([segue.identifier isEqualToString:@"WhereSegue"]) {
+        UINavigationController *nav = [segue destinationViewController];
+        RestaurantsViewController *restVC = (RestaurantsViewController *)nav.topViewController;
+        restVC.voteType = _voteType;
+    }
 }
 
 -(void)saveCustomObject:(HootLobby *)object

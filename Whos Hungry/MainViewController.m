@@ -29,6 +29,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    //[self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
     lobbies = [NSMutableArray new];
     hostImages = [NSMutableArray new];
     [self getGroups];
@@ -36,6 +38,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 -(void) getGroups {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    __block NSString *facebookName;
     NSDictionary *params = @{@"user_id": @"10154793475270002"};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_lobby_friend", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseData) {
         NSLog(@"JSON: %@", responseData);
@@ -46,21 +49,38 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             for (int i = 0; i < groups.count; i++) {
                 HootLobby *lobby = [[HootLobby alloc] init];
                 NSString *facebookId = [groups objectAtIndex:i][@"admin_user"];
-                __block NSString *facebookName;
                 if (facebookId) {
+                    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@",facebookId]
+                                                 parameters:nil
+                                                 HTTPMethod:@"GET"
+                                          completionHandler:^(
+                                                              FBRequestConnection *connection,
+                                                              id result,
+                                                              NSError *error
+                                                              ) {
+                                              NSDictionary *results = (NSDictionary *)result;
+                                              NSLog(@"results :ARE %@", results);
+                                              facebookName = results[@"name"];
+                                              lobby.facebookName = facebookName;
+                                              [self.tableView reloadData];
+                                              NSLog(@"facebook name is : %@", lobby.facebookName);
+                                          }];
+                    
                     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture", facebookId]];
                     NSData *data = [NSData dataWithContentsOfURL:url];
                     UIImage *image = [UIImage imageWithData:data];
                     [hostImages addObject:image];
+                    
+                    NSLog(@"ost immmagier:  %li", hostImages.count);
+                    NSDate *expectedDate = [groups objectAtIndex:i][@"expected_time"];
+                    NSString *voteType = [groups objectAtIndex:i][@"vote_type"];
+                    lobby.facebookId = facebookId;
+                    lobby.facebookName = facebookName;
+                    NSLog(@"lobby facebook name is %@", lobby.facebookName);
+                    lobby.expirationTime = expectedDate;
+                    lobby.voteType = voteType;
+                    [lobbies addObject:lobby];
                 }
-                NSLog(@"ost immmagier:  %li", hostImages.count);
-                NSDate *expectedDate = [groups objectAtIndex:i][@"expected_time"];
-                NSString *voteType = [groups objectAtIndex:i][@"vote_type"];
-                lobby.facebookId = facebookId;
-                lobby.facebookName = facebookName;
-                lobby.expirationTime = expectedDate;
-                lobby.voteType = voteType;
-                [lobbies addObject:lobby];
             }
             [self.tableView reloadData];
         }
@@ -90,7 +110,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 200;
+    CGFloat height = 200.0;
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -13,7 +13,9 @@
 #define GOOGLE_API_KEY_THREE @"AIzaSyA6gixyCg9D-9nEJ8q7PQJiJ9Nk5LzcltI"
 #define LOBBY_KEY  @"currentlobby"
 
-@interface RestaurantsViewController ()
+@interface RestaurantsViewController () {
+    NSMutableArray *restImages;
+}
 
 @end
 
@@ -24,6 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _restaurantIdArray = [NSMutableArray new];
+    restImages = [NSMutableArray new];
     
     [self initRestaurants];
 }
@@ -59,7 +62,7 @@
 }
 
 -(void) queryGooglePlaces: (NSString *) googleType {
-    NSLog(@"going through google places!!!");
+    NSLog(@"going through google places!!! with loc: %f", _currentCentre.latitude);
     // Build the url string to send to Google. NOTE: The kGOOGLE_API_KEY is a constant that should contain your own API key that you obtain from Google. See this link for more info:
     // https://developers.google.com/maps/documentation/places/#Authentication
     NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/json?location=%f,%f&radius=%@&types=%@&sensor=true&key=%@", _currentCentre.latitude, _currentCentre.longitude, [NSString stringWithFormat:@"%i", 1000], googleType, GOOGLE_API_KEY_THREE];
@@ -77,6 +80,7 @@
 
 -(void)fetchedData:(NSData *)responseData {
     //parse out the json data
+    if (responseData != nil) {
     NSLog(@"fetched data is @!!:!!");
     NSError* error;
     NSDictionary* json = [NSJSONSerialization
@@ -94,12 +98,27 @@
     }
     for (int k = 0; k < _allPlaces.count; k++) {
         response = [_allPlaces objectAtIndex:k];
+        NSLog(@"response for the places are  %@     ", response);
+        NSDictionary *photoDict = [response objectForKey:@"photos"][0];
+        NSString *photoRef = [photoDict objectForKey:@"photo_reference"];
+        NSString *urlStr = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", photoRef, GOOGLE_API_KEY_THREE];
+        NSURL * imageURL = [NSURL URLWithString:urlStr];
+        
+        dispatch_queue_t concurrentQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(concurrentQueue, ^{
+            NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
+            UIImage * image = [UIImage imageWithData:imageData];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [restImages addObject:image];
+            });
+        });
         [tempDictionary setObject:@(0) forKey:[response objectForKey:@"name"]];
     }
-
+        
     [self.restaurantsTable reloadData];
 }
-
+}
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     //Finds location for the first time only and ONLY if it is ADMIN
@@ -108,7 +127,11 @@
         _currentLocation = locations[0];
         _currentCentre = _currentLocation.coordinate;
         _locationFound = TRUE;
-        [self queryGooglePlaces:@"food"];
+        if (![self.voteType isEqualToString:@"coffee"]) {
+            [self queryGooglePlaces:@"food"];
+        } else {
+            [self queryGooglePlaces:@"cafe"];
+        }
     }
 
 }
@@ -158,6 +181,9 @@
         });
     });
     */
+    if (restImages.count > 0) {
+        cell.image.image = restImages[indexPath.row];
+    }
     cell.name.text = response[@"name"];
     
     /////////

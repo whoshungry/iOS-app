@@ -21,7 +21,11 @@
         self.downBtn.enabled = YES;
         self.votes++;
     }
+    self.status = @"+1";
     self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObject:self
+                                                         forKey:@"sender"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MakeVote" object:self userInfo:dataDict];
 }
 
 - (IBAction)voteDown:(id)sender {
@@ -38,7 +42,11 @@
         self.downBtn.enabled = YES
         ;
     }
+    self.status = @"-1";
     self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObject:self
+                                                         forKey:@"sender"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MakeVote" object:self userInfo:dataDict];
 }
 
 @end

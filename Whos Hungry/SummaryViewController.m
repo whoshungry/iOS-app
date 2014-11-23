@@ -8,6 +8,9 @@
 
 #import "SummaryViewController.h"
 #import "UIImage+Resize.h"
+#import "RSVPFriendsTableViewCell.h"
+#import "AFNetworking.h"
+#import "AFHTTPRequestOperation.h"
 
 #define LOBBY_KEY  @"currentlobby"
 static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
@@ -19,6 +22,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 @interface SummaryViewController (){
     CLLocationCoordinate2D restaurantCoor;
+    int votedIndex;
 }
 
 @end
@@ -40,6 +44,47 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     //_restaurantTable = [UITableView new];
     _currentLobby = [HootLobby new];
     _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+
+    [self.friendsGoingTable registerNib:[UINib nibWithNibName:@"RSVPFriendsTableViewCell" bundle:nil] forCellReuseIdentifier:@"MyCustomCell"];
+    self.friendsGoingTable.delegate = self;
+    self.friendsGoingTable.dataSource = self;
+    self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(makeVote:)
+                                                 name:@"MakeVote"
+                                               object:nil];
+    
+    self.mapView.hidden = YES;
+    
+    if (self.mapView.hidden == NO) {
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.delegate = self;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        
+        [locationManager requestWhenInUseAuthorization];
+        
+        self.mapView.delegate = self;
+        
+        CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
+        if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
+            authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
+            authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+            
+            self.mapView.showsUserLocation = YES;
+            [locationManager startUpdatingLocation];
+            
+            restaurantCoor = CLLocationCoordinate2DMake(30.285647, -97.742081);
+            MKPointAnnotation *restaurantPin = [[MKPointAnnotation alloc] init];
+            restaurantPin.coordinate = restaurantCoor;
+            NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
+            restaurantPin.title = @"Chipotle!";
+            [self.mapView addAnnotation:restaurantPin];
+        } else {
+            NSLog(@"or nah");
+            [self viewDidLoad];
+        }
+    }
     
     //HootLobby doesn't exist
     if (!_currentLobby) {
@@ -55,38 +100,47 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         //NSLog(@"%@", _currentLobby);
         //[_restaurantTable reloadData];
     }
+}
+
+-(void) makeVote:(NSNotification *)note {
+    NSLog(@"making vote!!" );
     
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
-    [locationManager requestWhenInUseAuthorization];
-    
-    self.mapView.delegate = self;
-    
-    CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
-    if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
-        authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
-        authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        
-        self.mapView.showsUserLocation = YES;
-        [locationManager startUpdatingLocation];
-        
-        restaurantCoor = CLLocationCoordinate2DMake(30.285647, -97.742081);
-        MKPointAnnotation *restaurantPin = [[MKPointAnnotation alloc] init];
-        restaurantPin.coordinate = restaurantCoor;
-        NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
-        restaurantPin.title = @"Chipotle!";
-        [self.mapView addAnnotation:restaurantPin];
-    } else {
-        NSLog(@"or nah");
-        [self viewDidLoad];
+    UpDownVoteView *sender;
+    NSDictionary *theData = [note userInfo];
+    if (theData != nil) {
+        sender = (UpDownVoteView *)[theData objectForKey:@"sender"];
     }
+    
+    //user_id : <facebook_id>
+    //group_id : <group_id>
+    //choice : <id of restaurant>
+    //status :  <status “+1”, “0”, “-1”>
+    
+    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
+    if (username != nil) {
+        username = @"";
+    }
+    NSString *groupid = [[NSUserDefaults standardUserDefaults] stringForKey:@"groupid"];
+    if (groupid != nil) {
+        groupid = @"";
+    }
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *params = @{
+                             @"user_id": username,
+                             @"group_id":groupid,
+                             @"choice" : _allPlaces[sender.tag],
+                             @"status" : sender.status};
+    [manager POST:[NSString stringWithFormat:@"%@apis/register", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 }
 
 
 - (IBAction)goHome:(id)sender {
-    //[locationManager stopUpdatingLocation];
+    [locationManager stopUpdatingLocation];
 }
 
 #pragma mark - Location methods
@@ -166,6 +220,12 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     [manager POST:[NSString stringWithFormat:@"%@apis/create_group", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
+        NSDictionary *results = (NSDictionary *)responseObject;
+        NSString *groupID = results[@"group_id"];
+        if (groupID != nil) {
+            [[NSUserDefaults standardUserDefaults] setObject:groupID forKey:@"groupid"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
         [self createAPIVoteWithGroupId:responseObject[@"group_id"]];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -214,6 +274,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         tempCell = (UpDownVoteView*)[_restaurantTable cellForRowAtIndexPath:tempIndex];
         //UpDownVoteView *cell = [self.restaurantTable cellForRowAtIndexPath:_indexPathArray[j]];
         tempCell.restaurantLabel.text = _allPlaces[j][@"name"];
+        tempCell.tag = j;
     }
 }
 
@@ -225,7 +286,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     // Retrieve the results of the URL.
     dispatch_async(kBgQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL: googleRequestURL];
-        //NSLog(@"data found is :%@", data);
         [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
     });
 }
@@ -244,50 +304,206 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     //NSLog(@"JSON is %@",json);
     //The results from Google will be an array obtained from the NSDictionary object with the key "results".
     NSArray* place = [json objectForKey:@"result"];
+    NSLog(@"placcce: %@", place);
     
     [_allPlaces addObject:place];
     if (_allPlaces.count == _currentLobby.placesIdArray.count) {
-        //[self loadRestaurantNames];
+        [self loadRestaurantNames];
         [_restaurantTable reloadData];
     }
     //NSLog(@"places is %@",place);
 }
 
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _currentLobby.placesIdArray.count;
+    if ([tableView isEqual:self.restaurantTable]) {
+        return _currentLobby.placesIdArray.count;
+    }
+    
+    else {
+        return 1;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 100;
+    if ([tableView isEqual:self.restaurantTable]) {
+        return 100;
+    } else {
+        return 75;
+    }
 }
+
+
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"chosen: %li", indexPath.row);
+    
+    votedIndex = (int)indexPath.row;
+}
+
+
+
+#pragma mark - UIScrollViewDelegate
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *simpleTableIdentifier = @"UpDownVoteView";
-    
-    UpDownVoteView *cell = (UpDownVoteView *)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    if (cell == nil)
-    {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"updownvote" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
-    }
-    [cell layoutIfNeeded];
-    [_indexPathArray addObject:indexPath];
-    if (_allPlaces.count == _currentLobby.placesIdArray.count) {
-        CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
-        float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
-        cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
-        cell.restaurantLabel.text = _allPlaces[indexPath.row][@"name"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if ([tableView isEqual:self.restaurantTable]) {
+        static NSString *simpleTableIdentifier = @"UpDownVoteView";
         
+        UpDownVoteView *cell = (UpDownVoteView *)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+        if (cell == nil)
+        {
+            NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"updownvote" owner:self options:nil];
+            cell = [nib objectAtIndex:0];
+        }
+        [cell layoutIfNeeded];
+        [_indexPathArray addObject:indexPath];
+        if (_allPlaces.count == _currentLobby.placesIdArray.count) {
+            CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
+            float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
+            cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
+            cell.restaurantLabel.text = _allPlaces[indexPath.row][@"name"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+        }
+        
+        return cell;
+    }
+    else {
+        static NSString *cellIdentifier = @"MyCustomCell";
+        
+        RSVPFriendsTableViewCell *cell = (RSVPFriendsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        
+        cell.leftUtilityButtons = [self leftButtons];
+        cell.rightUtilityButtons = [self rightButtons];
+        cell.delegate = self;
+        
+        return cell;
     }
     
-    return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"index path is: ");
+- (NSArray *)rightButtons
+{
+    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0]
+                                                title:@"More"];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
+                                                title:@"Delete"];
+    
+    return rightUtilityButtons;
 }
 
+- (NSArray *)leftButtons
+{
+    NSMutableArray *leftUtilityButtons = [NSMutableArray new];
+    
+    [leftUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:0.07 green:0.75f blue:0.16f alpha:1.0]
+                                                icon:[UIImage imageNamed:@"check.png"]];
+    [leftUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0]
+                                                icon:[UIImage imageNamed:@"cross.png"]];
+    
+    return leftUtilityButtons;
+}
+
+// Set row height on an individual basis
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    return [self rowHeightForIndexPath:indexPath];
+//}
+//
+//- (CGFloat)rowHeightForIndexPath:(NSIndexPath *)indexPath {
+//    return ([indexPath row] * 10) + 60;
+//}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Set background color of cell here if you don't want default white
+}
+
+#pragma mark - SWTableViewDelegate
+
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state
+{
+    switch (state) {
+        case 0:
+            NSLog(@"utility buttons closed");
+            break;
+        case 1:
+            NSLog(@"left utility buttons open");
+            break;
+        case 2:
+            NSLog(@"right utility buttons open");
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerLeftUtilityButtonWithIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+            NSLog(@"RVSP YES was pressed");
+            break;
+        case 1:
+            NSLog(@"RSVP NO was pressed");
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+        {
+            NSLog(@"More button was pressed");
+            UIAlertView *alertTest = [[UIAlertView alloc] initWithTitle:@"Hello" message:@"More more more" delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
+            [alertTest show];
+            
+            [cell hideUtilityButtonsAnimated:YES];
+            break;
+        }
+        case 1:
+        {
+            // Delete button was pressed
+            /*NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
+            
+            [_testArray[cellIndexPath.section] removeObjectAtIndex:cellIndexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationLeft];*/
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
+{
+    // allow just one cell's utility button to be open at once
+    return YES;
+}
+
+- (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state
+{
+    switch (state) {
+        case 1:
+            // set to NO to disable all left utility buttons appearing
+            return YES;
+            break;
+        case 2:
+            // set to NO to disable all right utility buttons appearing
+            return NO;
+            break;
+        default:
+            break;
+    }
+    
+    return YES;
+}
 
 @end

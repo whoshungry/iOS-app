@@ -18,18 +18,22 @@
 #import "AFNetworking.h"
 #import "AFHTTPRequestOperation.h"
 #import "UpDownVoteView.h"
+#import "SWTableViewCell.h"
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
 
-@interface SummaryViewController : UIViewController<CLLocationManagerDelegate, MKMapViewDelegate> {
+@interface SummaryViewController : UIViewController<CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate, SWTableViewCellDelegate> {
     CLLocationManager *locationManager;
 }
+
+@property (assign, nonatomic) BOOL active;
 
 @property (strong, nonatomic) HootLobby* currentLobby;
 @property (strong, nonatomic) NSMutableArray* allPlaces;
 @property (strong, nonatomic) NSMutableArray* indexPathArray;
 @property (strong, nonatomic) IBOutlet UITableView *restaurantTable;
+@property (weak, nonatomic) IBOutlet UITableView *friendsGoingTable;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) CLLocation* currentLocation;

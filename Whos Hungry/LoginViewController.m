@@ -23,6 +23,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     self.loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     self.loginButton.delegate = self;
+    
+    //[self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
 
 //fetched the facebook info
@@ -46,6 +48,11 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                              @"facebook_id" : user.objectID,
                              @"os_type" : @"IOS"};
     [manager POST:[NSString stringWithFormat:@"%@apis/register", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *results = (NSDictionary *)responseObject;
+        NSLog(@"resultssS:S %@", results);
+        NSString *username = results[@"user_id"];
+        [[NSUserDefaults standardUserDefaults] setObject:username forKey:@"username"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         NSLog(@"JSON: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
