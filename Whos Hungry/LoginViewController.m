@@ -24,20 +24,23 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     self.loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     self.loginButton.delegate = self;
     
+    /*NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];*/
+    
     //[self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
 
 //fetched the facebook info
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
                             user:(id<FBGraphUser>)user {
-    NSString *firstTime = [[NSUserDefaults standardUserDefaults] stringForKey:@"firstTime"];
-    if (firstTime == nil) {
+    //NSString *firstTime = [[NSUserDefaults standardUserDefaults] stringForKey:@"firstTime"];
+    //if (firstTime == nil) {
         NSLog(@"user id is :%@", user.objectID);
         NSLog(@"username is %@", user.name);
         NSString *pushToken = [[NSUserDefaults standardUserDefaults]
                                  stringForKey:@"pushToken"];
         [self registerUser:user andPushID:pushToken];
-    }
+    //}
 }
 
 -(void) registerUser:(id<FBGraphUser>)user andPushID:(NSString *)pushID{

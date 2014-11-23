@@ -23,6 +23,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 @interface SummaryViewController (){
     CLLocationCoordinate2D restaurantCoor;
     int votedIndex;
+    NSString *groupid;
+    NSString *voteid;
 }
 
 @end
@@ -37,8 +39,34 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     return self;
 }
 
+-(void)initFromGroupID:(NSString *)gid andVoteID:(NSString *)vid {
+    /*groupid = gid;
+    voteid = vid;
+    
+    _currentLobby = [HootLobby new];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *params = @{@"vote_id": voteid};
+    [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        NSDictionary *results = (NSDictionary *)responseObject;
+        NSArray *choices = results[@"choices"];
+        for (int i = 0; i < choices.count; i++) {
+            NSDictionary *currentRest = choices[i];
+            [_currentLobby.placesIdArray addObject:currentRest[@"restaurant_id"]];
+        }
+        
+        //[self loadSummary];
+        //[_restaurantTable reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];*/
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (!_loaded) {
     _allPlaces = [NSMutableArray new];
     _indexPathArray = [NSMutableArray new];
     //_restaurantTable = [UITableView new];
@@ -95,10 +123,12 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     else{
         NSLog(@"Current Lobby has DATA!");
         NSLog(@"%@", _currentLobby);
-        //[self createAPIGroup];
-        [self loadSummary];
+        [self createAPIGroup];
+        
+        //[self loadSummary];
         //NSLog(@"%@", _currentLobby);
-        //[_restaurantTable reloadData];
+        [_restaurantTable reloadData];
+    }
     }
 }
 
@@ -120,18 +150,23 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     if (username != nil) {
         username = @"";
     }
-    NSString *groupid = [[NSUserDefaults standardUserDefaults] stringForKey:@"groupid"];
-    if (groupid != nil) {
-        groupid = @"";
+    if (groupid == nil) {
+        groupid = [[NSUserDefaults standardUserDefaults] stringForKey:@"groupid"];
+        if (groupid != nil) {
+            groupid = @"";
+        }
     }
+    
+    NSLog(@"restaurant list ids: %@", _currentLobby.placesIdArray);
+    NSLog(@"voted restaurant id : %@", _currentLobby.placesIdArray[sender.index]);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *params = @{
                              @"user_id": username,
                              @"group_id":groupid,
-                             @"choice" : _allPlaces[sender.tag],
+                             @"choice" : _currentLobby.placesIdArray[sender.index],
                              @"status" : sender.status};
-    [manager POST:[NSString stringWithFormat:@"%@apis/register", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@apis/make_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -205,14 +240,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSLog(@"user_id is %@", _currentLobby.facebookId);
     NSLog(@"invitations is %@", facebookString);
     
-    NSDate *startDate = [NSDate new];
-    NSDate *endDate = _currentLobby.expirationTime;
-    NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
-    unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
-    NSDateComponents *components = [gregorian components:unitFlags fromDate:startDate
-                                                  toDate:endDate options:0];
-    NSInteger minsLeft = [components minute];
-    
     NSDictionary *params = @{@"user_id": _currentLobby.facebookId,
                              //@"timeleft" : @(minsLeft),
                              //@"expiration date" : _currentLobby.expirationTime,
@@ -245,10 +272,19 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         }
     }
     
+    NSDate *startDate = [NSDate new];
+    NSDate *endDate = _currentLobby.expirationTime;
+    NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+    unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
+    NSDateComponents *components = [gregorian components:unitFlags fromDate:startDate
+                                                  toDate:endDate options:0];
+    NSInteger minsLeft = [components minute];
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *params = @{@"user_id": _currentLobby.facebookId,
                              @"group_id": groupId,
                              @"vote_type": _currentLobby.voteType,
+                             @"expiration_time_number": @(minsLeft),
                              @"expiration_time": _currentLobby.expirationTime,
                              @"restaurants": restaurantString};
     [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -274,7 +310,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         tempCell = (UpDownVoteView*)[_restaurantTable cellForRowAtIndexPath:tempIndex];
         //UpDownVoteView *cell = [self.restaurantTable cellForRowAtIndexPath:_indexPathArray[j]];
         tempCell.restaurantLabel.text = _allPlaces[j][@"name"];
-        tempCell.tag = j;
     }
 }
 
@@ -363,7 +398,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _allPlaces[indexPath.row][@"name"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
+            cell.index = (int)indexPath.row;
         }
         
         return cell;

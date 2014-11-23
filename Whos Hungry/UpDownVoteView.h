@@ -13,6 +13,7 @@
 //@property (nonatomic, assign) BOOL voted;
 @property (nonatomic, assign) int state;
 @property (nonatomic, assign) NSString* status;
+@property(nonatomic, assign) int index;
 
 
 @property (weak, nonatomic) IBOutlet UIButton *upBtn;

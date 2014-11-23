@@ -28,6 +28,7 @@
 }
 
 @property (assign, nonatomic) BOOL active;
+@property (assign, nonatomic) BOOL loaded;
 
 @property (strong, nonatomic) HootLobby* currentLobby;
 @property (strong, nonatomic) NSMutableArray* allPlaces;
@@ -38,5 +39,7 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) CLLocation* currentLocation;
 - (IBAction)goHome:(id)sender;
+-(void)initFromGroupID:(NSString *)gid andVoteID:(NSString *)vid;
+
 
 @end

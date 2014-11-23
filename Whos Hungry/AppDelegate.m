@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <AVFoundation/AVAudioPlayer.h>
+#import "SummaryViewController.h"
 
 
 @interface AppDelegate ()
@@ -27,16 +28,16 @@
     [PFFacebookUtils initializeFacebook];*/
     NSLog(@"Registering for push notifications...");
     
-    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
-    {
-        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-        
-    }
-    else
-    {
-        [application registerForRemoteNotificationTypes:
-         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+#ifdef __IPHONE_8_0
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
+                                                                                             |UIRemoteNotificationTypeSound
+                                                                                             |UIRemoteNotificationTypeAlert) categories:nil];
+        [application registerUserNotificationSettings:settings];
+#endif
+    } else {
+        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
+        [application registerForRemoteNotificationTypes:myTypes];
     }
     
     
@@ -55,6 +56,18 @@
         if (dictionary != nil)
         {
             NSLog(@"Launched from push notification: %@", dictionary);
+        #define ROOTVIEW [[[UIApplication sharedApplication] keyWindow] rootViewController]
+            
+            UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                                     bundle: nil];
+            
+            SummaryViewController *controller = (SummaryViewController*)[mainStoryboard
+                                                               instantiateViewControllerWithIdentifier: @"SummaryViewController"];
+            controller.loaded = YES;
+            [controller initFromGroupID:dictionary[@"group_id"] andVoteID:dictionary[@"vote_id"]];
+            [ROOTVIEW presentViewController:controller animated:YES completion:^(void) {
+                
+            }];
         }
     }
     
@@ -64,6 +77,18 @@
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
     NSLog(@"Received notification: %@", userInfo);
+#define ROOTVIEW [[[UIApplication sharedApplication] keyWindow] rootViewController]
+    
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    
+    SummaryViewController *controller = (SummaryViewController*)[mainStoryboard
+                                                                 instantiateViewControllerWithIdentifier: @"SummaryViewController"];
+    controller.loaded = YES;
+    [controller initFromGroupID:userInfo[@"group_id"] andVoteID:userInfo[@"vote_id"]];
+    [ROOTVIEW presentViewController:controller animated:YES completion:^(void) {
+        
+    }];
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -78,7 +103,7 @@
                                 stringByReplacingOccurrencesOfString: @"<" withString: @""]
                                stringByReplacingOccurrencesOfString: @">" withString: @""]
                               stringByReplacingOccurrencesOfString: @" " withString: @""];
-    NSLog(@"%@",pushToken);
+    NSLog(@"push id %@",pushToken);
     [[NSUserDefaults standardUserDefaults] setObject:pushToken forKey:@"pushToken"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
