@@ -25,6 +25,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     int votedIndex;
     NSString *groupid;
     NSString *voteid;
+    NSMutableArray *placesCountArray;
 }
 
 @end
@@ -39,96 +40,109 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     return self;
 }
 
--(void)initFromGroupID:(NSString *)gid andVoteID:(NSString *)vid {
-    /*groupid = gid;
-    voteid = vid;
+-(void)initWithHootLobby:(HootLobby *)hootlobby {
+    _currentLobby = hootlobby;
+    NSMutableArray *placesIdArray = [NSMutableArray new];
+    NSMutableArray *placesNamesArray = [NSMutableArray new];
+    NSMutableArray *placesPicsArray = [NSMutableArray new];
     
-    _currentLobby = [HootLobby new];
+    placesCountArray = [NSMutableArray new];
+    _loaded = YES;
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *params = @{@"vote_id": voteid};
+    NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         NSDictionary *results = (NSDictionary *)responseObject;
         NSArray *choices = results[@"choices"];
         for (int i = 0; i < choices.count; i++) {
             NSDictionary *currentRest = choices[i];
-            [_currentLobby.placesIdArray addObject:currentRest[@"restaurant_id"]];
+            [placesIdArray addObject:currentRest[@"restaurant_id"]];
+            [placesNamesArray addObject:currentRest[@"restaurant_name"]];
+            [placesPicsArray addObject:currentRest[@"restaurant_picture"]];
+            [placesCountArray addObject:currentRest[@"count"]];
         }
         
-        //[self loadSummary];
-        //[_restaurantTable reloadData];
+        _currentLobby.placesIdArray = placesIdArray;
+        _currentLobby.placesNamesArray = placesNamesArray;
+        _currentLobby.placesPicsArray = placesPicsArray;
+        
+        NSLog(@"current lobby ids rrrr: %@", _currentLobby.placesIdArray);
+        NSLog(@"current lobby names rrrr: %@", _currentLobby.placesNamesArray);
+        NSLog(@"current lobby pics rrrr: %@", _currentLobby.placesPicsArray);
+        
+        [_restaurantTable reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
-    }];*/
+    }];
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (!_loaded) {
+        _currentLobby = [HootLobby new];
+        _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+        //HootLobby doesn't exist
+        if (!_currentLobby) {
+            NSLog(@"Current Lobby is empty");
+            _currentLobby = [HootLobby new];
+        }
+        //HootLobby exists
+        else{
+            NSLog(@"Current Lobby has DATA!");
+            NSLog(@"currnet lobby is %@", _currentLobby);
+            [self createAPIGroup];
+        }
+    }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     if (!_loaded) {
-    _allPlaces = [NSMutableArray new];
-    _indexPathArray = [NSMutableArray new];
-    //_restaurantTable = [UITableView new];
-    _currentLobby = [HootLobby new];
-    _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
-
-    [self.friendsGoingTable registerNib:[UINib nibWithNibName:@"RSVPFriendsTableViewCell" bundle:nil] forCellReuseIdentifier:@"MyCustomCell"];
-    self.friendsGoingTable.delegate = self;
-    self.friendsGoingTable.dataSource = self;
-    self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(makeVote:)
-                                                 name:@"MakeVote"
-                                               object:nil];
-    
-    self.mapView.hidden = YES;
-    
-    if (self.mapView.hidden == NO) {
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.delegate = self;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        _allPlaces = [NSMutableArray new];
+        _indexPathArray = [NSMutableArray new];
         
-        [locationManager requestWhenInUseAuthorization];
+        [self.friendsGoingTable registerNib:[UINib nibWithNibName:@"RSVPFriendsTableViewCell" bundle:nil] forCellReuseIdentifier:@"MyCustomCell"];
+        self.friendsGoingTable.delegate = self;
+        self.friendsGoingTable.dataSource = self;
+        self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
         
-        self.mapView.delegate = self;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(makeVote:)
+                                                     name:@"MakeVote"
+                                                   object:nil];
         
-        CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
-        if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
-            authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
-            authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        self.mapView.hidden = YES;
+        
+        if (self.mapView.hidden == NO) {
+            locationManager = [[CLLocationManager alloc] init];
+            locationManager.delegate = self;
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             
-            self.mapView.showsUserLocation = YES;
-            [locationManager startUpdatingLocation];
+            [locationManager requestWhenInUseAuthorization];
             
-            restaurantCoor = CLLocationCoordinate2DMake(30.285647, -97.742081);
-            MKPointAnnotation *restaurantPin = [[MKPointAnnotation alloc] init];
-            restaurantPin.coordinate = restaurantCoor;
-            NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
-            restaurantPin.title = @"Chipotle!";
-            [self.mapView addAnnotation:restaurantPin];
-        } else {
-            NSLog(@"or nah");
-            [self viewDidLoad];
+            self.mapView.delegate = self;
+            
+            CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
+            if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
+                authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
+                authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+                
+                self.mapView.showsUserLocation = YES;
+                [locationManager startUpdatingLocation];
+                
+                restaurantCoor = CLLocationCoordinate2DMake(30.285647, -97.742081);
+                MKPointAnnotation *restaurantPin = [[MKPointAnnotation alloc] init];
+                restaurantPin.coordinate = restaurantCoor;
+                NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
+                restaurantPin.title = @"Chipotle!";
+                [self.mapView addAnnotation:restaurantPin];
+            } else {
+                NSLog(@"or nah");
+                [self viewDidLoad];
+            }
         }
-    }
-    
-    //HootLobby doesn't exist
-    if (!_currentLobby) {
-        NSLog(@"Current Lobby is empty");
-        _currentLobby = [HootLobby new];
-    }
-    //HootLobby exists
-    else{
-        NSLog(@"Current Lobby has DATA!");
-        NSLog(@"%@", _currentLobby);
-        [self createAPIGroup];
-        
-        //[self loadSummary];
-        //NSLog(@"%@", _currentLobby);
-        [_restaurantTable reloadData];
-    }
     }
 }
 
@@ -147,12 +161,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     //status :  <status “+1”, “0”, “-1”>
     
     NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
-    if (username != nil) {
+    if (username == nil) {
         username = @"";
     }
+    groupid = _currentLobby.groupid;
     if (groupid == nil) {
         groupid = [[NSUserDefaults standardUserDefaults] stringForKey:@"groupid"];
-        if (groupid != nil) {
+        if (groupid == nil) {
             groupid = @"";
         }
     }
@@ -200,8 +215,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSLog(@"New Location %f %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
     _currentLocation = newLocation;
     [locationManager stopUpdatingLocation];
-
-    
 }
 
 
@@ -239,38 +252,56 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     }
     NSLog(@"user_id is %@", _currentLobby.facebookId);
     NSLog(@"invitations is %@", facebookString);
+    NSLog(@"current lobby is is is is %@", _currentLobby);
     
     NSDictionary *params = @{@"user_id": _currentLobby.facebookId,
-                             //@"timeleft" : @(minsLeft),
-                             //@"expiration date" : _currentLobby.expirationTime,
                              @"invitations" : facebookString};
     
     [manager POST:[NSString stringWithFormat:@"%@apis/create_group", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
+        NSLog(@"create group JSON: %@", responseObject);
         NSDictionary *results = (NSDictionary *)responseObject;
         NSString *groupID = results[@"group_id"];
         if (groupID != nil) {
             [[NSUserDefaults standardUserDefaults] setObject:groupID forKey:@"groupid"];
             [[NSUserDefaults standardUserDefaults] synchronize];
+            _currentLobby.groupid = groupID;
+            NSLog(@"group id made is : %@", groupID);
+        } else {
+            groupID = _currentLobby.groupid;
         }
-        [self createAPIVoteWithGroupId:responseObject[@"group_id"]];
+        NSLog(@"group id isisisisisi :%@", groupID);
+        [self createAPIVoteWithGroupId:groupID];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
 }
 
 - (void) createAPIVoteWithGroupId:(NSString*)groupId{
-    NSString* restaurantString = @"";
+    NSString* restaurantIds = @"";
+    NSString* restaurantNames = @"";
+    NSString* restaurantPics = @"";
+
     for (int i = 0; i < _currentLobby.placesIdArray.count; i++) {
         if (i != _currentLobby.placesIdArray.count - 1) {
-            restaurantString = [restaurantString stringByAppendingString:_currentLobby.placesIdArray[i]];
-            restaurantString = [restaurantString stringByAppendingString:@","];
+            restaurantIds = [restaurantIds stringByAppendingString:_currentLobby.placesIdArray[i]];
+            restaurantIds = [restaurantIds stringByAppendingString:@","];
+            
+            restaurantNames = [restaurantNames stringByAppendingString:_currentLobby.placesNamesArray[i]];
+            restaurantNames = [restaurantNames stringByAppendingString:@","];
+            
+            restaurantPics = [restaurantPics stringByAppendingString:_currentLobby.placesPicsArray[i]];
+            restaurantPics = [restaurantPics stringByAppendingString:@","];
         }
         else{
-            restaurantString = [restaurantString stringByAppendingString:_currentLobby.placesIdArray[i]];
-            
+            restaurantIds = [restaurantIds stringByAppendingString:_currentLobby.placesIdArray[i]];
+            restaurantNames = [restaurantNames stringByAppendingString:_currentLobby.placesNamesArray[i]];
+            restaurantPics = [restaurantPics stringByAppendingString:_currentLobby.placesPicsArray[i]];
         }
     }
+    
+    NSLog(@"rest ids: %@", restaurantIds);
+    NSLog(@"rest names: %@", restaurantNames);
+    NSLog(@"rest pics: %@", restaurantPics);
     
     NSDate *startDate = [NSDate new];
     NSDate *endDate = _currentLobby.expirationTime;
@@ -286,9 +317,16 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                              @"vote_type": _currentLobby.voteType,
                              @"expiration_time_number": @(minsLeft),
                              @"expiration_time": _currentLobby.expirationTime,
-                             @"restaurants": restaurantString};
+                             @"restaurant_ids": restaurantIds,
+                             @"restaurant_names": restaurantNames,
+                             @"restaurant_pics":restaurantPics
+                             };
     [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
+        NSLog(@"~~~~~~~~~~~~~JSON: %@", responseObject);
+        
+        [self loadSummary];
+        //NSLog(@"%@", _currentLobby);
+        [_restaurantTable reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -303,12 +341,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 }
 
 -(void)loadRestaurantNames{
-    //[_restaurantTable reloadData];
-    for (int j = 0; j < _indexPathArray.count; j++) {
+    NSLog(@"count is %li", (unsigned long)_allPlaces.count);
+    for (int j = 0; j < _allPlaces.count; j++) {
         UpDownVoteView *tempCell = [UpDownVoteView new];
         NSIndexPath *tempIndex = _indexPathArray[j];
         tempCell = (UpDownVoteView*)[_restaurantTable cellForRowAtIndexPath:tempIndex];
         //UpDownVoteView *cell = [self.restaurantTable cellForRowAtIndexPath:_indexPathArray[j]];
+
         tempCell.restaurantLabel.text = _allPlaces[j][@"name"];
     }
 }
@@ -372,8 +411,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"chosen: %li", indexPath.row);
-    
-    votedIndex = (int)indexPath.row;
 }
 
 
@@ -391,14 +428,23 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             cell = [nib objectAtIndex:0];
         }
         [cell layoutIfNeeded];
+        
+        
         [_indexPathArray addObject:indexPath];
         if (_allPlaces.count == _currentLobby.placesIdArray.count) {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.index = (int)indexPath.row;
+        }
+        
+        if (!_loaded) {
             CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
             float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _allPlaces[indexPath.row][@"name"];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.index = (int)indexPath.row;
+        } else {
+            cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
+            cell.votes = (int)placesCountArray[indexPath.row];
+            cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
         }
         
         return cell;
@@ -465,6 +511,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     switch (state) {
         case 0:
             NSLog(@"utility buttons closed");
+            [self.friendsGoingTable setEditing:NO animated:NO];
             break;
         case 1:
             NSLog(@"left utility buttons open");
@@ -479,12 +526,18 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerLeftUtilityButtonWithIndex:(NSInteger)index
 {
+    RSVPFriendsTableViewCell *theCell = (RSVPFriendsTableViewCell *)cell;
+    NSIndexPath *path = [NSIndexPath indexPathWithIndex:index];
     switch (index) {
         case 0:
             NSLog(@"RVSP YES was pressed");
+            theCell.arrow.image = [UIImage imageNamed:@"greenarrow.png"];
+            theCell.backgroundColor = [UIColor greenColor];
             break;
         case 1:
             NSLog(@"RSVP NO was pressed");
+            theCell.arrow.image = [UIImage imageNamed:@"redarrow.png"];
+            theCell.backgroundColor = [UIColor redColor];
             break;
         default:
             break;

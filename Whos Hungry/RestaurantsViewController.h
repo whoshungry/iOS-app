@@ -39,6 +39,8 @@
 @property BOOL isAdmin;
 
 @property NSMutableArray* restaurantIdArray;
+@property NSMutableArray* restaurantNameArray;
+@property NSMutableArray* restaurantPicArray;
 @property NSString* facebookId;
 
 @end

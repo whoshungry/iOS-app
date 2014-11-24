@@ -39,8 +39,6 @@
 	<string>Who&apos;s Hungry</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>EXTRA DETAILS ABOUT LOCATION</string>
 	<key>UILaunchStoryboardName</key>

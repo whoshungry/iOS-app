@@ -10,9 +10,15 @@
 #import "AFNetworking.h"
 #import "AFHTTPRequestOperation.h"
 
+
 static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
-@interface LoginViewController ()
+@interface LoginViewController () {
+    BOOL foundPushToken;
+    id<FBGraphUser> foundUser;
+    NSString *pushToken;
+    BOOL registered;
+}
 
 @end
 
@@ -24,10 +30,25 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     self.loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     self.loginButton.delegate = self;
     
+    foundPushToken = NO;
+    
     /*NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];*/
     
     //[self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    [self.locationManager requestWhenInUseAuthorization];
+    [self.locationManager requestAlwaysAuthorization];
+    
+    CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
+    if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
+        authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [self.locationManager startUpdatingLocation];
+    }
 }
 
 //fetched the facebook info
@@ -37,35 +58,57 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     //if (firstTime == nil) {
         NSLog(@"user id is :%@", user.objectID);
         NSLog(@"username is %@", user.name);
-        NSString *pushToken = [[NSUserDefaults standardUserDefaults]
+        pushToken = [[NSUserDefaults standardUserDefaults]
                                  stringForKey:@"pushToken"];
-        [self registerUser:user andPushID:pushToken];
+    
+        NSLog(@"push token is %@", pushToken);
+
+    if (pushToken != nil) {
+        foundPushToken = YES;
+        foundUser = user;
+        [self.locationManager startUpdatingLocation];
+    }
     //}
 }
 
 -(void) registerUser:(id<FBGraphUser>)user andPushID:(NSString *)pushID{
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSLog(@"username: %@", user.name);
+    NSLog(@"object id: %@", user.objectID);
+    NSLog(@"push ifddd: %@", pushID);
+    NSLog(@"usergraph: %@", user);
+    NSLog(@"pic is :%@", user.link);
+   NSString *pic = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square", user.objectID];
+    
     NSDictionary *params = @{
                              @"username": user.name,
+                             @"picture":pic,
                              @"push_id":pushID,
                              @"facebook_id" : user.objectID,
+                             @"location_x" : @(_currentCoor.latitude),
+                             @"location_y" : @(_currentCoor.longitude),
                              @"os_type" : @"IOS"};
     [manager POST:[NSString stringWithFormat:@"%@apis/register", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *results = (NSDictionary *)responseObject;
         NSLog(@"resultssS:S %@", results);
-        NSString *username = results[@"user_id"];
-        [[NSUserDefaults standardUserDefaults] setObject:username forKey:@"username"];
+        [[NSUserDefaults standardUserDefaults] setObject:user.name forKey:@"username"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        registered = YES;
+        [self.locationManager stopUpdatingLocation];
+        [self performSegueWithIdentifier:@"mainScreenSegue" sender:self];
         NSLog(@"JSON: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
+
 }
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
     [[NSUserDefaults standardUserDefaults] setObject:@"nah" forKey:@"firstTime"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [self performSegueWithIdentifier:@"mainScreenSegue" sender:self];
+    
+    if (foundUser && foundPushToken && registered)
+        [self performSegueWithIdentifier:@"mainScreenSegue" sender:self];
 }
 
 // Logged-out user experience
@@ -114,6 +157,19 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
     }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
+    //Finds location for the first time only and ONLY if it is ADMIN
+        _currentLocation = locations[0];
+        _currentCoor = _currentLocation.coordinate;
+        _locationFound = TRUE;
+        NSLog(@"updated loc: %f, %f", _currentCoor.latitude, _currentCoor.longitude);
+        if (foundUser != nil && foundPushToken) {
+            NSLog(@"register user: %@", foundUser);
+            [self registerUser:foundUser andPushID:pushToken];
+        }
+    
 }
 
 @end

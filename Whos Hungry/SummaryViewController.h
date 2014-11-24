@@ -39,7 +39,6 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) CLLocation* currentLocation;
 - (IBAction)goHome:(id)sender;
--(void)initFromGroupID:(NSString *)gid andVoteID:(NSString *)vid;
-
+-(void)initWithHootLobby:(HootLobby *)hootlobby;
 
 @end

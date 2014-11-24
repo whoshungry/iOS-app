@@ -26,6 +26,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _restaurantIdArray = [NSMutableArray new];
+    _restaurantNameArray = [NSMutableArray new];
+    _restaurantPicArray = [NSMutableArray new];
     restImages = [NSMutableArray new];
     
     [self initRestaurants];
@@ -103,8 +105,12 @@
         NSString *photoRef = [photoDict objectForKey:@"photo_reference"];
         NSString *urlStr = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", photoRef, GOOGLE_API_KEY_THREE];
         NSURL * imageURL = [NSURL URLWithString:urlStr];
+        NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
+        UIImage * image = [UIImage imageWithData:imageData];
+        [restImages addObject:image];
         
-        dispatch_queue_t concurrentQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        
+        /*dispatch_queue_t concurrentQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_async(concurrentQueue, ^{
             NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
             UIImage * image = [UIImage imageWithData:imageData];
@@ -112,7 +118,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [restImages addObject:image];
             });
-        });
+        });*/
         [tempDictionary setObject:@(0) forKey:[response objectForKey:@"name"]];
     }
         
@@ -218,6 +224,8 @@
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         [cell setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:228.0/255.0 blue:171.0/255.0 alpha:1.0]];
         [_restaurantIdArray addObject:response[@"place_id"]];
+        [_restaurantNameArray addObject:response[@"name"]];
+        [_restaurantPicArray addObject:[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", response[@"place_id"], GOOGLE_API_KEY_THREE]];
     }
     else
     {
@@ -262,6 +270,8 @@
     //////////
     //Reset array of restaurant id's
     [_restaurantIdArray removeAllObjects];
+    [_restaurantNameArray removeAllObjects];
+    [_restaurantPicArray removeAllObjects];
     
     //reload data again to display checkmarks
     [self.restaurantsTable reloadData];
@@ -304,11 +314,15 @@
         NSLog(@"Current Lobby is empty");
         tempLobby = [HootLobby new];
         tempLobby.placesIdArray = _restaurantIdArray;
+        tempLobby.placesNamesArray = _restaurantNameArray;
+        tempLobby.placesPicsArray = _restaurantPicArray;
         [self saveCustomObject:tempLobby];
     }
     else{
         NSLog(@"Current Lobby has DATA!");
         tempLobby.placesIdArray = _restaurantIdArray;
+        tempLobby.placesNamesArray = _restaurantNameArray;
+        tempLobby.placesPicsArray = _restaurantPicArray;
         [self saveCustomObject:tempLobby];
     }
     

@@ -27,19 +27,16 @@
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     [PFFacebookUtils initializeFacebook];*/
     NSLog(@"Registering for push notifications...");
-    
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-#ifdef __IPHONE_8_0
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
-                                                                                             |UIRemoteNotificationTypeSound
-                                                                                             |UIRemoteNotificationTypeAlert) categories:nil];
-        [application registerUserNotificationSettings:settings];
-#endif
-    } else {
-        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
-        [application registerForRemoteNotificationTypes:myTypes];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+    {
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
     }
-    
+    else
+    {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+         (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
+    }
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -63,8 +60,8 @@
             
             SummaryViewController *controller = (SummaryViewController*)[mainStoryboard
                                                                instantiateViewControllerWithIdentifier: @"SummaryViewController"];
-            controller.loaded = YES;
-            [controller initFromGroupID:dictionary[@"group_id"] andVoteID:dictionary[@"vote_id"]];
+            //controller.loaded = YES;
+            //[controller initFromGroupID:dictionary[@"group_id"] andVoteID:dictionary[@"vote_id"]];
             [ROOTVIEW presentViewController:controller animated:YES completion:^(void) {
                 
             }];
@@ -79,13 +76,12 @@
     NSLog(@"Received notification: %@", userInfo);
 #define ROOTVIEW [[[UIApplication sharedApplication] keyWindow] rootViewController]
     
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                             bundle: nil];
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
     SummaryViewController *controller = (SummaryViewController*)[mainStoryboard
                                                                  instantiateViewControllerWithIdentifier: @"SummaryViewController"];
-    controller.loaded = YES;
-    [controller initFromGroupID:userInfo[@"group_id"] andVoteID:userInfo[@"vote_id"]];
+    //controller.loaded = YES;
+    //[controller initFromGroupID:userInfo[@"group_id"] andVoteID:userInfo[@"vote_id"]];
     [ROOTVIEW presentViewController:controller animated:YES completion:^(void) {
         
     }];

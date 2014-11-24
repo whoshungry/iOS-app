@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface LoginViewController : UIViewController <FBLoginViewDelegate>
+@interface LoginViewController : UIViewController <FBLoginViewDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet FBLoginView *loginButton;
+
+
+@property CLLocationManager *locationManager;
+@property CLLocationCoordinate2D currentCoor;
+@property CLLocation *currentLocation;
+@property BOOL locationFound;
 
 @end
 

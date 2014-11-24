@@ -10,5 +10,5 @@
 #import "SWTableViewCell.h"
 
 @interface RSVPFriendsTableViewCell : SWTableViewCell
-
+@property (weak, nonatomic) IBOutlet UIImageView *arrow;
 @end
