@@ -18,11 +18,10 @@
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
-@interface RestaurantsViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface RestaurantsViewController : UIViewController <CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property CLLocationManager *locationManager;
 @property CLLocationCoordinate2D currentCentre;
-@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property CLLocation *currentLocation;
 @property BOOL locationFound;
 @property int currenDist;

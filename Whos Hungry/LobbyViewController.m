@@ -44,7 +44,8 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self lunchBtnPressed:nil];
+    if (_voteType == nil)
+        [self lunchBtnPressed:nil];
 }
 
 -(IBAction)inviteFriends:(id)sender {
@@ -192,7 +193,7 @@
     self.coffeeBtn.layer.borderWidth = 3.0f;
     self.drinksBtn.layer.borderColor = greenColor.CGColor;
     self.drinksBtn.layer.borderWidth = 0.0f;
-    _voteType = @"coffee";
+    _voteType = @"cafe";
 }
 
 - (IBAction)drinksBtnPressed:(id)sender {

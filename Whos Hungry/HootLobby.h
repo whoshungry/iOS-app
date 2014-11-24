@@ -10,17 +10,21 @@
 
 @interface HootLobby : NSObject
 
-@property (strong, nonatomic) NSString* facebookId;
 @property (strong, nonatomic) NSString* groupid;
+
+@property (strong, nonatomic) NSString* facebookId;
 @property (strong, nonatomic) NSString* facebookPic;
 @property (strong, nonatomic) NSString* facebookName;
+
 @property (strong, nonatomic) NSMutableArray* facebookbInvitatitions;
-@property (strong, nonatomic) NSDate* expirationTime;
+
 @property (strong, nonatomic) NSMutableArray* placesIdArray;
 @property (strong, nonatomic) NSMutableArray* placesNamesArray;
 @property (strong, nonatomic) NSMutableArray* placesPicsArray;
 @property (strong, nonatomic) NSMutableArray* placesXArray;
 @property (strong, nonatomic) NSMutableArray* placesYArray;
+
+@property (strong, nonatomic) NSDate* expirationTime;
 @property (strong, nonatomic) NSString* voteType;
 @property (strong, nonatomic) NSString* voteid;
 

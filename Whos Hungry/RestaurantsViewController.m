@@ -7,6 +7,8 @@
 //
 
 #import "RestaurantsViewController.h"
+#import "AFHTTPRequestOperationManager.h"
+#import "AFNetworking.h"
 
 #define GOOGLE_API_KEY @"AIzaSyAdB2MtdRCGDZNfIcd-uR22hkmCmniA6Oc"
 #define GOOGLE_API_KEY_TWO @"AIzaSyBBQSs-ALwZ3Za7nioFPYXsByMDsMFq-68"
@@ -50,14 +52,12 @@
     
     [locationManager requestWhenInUseAuthorization];
     [locationManager requestAlwaysAuthorization];
-    self.mapView.delegate = self;
     
     CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
     if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
         authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
         
         [self.locationManager startUpdatingLocation];
-        self.mapView.showsUserLocation = YES;
     }
 
     // Do any additional setup after loading the view.
@@ -67,7 +67,50 @@
     _allPlaces = [NSMutableArray new];
 }
 
--(void) queryGooglePlaces: (NSString *) googleType {
+-(void)getRestInfo:(NSString *)googleType {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters =
+                                @{@"location": [NSString stringWithFormat:@"%f,%f", _currentCentre.latitude,                     _currentCentre.longitude],
+                                 @"radius":@"1000",
+                                 @"types":googleType,
+                                 @"key":GOOGLE_API_KEY_TWO,
+                                 };
+    [manager GET:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary* emptyVotingDict = [NSMutableDictionary new];
+        NSDictionary *googlePlacesResults = (NSDictionary *)responseObject;
+        NSArray *placesData = googlePlacesResults[@"results"];
+        int amount = 15;
+            if (placesData.count < 15)
+                amount = (int)placesData.count;
+        for (int i = 0; i < amount; i++) {
+            NSDictionary *currentPlace = placesData[i];
+            [_allPlaces addObject:currentPlace];
+            NSLog(@"currnet plae is %@:", currentPlace);
+            
+            [emptyVotingDict setObject:@(0) forKey:currentPlace[@"name"]];
+            
+            NSString *urlStr;
+            if (currentPlace[@"photos"] != nil) {
+                NSDictionary *photosDict = currentPlace[@"photos"][0];
+                NSString *photoRef = photosDict[@"photo_reference"];
+                urlStr = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", photoRef, GOOGLE_API_KEY_TWO];
+            } else {
+                urlStr = currentPlace[@"icon"];
+            }
+            
+            NSURL * imageURL = [NSURL URLWithString:urlStr];
+            NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
+            UIImage * image = [UIImage imageWithData:imageData];
+            [restImages addObject:image];
+            
+        }
+        [self.restaurantsTable reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
+/*-(void) queryGooglePlaces: (NSString *) googleType {
     NSLog(@"going through google places!!! with loc: %f", _currentCentre.latitude);
     // Build the url string to send to Google. NOTE: The kGOOGLE_API_KEY is a constant that should contain your own API key that you obtain from Google. See this link for more info:
     // https://developers.google.com/maps/documentation/places/#Authentication
@@ -122,13 +165,13 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [restImages addObject:image];
             });
-        });*/
+        });
         [tempDictionary setObject:@(0) forKey:[response objectForKey:@"name"]];
     }
         
     [self.restaurantsTable reloadData];
 }
-}
+}*/
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     //Finds location for the first time only and ONLY if it is ADMIN
@@ -137,20 +180,18 @@
         _currentLocation = locations[0];
         _currentCentre = _currentLocation.coordinate;
         _locationFound = TRUE;
-        if (![self.voteType isEqualToString:@"coffee"]) {
-            [self queryGooglePlaces:@"food"];
-        } else {
-            [self queryGooglePlaces:@"cafe"];
+        if ([self.voteType isEqualToString:@"cafe"]) {
+            [self getRestInfo:@"cafe"];
         }
+        else {
+            [self getRestInfo:@"food"];
+        }
+        [locationManager stopUpdatingLocation];
     }
 
 }
 
 # pragma mark - tableView methods
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (self.allPlaces.count == 0) {
@@ -167,8 +208,7 @@
     static NSString *CellIdentifier = @"mainCell";
     RestaurantCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    NSDictionary *response = [_allPlaces objectAtIndex:indexPath.row];
-    
+    NSDictionary *chosenResponse = [_allPlaces objectAtIndex:indexPath.row];
     cell.backgroundColor = [UIColor clearColor];
     
 
@@ -194,11 +234,11 @@
     if (restImages.count > 0) {
         cell.image.image = restImages[indexPath.row];
     }
-    cell.name.text = response[@"name"];
+    cell.name.text = chosenResponse[@"name"];
     
     /////////
     //Price level signs
-    int priceLevel = [[response objectForKey:@"price_level"] intValue];
+    int priceLevel = [chosenResponse[@"price_level"]intValue];
     if (!priceLevel) {
         priceLevel = 3;
     }
@@ -211,15 +251,13 @@
     ///////////
     //Loading distance from current location
     NSDictionary* loc  = [[NSDictionary alloc] init];
-    loc = [response objectForKey:@"geometry"];
-    NSDictionary* locTwo  = [[NSDictionary alloc] init];
-    locTwo = loc[@"location"];
-    CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[locTwo[@"lat"] doubleValue] longitude:(CLLocationDegrees)[locTwo[@"lng"] doubleValue]];
-    //NSLog(@"Latitude %@ and Longitude %@", locTwo[@"lat"], locTwo[@"lng"]);
+    loc = chosenResponse[@"geometry"][@"location"];
+    CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[loc[@"lat"] doubleValue] longitude:(CLLocationDegrees)[loc[@"lng"] doubleValue]];
+    NSLog(@"Latitude %@ and Longitude %@", loc[@"lat"], loc[@"lng"]);
+    
     CLLocation* userLocation = [[CLLocation alloc] initWithLatitude:_currentCentre.latitude longitude:_currentCentre.longitude];
     float distance = [placeLocation distanceFromLocation:userLocation] / 1609.0;
-    cell.distance.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
-    
+    cell.distance.text = [NSString stringWithFormat:@"%1.2f mi.", distance];
     
     ///////////
     //Add or remove checkmark
@@ -227,12 +265,12 @@
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         [cell setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:228.0/255.0 blue:171.0/255.0 alpha:1.0]];
-        [_restaurantIdArray addObject:response[@"place_id"]];
-        [_restaurantNameArray addObject:response[@"name"]];
-        [_restaurantPicArray addObject:[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", response[@"place_id"], GOOGLE_API_KEY]];
+        [_restaurantIdArray addObject:chosenResponse[@"place_id"]];
+        [_restaurantNameArray addObject:chosenResponse[@"name"]];
+        [_restaurantPicArray addObject:[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", chosenResponse[@"place_id"], GOOGLE_API_KEY]];
         
-        [_restaurantXArray addObject:response[@"geometry"][@"location"][@"lat"]];
-        [_restaurantYArray addObject:response[@"geometry"][@"location"][@"lng"]];
+        [_restaurantXArray addObject:chosenResponse[@"geometry"][@"location"][@"lat"]];
+        [_restaurantYArray addObject:chosenResponse[@"geometry"][@"location"][@"lng"]];
     }
     else
     {
@@ -290,7 +328,6 @@
     [self.locationManager stopUpdatingLocation];
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    
     ///////////
     //Retrieving FB user Id
     if (FBSession.activeSession.isOpen)
@@ -338,8 +375,6 @@
         tempLobby.placesYArray = _restaurantYArray;
         [self saveCustomObject:tempLobby];
     }
-    
-
 }
 
 -(void)saveCustomObject:(HootLobby *)object

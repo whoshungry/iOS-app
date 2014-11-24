@@ -67,6 +67,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         foundPushToken = YES;
         foundUser = user;
         [self.locationManager startUpdatingLocation];
+    } else {
+        [self performSegueWithIdentifier:@"mainScreenSegue" sender:self];
+        [self.locationManager stopUpdatingLocation];
     }
     //}
 }
