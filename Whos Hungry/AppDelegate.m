@@ -41,7 +41,7 @@
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     ///F36F45
-    UIColor *orangeColor = [UIColor colorWithRed:(243.0/255.0) green:(111/255.0) blue:(69/255.0) alpha:1.0];
+    UIColor *orangeColor = [UIColor colorWithRed:(243/255.0) green:(111/255.0) blue:(69/255.0) alpha:1.0];
     
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setBarTintColor:orangeColor];

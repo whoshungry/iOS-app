@@ -11,6 +11,7 @@
 #define GOOGLE_API_KEY @"AIzaSyAdB2MtdRCGDZNfIcd-uR22hkmCmniA6Oc"
 #define GOOGLE_API_KEY_TWO @"AIzaSyBBQSs-ALwZ3Za7nioFPYXsByMDsMFq-68"
 #define GOOGLE_API_KEY_THREE @"AIzaSyA6gixyCg9D-9nEJ8q7PQJiJ9Nk5LzcltI"
+#define GOOGLE_API_KEY_FOUR @"AIzaSyDF0gj_1xGofM8BriMNH-uHbNYBVjI3g70"
 #define LOBBY_KEY  @"currentlobby"
 
 @interface RestaurantsViewController () {
@@ -28,6 +29,8 @@
     _restaurantIdArray = [NSMutableArray new];
     _restaurantNameArray = [NSMutableArray new];
     _restaurantPicArray = [NSMutableArray new];
+    _restaurantXArray = [NSMutableArray new];
+    _restaurantYArray = [NSMutableArray new];
     restImages = [NSMutableArray new];
     _allPlaces = [NSMutableArray new];
     
@@ -68,7 +71,7 @@
     NSLog(@"going through google places!!! with loc: %f", _currentCentre.latitude);
     // Build the url string to send to Google. NOTE: The kGOOGLE_API_KEY is a constant that should contain your own API key that you obtain from Google. See this link for more info:
     // https://developers.google.com/maps/documentation/places/#Authentication
-    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/json?location=%f,%f&radius=%@&types=%@&sensor=true&key=%@", _currentCentre.latitude, _currentCentre.longitude, [NSString stringWithFormat:@"%i", 1000], googleType, GOOGLE_API_KEY_THREE];
+    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/json?location=%f,%f&radius=%@&types=%@&sensor=true&key=%@", _currentCentre.latitude, _currentCentre.longitude, [NSString stringWithFormat:@"%i", 1000], googleType, GOOGLE_API_KEY];
     
     //Formulate the string as a URL object.
     NSURL *googleRequestURL=[NSURL URLWithString:url];
@@ -104,7 +107,7 @@
         NSLog(@"response for the places are  %@     ", response);
         NSDictionary *photoDict = [response objectForKey:@"photos"][0];
         NSString *photoRef = [photoDict objectForKey:@"photo_reference"];
-        NSString *urlStr = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", photoRef, GOOGLE_API_KEY_THREE];
+        NSString *urlStr = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", photoRef, GOOGLE_API_KEY];
         NSURL * imageURL = [NSURL URLWithString:urlStr];
         NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
         UIImage * image = [UIImage imageWithData:imageData];
@@ -226,7 +229,10 @@
         [cell setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:228.0/255.0 blue:171.0/255.0 alpha:1.0]];
         [_restaurantIdArray addObject:response[@"place_id"]];
         [_restaurantNameArray addObject:response[@"name"]];
-        [_restaurantPicArray addObject:[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", response[@"place_id"], GOOGLE_API_KEY_THREE]];
+        [_restaurantPicArray addObject:[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", response[@"place_id"], GOOGLE_API_KEY]];
+        
+        [_restaurantXArray addObject:response[@"geometry"][@"location"][@"lat"]];
+        [_restaurantYArray addObject:response[@"geometry"][@"location"][@"lng"]];
     }
     else
     {
@@ -273,6 +279,8 @@
     [_restaurantIdArray removeAllObjects];
     [_restaurantNameArray removeAllObjects];
     [_restaurantPicArray removeAllObjects];
+    [_restaurantXArray removeAllObjects];
+    [_restaurantYArray removeAllObjects];
     
     //reload data again to display checkmarks
     [self.restaurantsTable reloadData];
@@ -317,6 +325,8 @@
         tempLobby.placesIdArray = _restaurantIdArray;
         tempLobby.placesNamesArray = _restaurantNameArray;
         tempLobby.placesPicsArray = _restaurantPicArray;
+        tempLobby.placesXArray = _restaurantXArray;
+        tempLobby.placesYArray = _restaurantYArray;
         [self saveCustomObject:tempLobby];
     }
     else{
@@ -324,6 +334,8 @@
         tempLobby.placesIdArray = _restaurantIdArray;
         tempLobby.placesNamesArray = _restaurantNameArray;
         tempLobby.placesPicsArray = _restaurantPicArray;
+        tempLobby.placesXArray = _restaurantXArray;
+        tempLobby.placesYArray = _restaurantYArray;
         [self saveCustomObject:tempLobby];
     }
     
@@ -344,9 +356,6 @@
     HootLobby *obj = (HootLobby *)[NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
     return obj;
 }
-
-
-
 
 
 

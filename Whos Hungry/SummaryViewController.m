@@ -17,7 +17,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 #define GOOGLE_API_KEY @"AIzaSyAdB2MtdRCGDZNfIcd-uR22hkmCmniA6Oc"
 #define GOOGLE_API_KEY_TWO @"AIzaSyBBQSs-ALwZ3Za7nioFPYXsByMDsMFq-68"
 #define GOOGLE_API_KEY_THREE @"AIzaSyA6gixyCg9D-9nEJ8q7PQJiJ9Nk5LzcltI"
-
+#define GOOGLE_API_KEY_FOUR @"AIzaSyDF0gj_1xGofM8BriMNH-uHbNYBVjI3g70"
 
 
 @interface SummaryViewController (){
@@ -71,7 +71,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"current lobby names rrrr: %@", _currentLobby.placesNamesArray);
         NSLog(@"current lobby pics rrrr: %@", _currentLobby.placesPicsArray);
         
-        [_restaurantTable reloadData];
+        //[_restaurantTable reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -91,7 +91,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         else{
             NSLog(@"Current Lobby has DATA!");
             NSLog(@"currnet lobby is %@", _currentLobby);
-            [self createAPIGroup];
+            //[self createAPIGroup];
+                    //[self createAPIGroup];
+                   [self loadSummary];
+            
+                    //[self loadSummary];
+            //NSLog(@"%@", _currentLobby);		         //NSLog(@"%@", _currentLobby);
+                   //[_restaurantTable reloadData];
         }
     }
 }
@@ -100,8 +106,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [super viewDidLoad];
     
     if (!_loaded) {
-        _allPlaces = [NSMutableArray new];
         _indexPathArray = [NSMutableArray new];
+        _allPlaces = [NSMutableArray new];
         
         [self.friendsGoingTable registerNib:[UINib nibWithNibName:@"RSVPFriendsTableViewCell" bundle:nil] forCellReuseIdentifier:@"MyCustomCell"];
         self.friendsGoingTable.delegate = self;
@@ -294,18 +300,18 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             restaurantPics = [restaurantPics stringByAppendingString:_currentLobby.placesPicsArray[i]];
             restaurantPics = [restaurantPics stringByAppendingString:@","];
             
-            restaurantX = [restaurantX stringByAppendingString:_currentLobby.placesXArray[i]];
+            restaurantX = [restaurantX stringByAppendingString:(NSString *)[_currentLobby.placesXArray[i]stringValue]];
             restaurantX = [restaurantX stringByAppendingString:@","];
             
-            restaurantY = [restaurantY stringByAppendingString:_currentLobby.placesYArray[i]];
+            restaurantY = [restaurantY stringByAppendingString:(NSString *)[_currentLobby.placesYArray[i]stringValue]];
             restaurantY = [restaurantY stringByAppendingString:@","];
         }
         else{
             restaurantIds = [restaurantIds stringByAppendingString:_currentLobby.placesIdArray[i]];
             restaurantNames = [restaurantNames stringByAppendingString:_currentLobby.placesNamesArray[i]];
             restaurantPics = [restaurantPics stringByAppendingString:_currentLobby.placesPicsArray[i]];
-            restaurantX = [restaurantX stringByAppendingString:_currentLobby.placesXArray[i]];
-            restaurantY = [restaurantY stringByAppendingString:_currentLobby.placesYArray[i]];
+            restaurantX = [restaurantX stringByAppendingString:(NSString *)[_currentLobby.placesXArray[i]stringValue]];
+            restaurantY = [restaurantY stringByAppendingString:(NSString *)[_currentLobby.placesYArray[i]stringValue]];
         }
     }
     
@@ -340,7 +346,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         
         [self loadSummary];
         //NSLog(@"%@", _currentLobby);
-        [_restaurantTable reloadData];
+        //[_restaurantTable reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -368,7 +374,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 -(void) queryGooglePlacesWithPlaceId:(NSString*)placeId{
     NSLog(@"going through google places!!!");
-    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?placeid=%@&key=%@",placeId,GOOGLE_API_KEY_THREE];
+    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?placeid=%@&key=%@",placeId,GOOGLE_API_KEY];
     NSURL *googleRequestURL=[NSURL URLWithString:url];
     
     // Retrieve the results of the URL.
@@ -380,15 +386,17 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 -(void)fetchedData:(NSData *)responseData {
     //parse out the json data
-    NSLog(@"fetched data is @!!:!!");
+    NSLog(@"fetched data is @!!:!! %@: ", responseData);
     NSError* error;
     NSDictionary* json = [NSJSONSerialization
                           JSONObjectWithData:responseData
                           
                           options:kNilOptions
                           error:&error];
+    NSLog(@"placccccccce: %@", json);
     
-    
+    NSLog(@"ferrror %@ ", error);
+
     //NSLog(@"JSON is %@",json);
     //The results from Google will be an array obtained from the NSDictionary object with the key "results".
     NSArray* place = [json objectForKey:@"result"];
@@ -397,9 +405,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [_allPlaces addObject:place];
     if (_allPlaces.count == _currentLobby.placesIdArray.count) {
         [self loadRestaurantNames];
-        [_restaurantTable reloadData];
+        //[_restaurantTable reloadData];
     }
-    //NSLog(@"places is %@",place);
+    NSLog(@"places is %@",_allPlaces);
 }
 
 
@@ -450,9 +458,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             cell.index = (int)indexPath.row;
         }
         
+        NSLog(@"ALL PLACES: %@", _allPlaces);
+        NSLog(@"places %@", _currentLobby);
+        
         if (!_loaded) {
-            CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
-            float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
+            //CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
+            //float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
+            float distance = 50.0f;
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _allPlaces[indexPath.row][@"name"];
         } else {

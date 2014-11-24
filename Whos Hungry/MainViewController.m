@@ -91,11 +91,11 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                 [self.tableView reloadData];
             }
             
-            NSArray *sortedArray = [lobbies sortedArrayUsingSelector:@selector(compare:)];
+            /*NSArray *sortedArray = [lobbies sortedArrayUsingSelector:@selector(compare:)];
             lobbies = [NSMutableArray arrayWithArray:sortedArray];
             for (int i =0; i < lobbies.count; i++) {
                 NSLog(@"lobbie vote id : %@", [[lobbies objectAtIndex:i] voteid]);
-            }
+            }*/
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
