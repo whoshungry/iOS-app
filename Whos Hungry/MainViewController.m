@@ -148,6 +148,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [self performSegueWithIdentifier:@"maintosummary" sender:self];
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    return nil;
+}
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([[segue identifier] isEqualToString:@"maintosummary"])

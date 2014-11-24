@@ -21,6 +21,8 @@
     [encoder encodeObject:_placesIdArray forKey:@"placesIdArray"];
     [encoder encodeObject:_placesNamesArray forKey:@"placesNamesArray"];
     [encoder encodeObject:_placesPicsArray forKey:@"placesPicsArray"];
+    [encoder encodeObject:_placesXArray forKey:@"placesXArray"];
+    [encoder encodeObject:_placesYArray forKey:@"placesYArray"];
     [encoder encodeObject:_voteType forKey:@"voteType"];
     [encoder encodeObject:_voteid forKey:@"voteid"];
     [encoder encodeObject:_winnerRestID forKey:@"winnerRestID"];
@@ -40,6 +42,8 @@
         _placesIdArray = [decoder decodeObjectForKey:@"placesIdArray"];
         _placesNamesArray = [decoder decodeObjectForKey:@"placesNamesArray"];
         _placesPicsArray = [decoder decodeObjectForKey:@"placesPicsArray"];
+        _placesXArray = [decoder decodeObjectForKey:@"placesXArray"];
+        _placesYArray = [decoder decodeObjectForKey:@"placesYArray"];
         _voteType = [decoder decodeObjectForKey:@"voteType"];
         _voteid = [decoder decodeObjectForKey:@"voteid"];
         _winnerRestID = [decoder decodeObjectForKey:@"winnerRestID"];

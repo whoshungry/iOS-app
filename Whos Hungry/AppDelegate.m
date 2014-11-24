@@ -40,10 +40,11 @@
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    UIColor *greenColor = [UIColor colorWithRed:(91.0/255.0) green:(186.0/255.0) blue:(71.0/255.0) alpha:1.0];
+    ///F36F45
+    UIColor *orangeColor = [UIColor colorWithRed:(243.0/255.0) green:(111/255.0) blue:(69/255.0) alpha:1.0];
     
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setBarTintColor:greenColor];
+    [[UINavigationBar appearance] setBarTintColor:orangeColor];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
     //received push...

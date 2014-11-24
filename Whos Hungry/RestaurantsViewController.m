@@ -29,6 +29,7 @@
     _restaurantNameArray = [NSMutableArray new];
     _restaurantPicArray = [NSMutableArray new];
     restImages = [NSMutableArray new];
+    _allPlaces = [NSMutableArray new];
     
     [self initRestaurants];
 }

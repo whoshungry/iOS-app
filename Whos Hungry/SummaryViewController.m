@@ -280,6 +280,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSString* restaurantIds = @"";
     NSString* restaurantNames = @"";
     NSString* restaurantPics = @"";
+    NSString* restaurantX = @"";
+    NSString* restaurantY = @"";
 
     for (int i = 0; i < _currentLobby.placesIdArray.count; i++) {
         if (i != _currentLobby.placesIdArray.count - 1) {
@@ -291,17 +293,27 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             
             restaurantPics = [restaurantPics stringByAppendingString:_currentLobby.placesPicsArray[i]];
             restaurantPics = [restaurantPics stringByAppendingString:@","];
+            
+            restaurantX = [restaurantX stringByAppendingString:_currentLobby.placesXArray[i]];
+            restaurantX = [restaurantX stringByAppendingString:@","];
+            
+            restaurantY = [restaurantY stringByAppendingString:_currentLobby.placesYArray[i]];
+            restaurantY = [restaurantY stringByAppendingString:@","];
         }
         else{
             restaurantIds = [restaurantIds stringByAppendingString:_currentLobby.placesIdArray[i]];
             restaurantNames = [restaurantNames stringByAppendingString:_currentLobby.placesNamesArray[i]];
             restaurantPics = [restaurantPics stringByAppendingString:_currentLobby.placesPicsArray[i]];
+            restaurantX = [restaurantX stringByAppendingString:_currentLobby.placesXArray[i]];
+            restaurantY = [restaurantY stringByAppendingString:_currentLobby.placesYArray[i]];
         }
     }
     
     NSLog(@"rest ids: %@", restaurantIds);
     NSLog(@"rest names: %@", restaurantNames);
     NSLog(@"rest pics: %@", restaurantPics);
+    NSLog(@"rest x: %@", restaurantX);
+    NSLog(@"rest y: %@", restaurantY);
     
     NSDate *startDate = [NSDate new];
     NSDate *endDate = _currentLobby.expirationTime;
@@ -319,7 +331,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                              @"expiration_time": _currentLobby.expirationTime,
                              @"restaurant_ids": restaurantIds,
                              @"restaurant_names": restaurantNames,
-                             @"restaurant_pics":restaurantPics
+                             @"restaurant_pics":restaurantPics,
+                             @"restaurant_location_x":restaurantX,
+                             @"restaurant_location_y":restaurantY
                              };
     [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"~~~~~~~~~~~~~JSON: %@", responseObject);
@@ -442,6 +456,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _allPlaces[indexPath.row][@"name"];
         } else {
+            CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_currentLobby.placesXArray[indexPath.row] doubleValue] longitude:(CLLocationDegrees)[_currentLobby.placesYArray[indexPath.row] doubleValue]];
+            float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
+            cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
             cell.votes = (int)placesCountArray[indexPath.row];
             cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
