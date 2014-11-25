@@ -23,7 +23,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 @interface SummaryViewController (){
     CLLocationCoordinate2D restaurantCoor;
     int votedIndex;
-    NSString *groupid;
+    //NSString *groupid;
     NSString *voteid;
     NSMutableArray *placesCountArray;
 }
@@ -91,13 +91,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         else{
             NSLog(@"Current Lobby has DATA!");
             NSLog(@"currnet lobby is %@", _currentLobby);
-            //[self createAPIGroup];
-                    //[self createAPIGroup];
-                   [self loadSummary];
-            
-                    //[self loadSummary];
-            //NSLog(@"%@", _currentLobby);		         //NSLog(@"%@", _currentLobby);
-                   //[_restaurantTable reloadData];
+            [self createAPIGroup];
         }
     }
 }
@@ -107,7 +101,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     if (!_loaded) {
         _indexPathArray = [NSMutableArray new];
-        _allPlaces = [NSMutableArray new];
         
         [self.friendsGoingTable registerNib:[UINib nibWithNibName:@"RSVPFriendsTableViewCell" bundle:nil] forCellReuseIdentifier:@"MyCustomCell"];
         self.friendsGoingTable.delegate = self;
@@ -166,25 +159,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     //choice : <id of restaurant>
     //status :  <status “+1”, “0”, “-1”>
     
-    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
-    if (username == nil) {
-        username = @"";
-    }
-    groupid = _currentLobby.groupid;
-    if (groupid == nil) {
-        groupid = [[NSUserDefaults standardUserDefaults] stringForKey:@"groupid"];
-        if (groupid == nil) {
-            groupid = @"";
-        }
-    }
-    
     NSLog(@"restaurant list ids: %@", _currentLobby.placesIdArray);
     NSLog(@"voted restaurant id : %@", _currentLobby.placesIdArray[sender.index]);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *params = @{
-                             @"user_id": username,
-                             @"group_id":groupid,
+                             @"user_id": _currentLobby.facebookId,
+                             @"group_id":_currentLobby.groupid,
                              @"choice" : _currentLobby.placesIdArray[sender.index],
                              @"status" : sender.status};
     [manager POST:[NSString stringWithFormat:@"%@apis/make_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -223,7 +204,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [locationManager stopUpdatingLocation];
 }
 
-
 #pragma mark - NSUserDefaults methods
 
 -(void)saveCustomObject:(HootLobby *)object
@@ -253,7 +233,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         }
         else{
             facebookString = [facebookString stringByAppendingString:_currentLobby.facebookbInvitatitions[i]];
-            
         }
     }
     NSLog(@"user_id is %@", _currentLobby.facebookId);
@@ -264,19 +243,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                              @"invitations" : facebookString};
     
     [manager POST:[NSString stringWithFormat:@"%@apis/create_group", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"create group JSON: %@", responseObject);
         NSDictionary *results = (NSDictionary *)responseObject;
-        NSString *groupID = results[@"group_id"];
-        if (groupID != nil) {
-            [[NSUserDefaults standardUserDefaults] setObject:groupID forKey:@"groupid"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            _currentLobby.groupid = groupID;
-            NSLog(@"group id made is : %@", groupID);
-        } else {
-            groupID = _currentLobby.groupid;
-        }
-        NSLog(@"group id isisisisisi :%@", groupID);
-        [self createAPIVoteWithGroupId:groupID];
+        _currentLobby.groupid = results[@"group_id"];
+        NSLog(@"group id is :%@", _currentLobby.groupid);
+        [self createAPIVoteWithGroupId:_currentLobby.groupid];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -331,7 +301,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *params = @{@"user_id": _currentLobby.facebookId,
-                             @"group_id": groupId,
+                             @"group_id": _currentLobby.groupid,
                              @"vote_type": _currentLobby.voteType,
                              @"expiration_time_number": @(minsLeft),
                              @"expiration_time": _currentLobby.expirationTime,
@@ -342,18 +312,14 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                              @"restaurant_location_y":restaurantY
                              };
     [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"~~~~~~~~~~~~~JSON: %@", responseObject);
-        
-        [self loadSummary];
-        //NSLog(@"%@", _currentLobby);
-        //[_restaurantTable reloadData];
-        
+        [self.restaurantTable reloadData];
+        //[self loadSummary];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
 }
 
-- (void)loadSummary{
+/*- (void)loadSummary{
     //Goes through all place_id's and stores them in _allPlaces array
     for (int i = 0; i < _currentLobby.placesIdArray.count; i++) {
         [self queryGooglePlacesWithPlaceId:_currentLobby.placesIdArray[i]];
@@ -408,7 +374,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         //[_restaurantTable reloadData];
     }
     NSLog(@"places is %@",_allPlaces);
-}
+}*/
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -453,7 +419,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         
         
         [_indexPathArray addObject:indexPath];
-        if (_allPlaces.count == _currentLobby.placesIdArray.count) {
+        if (_currentLobby && _currentLobby.placesIdArray.count > 0) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.index = (int)indexPath.row;
         }
@@ -462,11 +428,12 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"places %@", _currentLobby);
         
         if (!_loaded) {
+            CLLocation *placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_currentLobby.placesXArray[indexPath.row] doubleValue] longitude:(CLLocationDegrees)[_currentLobby.placesYArray[indexPath.row] doubleValue]];
             //CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
-            //float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
-            float distance = 50.0f;
+            float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
+            //float distance = 50.0f;
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
-            cell.restaurantLabel.text = _allPlaces[indexPath.row][@"name"];
+            cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
         } else {
             CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_currentLobby.placesXArray[indexPath.row] doubleValue] longitude:(CLLocationDegrees)[_currentLobby.placesYArray[indexPath.row] doubleValue]];
             float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;

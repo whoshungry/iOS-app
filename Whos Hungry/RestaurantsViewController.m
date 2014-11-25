@@ -334,6 +334,7 @@
     {
         [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             _facebookId = result[@"id"];
+            
             NSLog(@"FB ID is: %@", _facebookId);
             
             HootLobby* tempLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
@@ -359,22 +360,13 @@
     if (!tempLobby) {
         NSLog(@"Current Lobby is empty");
         tempLobby = [HootLobby new];
-        tempLobby.placesIdArray = _restaurantIdArray;
-        tempLobby.placesNamesArray = _restaurantNameArray;
-        tempLobby.placesPicsArray = _restaurantPicArray;
-        tempLobby.placesXArray = _restaurantXArray;
-        tempLobby.placesYArray = _restaurantYArray;
-        [self saveCustomObject:tempLobby];
     }
-    else{
-        NSLog(@"Current Lobby has DATA!");
-        tempLobby.placesIdArray = _restaurantIdArray;
-        tempLobby.placesNamesArray = _restaurantNameArray;
-        tempLobby.placesPicsArray = _restaurantPicArray;
-        tempLobby.placesXArray = _restaurantXArray;
-        tempLobby.placesYArray = _restaurantYArray;
-        [self saveCustomObject:tempLobby];
-    }
+    tempLobby.placesIdArray = _restaurantIdArray;
+    tempLobby.placesNamesArray = _restaurantNameArray;
+    tempLobby.placesPicsArray = _restaurantPicArray;
+    tempLobby.placesXArray = _restaurantXArray;
+    tempLobby.placesYArray = _restaurantYArray;
+    [self saveCustomObject:tempLobby];
 }
 
 -(void)saveCustomObject:(HootLobby *)object
