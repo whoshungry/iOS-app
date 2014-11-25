@@ -61,7 +61,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSDictionary *data = responseData;
         if (data != nil) {
             NSArray *groups = data[@"lobbies"];
-            NSLog(@"found sooooo many groups: %li", groups.count);
+            NSLog(@"found sooooo many groups: %li", (unsigned long)groups.count);
             for (int i = 0; i < groups.count; i++) {
                 HootLobby *lobby = [[HootLobby alloc] init];
                 NSLog(@"gorups object ids: %@", [groups objectAtIndex:i]);
@@ -74,9 +74,14 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                 NSString *voteid = [groups objectAtIndex:i][@"vote_id"];
                 NSString *winnerRestID = [groups objectAtIndex:i][@"winner_restaurant_id"];
                 
-                NSURL *url = [NSURL URLWithString:facebookPicture];
-                NSData *data = [NSData dataWithContentsOfURL:url];
-                UIImage *image = [UIImage imageWithData:data];
+                UIImage *image;
+                if (facebookPicture != nil) {
+                    NSURL *url = [NSURL URLWithString:facebookPicture];
+                    NSData *data = [NSData dataWithContentsOfURL:url];
+                    image = [UIImage imageWithData:data];
+                }
+                else
+                    image = [UIImage imageNamed:@"bae2.jpg"];
                 [hostImages addObject:image];
                 
                 lobby.facebookPic = facebookPicture;
