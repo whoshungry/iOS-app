@@ -64,6 +64,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             NSLog(@"found sooooo many groups: %li", groups.count);
             for (int i = 0; i < groups.count; i++) {
                 HootLobby *lobby = [[HootLobby alloc] init];
+                NSLog(@"gorups object ids: %@", [groups objectAtIndex:i]);
                 NSString *facebookId = [groups objectAtIndex:i][@"admin_user"];
                 NSString *facebookName = [groups objectAtIndex:i][@"admin_name"];
                 NSString *facebookPicture = [groups objectAtIndex:i][@"admin_picture"];
@@ -72,7 +73,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                 NSString *voteType = [groups objectAtIndex:i][@"vote_type"];
                 NSString *voteid = [groups objectAtIndex:i][@"vote_id"];
                 NSString *winnerRestID = [groups objectAtIndex:i][@"winner_restaurant_id"];
-                
                 
                 NSURL *url = [NSURL URLWithString:facebookPicture];
                 NSData *data = [NSData dataWithContentsOfURL:url];
