@@ -55,9 +55,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
     NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"response objectcttctctct: %@", responseObject);
         NSDictionary *results = (NSDictionary *)responseObject;
         NSArray *choices = results[@"choices"];
+        NSLog(@"response count: %lu", (unsigned long)choices.count);
+        NSLog(@"response objectcttctctct: %@", choices);
         for (int i = 0; i < choices.count; i++) {
             NSDictionary *currentRest = choices[i];
             [placesIdArray addObject:currentRest[@"restaurant_id"]];
@@ -78,7 +79,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"current lobby names rrrr: %@", _currentLobby.placesNamesArray);
         NSLog(@"current lobby pics rrrr: %@", _currentLobby.placesPicsArray);
         
-        //[_restaurantTable reloadData];
+        [_restaurantTable reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
