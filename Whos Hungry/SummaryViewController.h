@@ -30,6 +30,8 @@
 @property (assign, nonatomic) BOOL active;
 @property (assign, nonatomic) BOOL loaded;
 
+@property (weak, nonatomic) IBOutlet UILabel *timeleftLbl;
+@property (weak, nonatomic) IBOutlet UILabel *summaryTitleLbl;
 @property (strong, nonatomic) HootLobby* currentLobby;
 @property (strong, nonatomic) NSMutableArray* allPlaces;
 @property (strong, nonatomic) NSMutableArray* indexPathArray;

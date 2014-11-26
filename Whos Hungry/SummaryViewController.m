@@ -79,29 +79,12 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"current lobby names rrrr: %@", _currentLobby.placesNamesArray);
         NSLog(@"current lobby pics rrrr: %@", _currentLobby.placesPicsArray);
         
+        [self setSummaryTitle];
+        
         [_restaurantTable reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
-}
-
--(void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    if (!_loaded) {
-        _currentLobby = [HootLobby new];
-        _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
-        //HootLobby doesn't exist
-        if (!_currentLobby) {
-            NSLog(@"Current Lobby is empty");
-            _currentLobby = [HootLobby new];
-        }
-        //HootLobby exists
-        else{
-            NSLog(@"Current Lobby has DATA!");
-            NSLog(@"currnet lobby is %@", _currentLobby);
-            [self createAPIGroup];
-        }
-    }
 }
 
 - (void)viewDidLoad {
@@ -150,6 +133,21 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                 [self viewDidLoad];
             }
         }
+        
+        _currentLobby = [HootLobby new];
+        _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+        //HootLobby doesn't exist
+        if (!_currentLobby) {
+            NSLog(@"Current Lobby is empty");
+            _currentLobby = [HootLobby new];
+        }
+        //HootLobby exists
+        else{
+            NSLog(@"Current Lobby has DATA!");
+            NSLog(@"currnet lobby is %@", _currentLobby);
+            [self createAPIGroup];
+        }
+
     }
 }
 
@@ -337,11 +335,29 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSLog(@"params for create vote :%@", params);
     [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"create vote is :%@", responseObject);
+        [self setSummaryTitle];
         [self.restaurantTable reloadData];
         //[self loadSummary];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
+}
+
+-(void)setSummaryTitle {
+    NSString *englishVoteType;
+    if ([_currentLobby.voteType isEqualToString:@"cafe"]) {
+        englishVoteType = @"grab coffee";
+    } else if ([_currentLobby.voteType isEqualToString:@"drinks"]){
+        englishVoteType = @"get some drinks";
+    } else {
+        englishVoteType = [NSString stringWithFormat:@"eat %@", _currentLobby.voteType];
+    }
+    
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSString *normalAtTime = [dateFormatter stringFromDate:_currentLobby.expirationTime];
+    
+    self.summaryTitleLbl.text = [NSString stringWithFormat:@"%@ wants to %@ today at %@", _currentLobby.facebookName, englishVoteType, normalAtTime];
 }
 
 /*- (void)loadSummary{

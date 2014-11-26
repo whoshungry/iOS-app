@@ -52,6 +52,7 @@
     //Transfer WhenTime to HootLobby
     //Transfer voteType to HootLobby
     HootLobby* tempLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+    
     if (!tempLobby) {
         tempLobby = [HootLobby new];
         NSLog(@"Current Lobby is empty");
