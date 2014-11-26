@@ -10,7 +10,7 @@
 
 @interface HootLobby : NSObject
 
-@property (strong, nonatomic) NSString* groupid;
+@property (strong, nonatomic) NSNumber* groupid;
 
 @property (strong, nonatomic) NSString* facebookId;
 @property (strong, nonatomic) NSString* facebookPic;

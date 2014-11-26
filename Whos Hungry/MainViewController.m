@@ -72,10 +72,11 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                 NSDate *expectedDate = [groups objectAtIndex:i][@"expected_time"];
                 NSString *voteType = [groups objectAtIndex:i][@"vote_type"];
                 NSString *voteid = [groups objectAtIndex:i][@"vote_id"];
+                NSString *groupid = [groups objectAtIndex:i][@"group_id"];
                 NSString *winnerRestID = [groups objectAtIndex:i][@"winner_restaurant_id"];
                 
                 UIImage *image;
-                if (facebookPicture != nil) {
+                if (![facebookPicture isEqual:[NSNull null]]) {
                     NSURL *url = [NSURL URLWithString:facebookPicture];
                     NSData *data = [NSData dataWithContentsOfURL:url];
                     image = [UIImage imageWithData:data];
@@ -91,6 +92,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                 lobby.expirationTime = expectedDate;
                 lobby.voteType = voteType;
                 lobby.voteid = voteid;
+                lobby.groupid = groupid;
                 [lobbies addObject:lobby];
                 
                 [self.tableView reloadData];
@@ -137,6 +139,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     cell.whenLabel.text = [NSString stringWithFormat:@"7:3%li", (long)indexPath.row];
     cell.titleLabel.text = chosenLobby.voteType;
+    cell.titleLabel.text = [NSString stringWithFormat:@"%@", chosenLobby.groupid];
     cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you ;)", chosenLobby.facebookName];
     cell.backgroundImage.image = [UIImage imageNamed:@"chipotle.JPG"];
     cell.friendsImage.image = hostImages[indexPath.row];
@@ -153,16 +156,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [self performSegueWithIdentifier:@"maintosummary" sender:self];
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
-}
-
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([[segue identifier] isEqualToString:@"maintosummary"])
     {
         SummaryViewController *vc = [segue destinationViewController];
         vc.loaded = YES;
+        NSLog(@"the chosen group id is :%@", chosenHoot.groupid);
         [vc initWithHootLobby:chosenHoot];
     }
 }

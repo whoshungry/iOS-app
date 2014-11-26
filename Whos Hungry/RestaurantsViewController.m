@@ -56,7 +56,7 @@
     CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
     if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
         authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        
+        NSLog(@"getting loc");
         [self.locationManager startUpdatingLocation];
     }
 

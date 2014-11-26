@@ -45,14 +45,17 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSMutableArray *placesIdArray = [NSMutableArray new];
     NSMutableArray *placesNamesArray = [NSMutableArray new];
     NSMutableArray *placesPicsArray = [NSMutableArray new];
+    NSMutableArray *placesXArray = [NSMutableArray new];
+    NSMutableArray *placesYArray = [NSMutableArray new];
     
     placesCountArray = [NSMutableArray new];
     _loaded = YES;
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
     NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
+        NSLog(@"response objectcttctctct: %@", responseObject);
         NSDictionary *results = (NSDictionary *)responseObject;
         NSArray *choices = results[@"choices"];
         for (int i = 0; i < choices.count; i++) {
@@ -60,12 +63,16 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             [placesIdArray addObject:currentRest[@"restaurant_id"]];
             [placesNamesArray addObject:currentRest[@"restaurant_name"]];
             [placesPicsArray addObject:currentRest[@"restaurant_picture"]];
+            [placesXArray addObject:currentRest[@"restaurant_location_x"]];
+            [placesYArray addObject:currentRest[@"restaurant_location_y"]];
             [placesCountArray addObject:currentRest[@"count"]];
         }
         
         _currentLobby.placesIdArray = placesIdArray;
         _currentLobby.placesNamesArray = placesNamesArray;
         _currentLobby.placesPicsArray = placesPicsArray;
+        _currentLobby.placesXArray = placesXArray;
+        _currentLobby.placesYArray = placesYArray;
         
         NSLog(@"current lobby ids rrrr: %@", _currentLobby.placesIdArray);
         NSLog(@"current lobby names rrrr: %@", _currentLobby.placesNamesArray);
@@ -246,13 +253,14 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSDictionary *results = (NSDictionary *)responseObject;
         _currentLobby.groupid = results[@"group_id"];
         NSLog(@"group id is :%@", _currentLobby.groupid);
+        NSLog(@"create group is :%@", responseObject);
         [self createAPIVoteWithGroupId:_currentLobby.groupid];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
 }
 
-- (void) createAPIVoteWithGroupId:(NSString*)groupId{
+- (void) createAPIVoteWithGroupId:(NSNumber*)groupId{
     NSString* restaurantIds = @"";
     NSString* restaurantNames = @"";
     NSString* restaurantPics = @"";
@@ -300,18 +308,34 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSInteger minsLeft = [components minute];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    /*user_id : <facebook_id>
+    group_id : <group_id>
+    vote_type : <lunch, dinner ..> # lunch, dinner, coffee, beer
+    expiration_time : <absolute expiration time>
+    expiration_time_number : <relative expiration time : minute>
+    ex. 15, 30, 45, 60, 120 ...
+    restaurant_ids : <string of ids of restaurants>
+    ex. “12341234,12312341234”
+    restaurant_names : <stringof names>
+    restaurant_pics : <string of pic_urls>
+    restaurant_locations_x : strings of x
+    restaurant_locations_y : strings of y*/
+    
     NSDictionary *params = @{@"user_id": _currentLobby.facebookId,
-                             @"group_id": _currentLobby.groupid,
+                             @"group_id": groupId,
                              @"vote_type": _currentLobby.voteType,
                              @"expiration_time_number": @(minsLeft),
                              @"expiration_time": _currentLobby.expirationTime,
                              @"restaurant_ids": restaurantIds,
                              @"restaurant_names": restaurantNames,
-                             @"restaurant_pics":restaurantPics,
-                             @"restaurant_location_x":restaurantX,
-                             @"restaurant_location_y":restaurantY
+                             @"restaurant_pictures":restaurantPics,
+                             @"restaurant_locations_x":restaurantX,
+                             @"restaurant_locations_y":restaurantY
                              };
+    NSLog(@"params for create vote :%@", params);
     [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"create vote is :%@", responseObject);
         [self.restaurantTable reloadData];
         //[self loadSummary];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
