@@ -80,11 +80,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"current lobby names rrrr: %@", _currentLobby.placesNamesArray);
         NSLog(@"current lobby pics rrrr: %@", _currentLobby.placesPicsArray);
         
-<<<<<<< HEAD
-=======
         [self setSummaryTitle];
-        
->>>>>>> 946c3583a90d2eaee61399cd719b94c98a7cd222
         [_restaurantTable reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

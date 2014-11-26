@@ -134,15 +134,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSLog(@"chosen lobby is :::::: %@", chosenLobby);
     cell.whereLabel.text = @"Chipotle"; //winner restaurant
     cell.backgroundImage.image = [UIImage imageNamed:@"chipotle.jpg"]; //winner restaurant pic
-<<<<<<< HEAD
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //NSDate *atTime = [NSDate*]chosenLobby.expirationTime;
-    [dateFormatter setDateFormat:@"HH:mm a"];
-    NSString *formattedWhenTime = [dateFormatter stringFromDate:chosenLobby.expirationTime];
-    NSLog(@"at time :%@", chosenLobby.expirationTime);
-    cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
-=======
 
     //when isn't working :(
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -151,7 +142,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
     
 
->>>>>>> 946c3583a90d2eaee61399cd719b94c98a7cd222
     cell.titleLabel.text = chosenLobby.voteType;
     cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you", chosenLobby.facebookName];
     cell.friendsImage.image = hostImages[indexPath.row];
