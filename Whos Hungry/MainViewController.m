@@ -72,7 +72,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                 NSDate *expectedDate = [groups objectAtIndex:i][@"expected_time"];
                 NSString *voteType = [groups objectAtIndex:i][@"vote_type"];
                 NSString *voteid = [groups objectAtIndex:i][@"vote_id"];
-                NSString *groupid = [groups objectAtIndex:i][@"group_id"];
+                NSNumber *groupid = [groups objectAtIndex:i][@"group_id"];
                 NSString *winnerRestID = [groups objectAtIndex:i][@"winner_restaurant_id"];
                 
                 UIImage *image;
@@ -132,20 +132,21 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     HootLobby *chosenLobby = (HootLobby *)lobbies[indexPath.row];
     NSLog(@"chosen lobby is :::::: %@", chosenLobby);
-    cell.whereLabel.text = @"Chipotle";
+    cell.whereLabel.text = @"Chipotle"; //winner restaurant
+    cell.backgroundImage.image = [UIImage imageNamed:@"chipotle.jpg"]; //winner restaurant pic
+
+    //when isn't working :(
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSString *formattedWhenTime = [dateFormatter stringFromDate:chosenLobby.expirationTime];
+    cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
     
-    
-    //cell.whenLabel.text = ;
-    
-    cell.whenLabel.text = [NSString stringWithFormat:@"7:3%li", (long)indexPath.row];
+
     cell.titleLabel.text = chosenLobby.voteType;
-    cell.titleLabel.text = [NSString stringWithFormat:@"%@", chosenLobby.groupid];
-    cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you ;)", chosenLobby.facebookName];
-    cell.backgroundImage.image = [UIImage imageNamed:@"chipotle.JPG"];
+    cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you", chosenLobby.facebookName];
     cell.friendsImage.image = hostImages[indexPath.row];
     //cell.hostImage.image = hostImages[indexPath.row];
-    //NSLog(@"cell isi :%@ ", cell);
-    
+
     return cell;
 }
 
@@ -163,6 +164,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         SummaryViewController *vc = [segue destinationViewController];
         vc.loaded = YES;
         NSLog(@"the chosen group id is :%@", chosenHoot.groupid);
+        NSLog(@"the chosen vote id is :%@", chosenHoot.voteid);
         [vc initWithHootLobby:chosenHoot];
     }
 }
