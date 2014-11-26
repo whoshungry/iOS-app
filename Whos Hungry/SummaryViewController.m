@@ -26,6 +26,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     //NSString *groupid;
     NSString *voteid;
     NSMutableArray *placesCountArray;
+    NSTimer *theTimer;
 }
 
 @end
@@ -357,7 +358,25 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [dateFormatter setDateFormat:@"HH:mm"];
     NSString *normalAtTime = [dateFormatter stringFromDate:_currentLobby.expirationTime];
     
+    theTimer = [NSTimer timerWithTimeInterval:60 target:self selector:@selector(updateTime) userInfo:nil repeats:YES];
+    
     self.summaryTitleLbl.text = [NSString stringWithFormat:@"%@ wants to %@ today at %@", _currentLobby.facebookName, englishVoteType, normalAtTime];
+}
+
+-(void)updateTime {
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit;
+    NSDateComponents *components = [gregorianCalendar components:unitFlags
+                                                        fromDate:[NSDate new]
+                                                          toDate:_currentLobby.expirationTime
+                                                         options:0];
+    NSInteger hoursLeft = components.hour;
+    NSInteger minutesLeft = components.minute;
+    
+    //check if over...
+    
+
+    self.timeleftLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, minutesLeft];
 }
 
 /*- (void)loadSummary{
