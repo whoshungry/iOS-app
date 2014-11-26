@@ -43,5 +43,6 @@
 @property NSMutableArray* restaurantXArray;
 @property NSMutableArray* restaurantYArray;
 @property NSString* facebookId;
+@property NSString* facebookName;
 
 @end

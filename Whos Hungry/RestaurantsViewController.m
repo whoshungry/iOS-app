@@ -334,6 +334,7 @@
     {
         [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             _facebookId = result[@"id"];
+            _facebookName = result[@"name"];
             
             NSLog(@"FB ID is: %@", _facebookId);
             
@@ -341,14 +342,13 @@
             if (!tempLobby) {
                 NSLog(@"Current Lobby is empty");
                 tempLobby = [HootLobby new];
-                tempLobby.facebookId = _facebookId;
-                [self saveCustomObject:tempLobby];
             }
             else{
                 NSLog(@"Current Lobby has DATA!");
-                tempLobby.facebookId = _facebookId;
-                [self saveCustomObject:tempLobby];
             }
+            tempLobby.facebookId = _facebookId;
+            tempLobby.facebookName = _facebookName;
+            [self saveCustomObject:tempLobby];
         }];
         
     }

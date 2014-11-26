@@ -72,7 +72,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                 NSDate *expectedDate = [groups objectAtIndex:i][@"expected_time"];
                 NSString *voteType = [groups objectAtIndex:i][@"vote_type"];
                 NSString *voteid = [groups objectAtIndex:i][@"vote_id"];
-                NSString *groupid = [groups objectAtIndex:i][@"group_id"];
+                NSNumber *groupid = [groups objectAtIndex:i][@"group_id"];
                 NSString *winnerRestID = [groups objectAtIndex:i][@"winner_restaurant_id"];
                 
                 UIImage *image;
@@ -134,6 +134,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSLog(@"chosen lobby is :::::: %@", chosenLobby);
     cell.whereLabel.text = @"Chipotle"; //winner restaurant
     cell.backgroundImage.image = [UIImage imageNamed:@"chipotle.jpg"]; //winner restaurant pic
+<<<<<<< HEAD
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     //NSDate *atTime = [NSDate*]chosenLobby.expirationTime;
@@ -141,12 +142,21 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSString *formattedWhenTime = [dateFormatter stringFromDate:chosenLobby.expirationTime];
     NSLog(@"at time :%@", chosenLobby.expirationTime);
     cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
+=======
+
+    //when isn't working :(
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSString *formattedWhenTime = [dateFormatter stringFromDate:chosenLobby.expirationTime];
+    cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
+    
+
+>>>>>>> 946c3583a90d2eaee61399cd719b94c98a7cd222
     cell.titleLabel.text = chosenLobby.voteType;
     cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you", chosenLobby.facebookName];
     cell.friendsImage.image = hostImages[indexPath.row];
     //cell.hostImage.image = hostImages[indexPath.row];
-    //NSLog(@"cell isi :%@ ", cell);
-    
+
     return cell;
 }
 

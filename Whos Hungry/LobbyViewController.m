@@ -52,6 +52,7 @@
     //Transfer WhenTime to HootLobby
     //Transfer voteType to HootLobby
     HootLobby* tempLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+    
     if (!tempLobby) {
         tempLobby = [HootLobby new];
         NSLog(@"Current Lobby is empty");
@@ -149,15 +150,33 @@
 }
 
 - (IBAction)chooseWhenDate:(id)sender {
-    [ActionSheetDatePicker showPickerWithTitle:@"" datePickerMode:UIDatePickerModeTime selectedDate:_whenDate doneBlock:^(ActionSheetDatePicker *picker, id selectionDate, id origin) {
-        NSLog(@"when date is %@", selectionDate);
-        _whenDate = (NSDate *)selectionDate;
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"HH:mm"];
-        NSString *formattedDateString = [dateFormatter stringFromDate:_whenDate];
-        NSLog(@"formattedDateString: %@", formattedDateString);
-        [_whenButton setTitle:[NSString stringWithFormat:@"When: %@", formattedDateString] forState:UIControlStateNormal];
-    } cancelBlock:nil origin:sender];
+    NSInteger minuteInterval = 5;
+    //clamp date
+    NSInteger referenceTimeInterval = (NSInteger)[self.whenDate timeIntervalSinceReferenceDate];
+    NSInteger remainingSeconds = referenceTimeInterval % (minuteInterval *60);
+    NSInteger timeRoundedTo5Minutes = referenceTimeInterval - remainingSeconds;
+    if(remainingSeconds>((minuteInterval*60)/2)) {/// round up
+        timeRoundedTo5Minutes = referenceTimeInterval +((minuteInterval*60)-remainingSeconds);
+    }
+    
+    self.whenDate = [NSDate dateWithTimeIntervalSinceReferenceDate:(NSTimeInterval)timeRoundedTo5Minutes];
+    
+    ActionSheetDatePicker *datePicker = [[ActionSheetDatePicker alloc] initWithTitle:@"Select a time" datePickerMode:UIDatePickerModeTime selectedDate:self.whenDate target:self action:@selector(timeWasSelected:element:) origin:sender];
+    datePicker.minuteInterval = minuteInterval;
+    /*[datePicker addCustomButtonWithTitle:@"value" value:[NSDate date]];
+      [datePicker addCustomButtonWithTitle:@"sel" target:self selector:@selector(dateSelector:)];
+      [datePicker addCustomButtonWithTitle:@"Block" actionBlock:^{
+          NSLog(@"Block invoked");
+      }];*/
+    [datePicker showActionSheetPicker];
+}
+
+-(void)timeWasSelected:(NSDate *)selectedTime element:(id)element {
+    _whenDate = selectedTime;
+    
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    [self.whenButton setTitle:[dateFormatter stringFromDate:selectedTime] forState:UIControlStateNormal];
 }
 
 - (IBAction)lunchBtnPressed:(id)sender {

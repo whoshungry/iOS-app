@@ -14,7 +14,8 @@
 {
     //Encode properties, other class variables, etc
     [encoder encodeObject:_facebookId forKey:@"facebookId"];
-    [encoder encodeObject:_facebookId forKey:@"facebookPic"];
+    [encoder encodeObject:_facebookPic forKey:@"facebookPic"];
+    [encoder encodeObject:_facebookName forKey:@"facebookName"];
     [encoder encodeObject:_groupid forKey:@"groupid"];
     [encoder encodeObject:_facebookbInvitatitions forKey:@"facebookInvitations"];
     [encoder encodeObject:_expirationTime forKey:@"expirationTime"];
@@ -36,6 +37,7 @@
     {
         _facebookId = [decoder decodeObjectForKey:@"facebookId"];
         _facebookPic = [decoder decodeObjectForKey:@"facebookPic"];
+        _facebookName = [decoder decodeObjectForKey:@"facebookName"];
         _groupid = [decoder decodeObjectForKey:@"groupid"];
         _facebookbInvitatitions = [decoder decodeObjectForKey:@"facebookInvitations"];
         _expirationTime = [decoder decodeObjectForKey:@"expirationTime"];
