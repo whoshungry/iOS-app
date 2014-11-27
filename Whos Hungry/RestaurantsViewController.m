@@ -58,6 +58,8 @@
         authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
         NSLog(@"getting loc");
         [self.locationManager startUpdatingLocation];
+        [self.locationManager stopUpdatingLocation];
+        [self.locationManager startUpdatingLocation];
     }
 
     // Do any additional setup after loading the view.
