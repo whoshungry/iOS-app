@@ -52,6 +52,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     placesCountArray = [NSMutableArray new];
     _loaded = YES;
     
+    self.whenTimeLbl.text = @"okay man";
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
     NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
@@ -102,37 +104,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                                                  selector:@selector(makeVote:)
                                                      name:@"MakeVote"
                                                    object:nil];
-        
-        self.mapView.hidden = YES;
-        
-        if (self.mapView.hidden == NO) {
-            locationManager = [[CLLocationManager alloc] init];
-            locationManager.delegate = self;
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-            
-            [locationManager requestWhenInUseAuthorization];
-            
-            self.mapView.delegate = self;
-            
-            CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
-            if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
-                authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
-                authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
-                
-                self.mapView.showsUserLocation = YES;
-                [locationManager startUpdatingLocation];
-                
-                restaurantCoor = CLLocationCoordinate2DMake(30.285647, -97.742081);
-                MKPointAnnotation *restaurantPin = [[MKPointAnnotation alloc] init];
-                restaurantPin.coordinate = restaurantCoor;
-                NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
-                restaurantPin.title = @"Chipotle!";
-                [self.mapView addAnnotation:restaurantPin];
-            } else {
-                NSLog(@"or nah");
-                [self viewDidLoad];
-            }
-        }
         
         _currentLobby = [HootLobby new];
         _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
@@ -357,25 +328,61 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [dateFormatter setDateFormat:@"HH:mm"];
     NSString *normalAtTime = [dateFormatter stringFromDate:_currentLobby.expirationTime];
     
-    theTimer = [NSTimer timerWithTimeInterval:60 target:self selector:@selector(updateTime) userInfo:nil repeats:YES];
+    theTimer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(updateTime) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:theTimer forMode:NSRunLoopCommonModes];
     
     self.summaryTitleLbl.text = [NSString stringWithFormat:@"%@ wants to %@ today at %@", _currentLobby.facebookName, englishVoteType, normalAtTime];
 }
 
 -(void)updateTime {
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit;
+    NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
     NSDateComponents *components = [gregorianCalendar components:unitFlags
                                                         fromDate:[NSDate new]
                                                           toDate:_currentLobby.expirationTime
                                                          options:0];
     NSInteger hoursLeft = components.hour;
-    NSInteger minutesLeft = components.minute;
+    NSInteger minutesLeft = components.minute + 1; //a bug, i'm not sure why...
+
+    NSLog(@"time left is :%ld hrs and %ld mins", hoursLeft, minutesLeft);
+
+    self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, minutesLeft];
     
     //check if over...
-    
-
-    self.timeleftLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, minutesLeft];
+    if (hoursLeft == 0 && minutesLeft == 0) {
+        NSLog(@"donnnneee!!");
+        [theTimer invalidate];
+        theTimer = nil;
+        
+        self.active = NO;
+        self.mapView.hidden = NO;
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.delegate = self;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        
+        [locationManager requestWhenInUseAuthorization];
+        
+        self.mapView.delegate = self;
+        
+        CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
+        if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
+            authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
+            authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+            
+            self.mapView.showsUserLocation = YES;
+            [locationManager startUpdatingLocation];
+            
+            restaurantCoor = CLLocationCoordinate2DMake(30.285647, -97.742081);
+            MKPointAnnotation *restaurantPin = [[MKPointAnnotation alloc] init];
+            restaurantPin.coordinate = restaurantCoor;
+            NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
+            restaurantPin.title = @"Chipotle!";
+            [self.mapView addAnnotation:restaurantPin];
+        } else {
+            NSLog(@"or nah");
+            [self viewDidLoad];
+        }
+    }
 }
 
 /*- (void)loadSummary{
