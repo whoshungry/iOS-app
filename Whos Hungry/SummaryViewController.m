@@ -54,7 +54,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     placesCountArray = [NSMutableArray new];
     _loaded = YES;
     
-    self.whenTimeLbl.text = @"okay man";
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    [locationManager requestWhenInUseAuthorization];
+    
+    self.mapView.delegate = self;
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
@@ -345,6 +351,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSLog(@"params for create vote :%@", params);
     [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"create vote is :%@", responseObject);
+        NSDictionary *results = (NSDictionary *) responseObject;
+        _currentLobby.voteid = results[@"vote_id"];
         [self setSummaryTitle];
         [self.restaurantTable reloadData];
         //[self loadSummary];
@@ -355,9 +363,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 -(void)setSummaryTitle {
     NSString *englishVoteType;
-    if ([_currentLobby.voteType isEqualToString:@"cafe"]) {
+    if ([@"cafe" isEqualToString:_currentLobby.voteType]) {
         englishVoteType = @"grab coffee";
-    } else if ([_currentLobby.voteType isEqualToString:@"drinks"]){
+    } else if ([@"drinks" isEqualToString:_currentLobby.voteType]) {
         englishVoteType = @"get some drinks";
     } else {
         englishVoteType = [NSString stringWithFormat:@"eat %@", _currentLobby.voteType];
@@ -388,39 +396,61 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, minutesLeft];
     
     //check if over...
-    if (hoursLeft == 0 && minutesLeft < 5) {
+    if (hoursLeft == 0 && minutesLeft <= 0) {
         NSLog(@"donnnneee!!");
-        [theTimer invalidate];
-        theTimer = nil;
+        [self lobbyFinished];
+    }
+}
+
+-(void) lobbyFinished {
+    [theTimer invalidate];
+    theTimer = nil;
+    
+    self.active = NO;
+    self.mapView.hidden = NO;
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
+    NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
+    [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *results = (NSDictionary *)responseObject;
+        NSLog(@"results from FINISHED THING: %@", results);
         
-        self.active = NO;
-        self.mapView.hidden = NO;
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.delegate = self;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        NSNumberFormatter * f = [NSNumberFormatter new];
+        [f setNumberStyle:NSNumberFormatterDecimalStyle];
         
-        [locationManager requestWhenInUseAuthorization];
+        _currentLobby.winnerRestID = results[@"winner_restaurant_id"];
+        _currentLobby.winnerRestName = results[@"winner_restaurant_name"];
+        _currentLobby.winnerRestPic = results[@"winner_restaurant_picture"];
+        _currentLobby.winnerRestX = [f numberFromString:(NSString *)results[@"winner_restaurant_location_x"]];
+        _currentLobby.winnerRestY = [f numberFromString:(NSString *)results[@"winner_restaurant_location_y"]];
+
+        NSLog(@"current lobby ids rrrr: %@", _currentLobby.winnerRestID);
+        NSLog(@"current lobby names rrrr: %@", _currentLobby.winnerRestName);
+        NSLog(@"current lobby pics rrrr: %@", _currentLobby.winnerRestPic);
+        NSLog(@"current lobby x rrrr: %@", _currentLobby.winnerRestX);
+        NSLog(@"current lobby y rrrr: %@", _currentLobby.winnerRestY);
         
-        self.mapView.delegate = self;
+        [_restaurantTable reloadData];
+    } failure:nil];
+    
+    CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
+    if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
+        authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
+        authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
         
-        CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
-        if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
-            authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
-            authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
-            
-            self.mapView.showsUserLocation = YES;
-            [locationManager startUpdatingLocation];
-            
-            restaurantCoor = CLLocationCoordinate2DMake(30.285647, -97.742081);
-            restaurantPin = [[MKPointAnnotation alloc] init];
-            restaurantPin.coordinate = restaurantCoor;
-            NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
-            restaurantPin.title = @"Chipotle!"; //winner restaurant
-            [self.mapView addAnnotation:restaurantPin];
-        } else {
-            NSLog(@"or nah");
-            [self viewDidLoad];
-        }
+        self.mapView.showsUserLocation = YES;
+        [locationManager startUpdatingLocation];
+        
+        restaurantCoor = CLLocationCoordinate2DMake([_currentLobby.winnerRestX floatValue], [_currentLobby.winnerRestY floatValue]);
+        restaurantPin = [[MKPointAnnotation alloc] init];
+        restaurantPin.coordinate = restaurantCoor;
+        NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
+        restaurantPin.title = _currentLobby.winnerRestName;
+        [self.mapView addAnnotation:restaurantPin];
+    } else {
+        NSLog(@"or nah");
+        [self viewDidLoad];
     }
 }
 
@@ -633,16 +663,15 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         case 0:
             NSLog(@"RVSP YES was pressed");
             theCell.arrow.image = [UIImage imageNamed:@"greenarrow.png"];
-            theCell.backgroundColor = [UIColor greenColor];
             break;
         case 1:
             NSLog(@"RSVP NO was pressed");
             theCell.arrow.image = [UIImage imageNamed:@"redarrow.png"];
-            theCell.backgroundColor = [UIColor redColor];
             break;
         default:
             break;
     }
+    [theCell setNeedsDisplay];
 }
 
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index

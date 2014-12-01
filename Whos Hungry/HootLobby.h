@@ -30,5 +30,8 @@
 
 @property (strong, nonatomic) NSString* winnerRestID;
 @property (strong, nonatomic) NSString* winnerRestName;
+@property (strong, nonatomic) NSString* winnerRestPic;
+@property (strong, nonatomic) NSNumber* winnerRestX;
+@property (strong, nonatomic) NSNumber* winnerRestY;
 
 @end

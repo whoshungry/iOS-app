@@ -11,6 +11,7 @@
 		1B0ED51C1A15459A00639614 /* downvote.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B0ED51A1A15459A00639614 /* downvote.png */; };
 		1B0ED51D1A15459A00639614 /* upvote.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B0ED51B1A15459A00639614 /* upvote.png */; };
 		1B0ED5201A15485100639614 /* UpDownVoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0ED51F1A15485100639614 /* UpDownVoteView.m */; };
+		1B84AE351A2C3B8E00509322 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B84AE341A2C3B8E00509322 /* Main.storyboard */; };
 		1B9713B41A0B32F700A2F46E /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9713B21A0B32F700A2F46E /* Parse.framework */; };
 		1B9713B51A0B32F700A2F46E /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9713B31A0B32F700A2F46E /* ParseFacebookUtils.framework */; };
 		1B9713B71A0B330C00A2F46E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9713B61A0B330C00A2F46E /* AudioToolbox.framework */; };
@@ -110,7 +111,6 @@
 		C36C416C1A0B2B7000F37668 /* HootGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C416A1A0B2B7000F37668 /* HootGroupCell.m */; };
 		C36C416D1A0B2B7000F37668 /* HootGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */; };
 		C36C416F1A0B3B3100F37668 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C36C416E1A0B3B3100F37668 /* FacebookSDK.framework */; };
-		C36C41711A0B3DD800F37668 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C36C41701A0B3DD800F37668 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +129,7 @@
 		1B0ED51B1A15459A00639614 /* upvote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upvote.png; sourceTree = "<group>"; };
 		1B0ED51E1A15485100639614 /* UpDownVoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpDownVoteView.h; sourceTree = "<group>"; };
 		1B0ED51F1A15485100639614 /* UpDownVoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpDownVoteView.m; sourceTree = "<group>"; };
+		1B84AE341A2C3B8E00509322 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		1B9713B21A0B32F700A2F46E /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		1B9713B31A0B32F700A2F46E /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
 		1B9713B61A0B330C00A2F46E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -279,7 +280,6 @@
 		C36C416A1A0B2B7000F37668 /* HootGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HootGroupCell.m; sourceTree = "<group>"; };
 		C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HootGroupCell.xib; sourceTree = "<group>"; };
 		C36C416E1A0B3B3100F37668 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
-		C36C41701A0B3DD800F37668 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -509,7 +509,7 @@
 		C36C41331A0B206600F37668 /* Whos Hungry */ = {
 			isa = PBXGroup;
 			children = (
-				C36C41701A0B3DD800F37668 /* Main.storyboard */,
+				1B84AE341A2C3B8E00509322 /* Main.storyboard */,
 				C36C41381A0B206600F37668 /* AppDelegate.h */,
 				C36C41391A0B206600F37668 /* AppDelegate.m */,
 				C36C413B1A0B206600F37668 /* LoginViewController.h */,
@@ -672,6 +672,7 @@
 				1BF5C6281A0EDD42006D4D00 /* drinks.png in Resources */,
 				1B9713D31A0B362700A2F46E /* login-button-small-pressed@2x.png in Resources */,
 				1BF5C6291A0EDD42006D4D00 /* lunch.gif in Resources */,
+				1B84AE351A2C3B8E00509322 /* Main.storyboard in Resources */,
 				C36C416D1A0B2B7000F37668 /* HootGroupCell.xib in Resources */,
 				1BF5C4EF1A0EAD17006D4D00 /* nickcage.jpg in Resources */,
 				1BED85A51A22657D0092C69E /* greenarrow.png in Resources */,
@@ -680,7 +681,6 @@
 				1BF5C6391A0EF10B006D4D00 /* jennifer.jpg in Resources */,
 				1BD700801A2115F000D32F95 /* bae3.jpeg in Resources */,
 				1BF5C63B1A0EF2A1006D4D00 /* chipotle.JPG in Resources */,
-				C36C41711A0B3DD800F37668 /* Main.storyboard in Resources */,
 				1BD700811A2115F000D32F95 /* bae4.jpg in Resources */,
 				1BF5C4F11A0EAD8D006D4D00 /* friendsicon.png in Resources */,
 				1BD42CF31A212780008796F9 /* RSVPFriendsTableViewCell.xib in Resources */,

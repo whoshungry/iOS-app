@@ -28,6 +28,9 @@
     [encoder encodeObject:_voteid forKey:@"voteid"];
     [encoder encodeObject:_winnerRestID forKey:@"winnerRestID"];
     [encoder encodeObject:_winnerRestName forKey:@"winnerRestName"];
+    [encoder encodeObject:_winnerRestPic forKey:@"winnerRestPic"];
+    [encoder encodeObject:_winnerRestX forKey:@"winnerRestX"];
+    [encoder encodeObject:_winnerRestY forKey:@"winnerRestY"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -50,6 +53,9 @@
         _voteid = [decoder decodeObjectForKey:@"voteid"];
         _winnerRestID = [decoder decodeObjectForKey:@"winnerRestID"];
         _winnerRestName = [decoder decodeObjectForKey:@"winnerRestName"];
+        _winnerRestPic = [decoder decodeObjectForKey:@"winnerRestPic"];
+        _winnerRestX = [decoder decodeObjectForKey:@"winnerRestX"];
+        _winnerRestY = [decoder decodeObjectForKey:@"winnerRestY"];
     }
     return self;
 }
