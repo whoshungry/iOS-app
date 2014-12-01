@@ -25,8 +25,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     int votedIndex;
     //NSString *groupid;
     NSString *voteid;
+    UIImage *selfImage;
     NSMutableArray *placesCountArray;
     NSTimer *theTimer;
+    MKPointAnnotation *restaurantPin;
 }
 
 @end
@@ -91,6 +93,14 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (FBSession.activeSession.isOpen)
+    {
+        [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/me/picture?type=large&return_ssl_resources=1"]];
+            selfImage = [UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)];
+        }];
+    }
     
     if (!_loaded) {
         _indexPathArray = [NSMutableArray new];
@@ -158,6 +168,35 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 }
 
 #pragma mark - Location methods
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    
+    static NSString* AnnotationIdentifier = @"Annotation";
+    MKPinAnnotationView *pinView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationIdentifier];
+    
+    if (!pinView) {
+        MKPinAnnotationView *customPinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationIdentifier];
+        if (annotation == mapView.userLocation){
+            if (selfImage != nil) {
+                customPinView.image = [UIImage imageWithImage:selfImage scaledToSize:CGSizeMake(30.0, 30.0)];
+            } else {
+                customPinView.image = [UIImage imageWithImage:[UIImage imageNamed:@"jennifer.jpg"] scaledToSize:CGSizeMake(30.0, 30.0)];
+            }
+        }
+        else{
+            customPinView.image = [UIImage imageNamed:@"logosquare.png"];
+            //customPinView.image = [UIImage imageNamed:@"mySomeOtherImage.png"];
+        }
+        customPinView.animatesDrop = NO;
+        customPinView.canShowCallout = YES;
+        return customPinView;
+    } else {
+        pinView.annotation = annotation;
+    }
+    
+    return pinView;
+}
+
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
@@ -342,14 +381,14 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                                                           toDate:_currentLobby.expirationTime
                                                          options:0];
     NSInteger hoursLeft = components.hour;
-    NSInteger minutesLeft = components.minute + 1; //a bug, i'm not sure why...
+    NSInteger minutesLeft = components.minute + 0; //plus 1 to include the chosen time, plus 0 not t0
 
     NSLog(@"time left is :%ld hrs and %ld mins", hoursLeft, minutesLeft);
 
     self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, minutesLeft];
     
     //check if over...
-    if (hoursLeft == 0 && minutesLeft == 0) {
+    if (hoursLeft == 0 && minutesLeft < 5) {
         NSLog(@"donnnneee!!");
         [theTimer invalidate];
         theTimer = nil;
@@ -373,10 +412,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             [locationManager startUpdatingLocation];
             
             restaurantCoor = CLLocationCoordinate2DMake(30.285647, -97.742081);
-            MKPointAnnotation *restaurantPin = [[MKPointAnnotation alloc] init];
+            restaurantPin = [[MKPointAnnotation alloc] init];
             restaurantPin.coordinate = restaurantCoor;
             NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
-            restaurantPin.title = @"Chipotle!";
+            restaurantPin.title = @"Chipotle!"; //winner restaurant
             [self.mapView addAnnotation:restaurantPin];
         } else {
             NSLog(@"or nah");
