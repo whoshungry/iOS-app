@@ -101,6 +101,12 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                target:self
+                                              selector:@selector(updateTime:)
+                                              userInfo:nil
+                                               repeats:YES];
+    
     if (viewload == NO) {
     if (FBSession.activeSession.isOpen)
     {
@@ -268,6 +274,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         _currentLobby.groupid = results[@"group_id"];
         NSLog(@"group id is :%@", _currentLobby.groupid);
         NSLog(@"create group is :%@", responseObject);
+        if (_currentLobby.groupid != nil)
         [self createAPIVoteWithGroupId:_currentLobby.groupid];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -380,13 +387,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [dateFormatter setDateFormat:@"HH:mm"];
     NSString *normalAtTime = [dateFormatter stringFromDate:_currentLobby.expirationTime];
     
-    theTimer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(updateTime) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:theTimer forMode:NSRunLoopCommonModes];
-    
     self.summaryTitleLbl.text = [NSString stringWithFormat:@"%@ wants to %@ today at %@", _currentLobby.facebookName, englishVoteType, normalAtTime];
 }
 
--(void)updateTime {
+- (IBAction)updateTime:(id)sender {
     NSInteger hoursLeft = 0;
     NSInteger minutesLeft = 0;
     
