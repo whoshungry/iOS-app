@@ -100,12 +100,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                target:self
-                                              selector:@selector(updateTime:)
-                                              userInfo:nil
-                                               repeats:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                    target:self
+                                                  selector:@selector(updateTime:)
+                                                  userInfo:nil
+                                                   repeats:YES];
+    });
     
     if (viewload == NO) {
     if (FBSession.activeSession.isOpen)
