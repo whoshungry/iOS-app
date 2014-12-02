@@ -29,6 +29,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSMutableArray *placesCountArray;
     NSTimer *theTimer;
     MKPointAnnotation *restaurantPin;
+    BOOL viewload;
 }
 
 @end
@@ -100,6 +101,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if (viewload == NO) {
     if (FBSession.activeSession.isOpen)
     {
         [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -134,7 +136,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             NSLog(@"currnet lobby is %@", _currentLobby);
             [self createAPIGroup];
         }
-
+        _loaded = YES;
+    }
+        viewload = YES;
     }
 }
 
@@ -382,19 +386,26 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 }
 
 -(void)updateTime {
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-    NSDateComponents *components = [gregorianCalendar components:unitFlags
-                                                        fromDate:[NSDate new]
-                                                          toDate:_currentLobby.expirationTime
-                                                         options:0];
-    NSInteger hoursLeft = components.hour;
-    NSInteger minutesLeft = components.minute + 0; //plus 1 to include the chosen time, plus 0 not t0
-
-    NSLog(@"time left is :%ld hrs and %ld mins", hoursLeft, minutesLeft);
-
-    self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, minutesLeft];
+    NSInteger hoursLeft = 0;
+    NSInteger minutesLeft = 0;
     
+    if ([[NSDate new] compare:_currentLobby.expirationTime] == NSOrderedAscending) {
+        NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+        NSDateComponents *components = [gregorianCalendar components:unitFlags
+                                                            fromDate:[NSDate new]
+                                                              toDate:_currentLobby.expirationTime
+                                                             options:0];
+        hoursLeft = components.hour;
+        minutesLeft = components.minute + 0; //plus 1 to include the chosen time, plus 0 not t0
+        
+        NSLog(@"time left is :%ld hrs and %ld mins", (long)hoursLeft, (long)minutesLeft);
+        
+        self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, (long)minutesLeft];
+    } else {
+        self.whenTimeLbl.text = @"Lobby is closed!";
+    }
+
     //check if over...
     if (hoursLeft == 0 && minutesLeft <= 0) {
         NSLog(@"donnnneee!!");
@@ -450,7 +461,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         [self.mapView addAnnotation:restaurantPin];
     } else {
         NSLog(@"or nah");
-        [self viewDidLoad];
+        //[self viewDidLoad];
     }
 }
 
