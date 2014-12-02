@@ -150,7 +150,19 @@
 }
 
 - (IBAction)chooseWhenDate:(id)sender {
-    NSInteger minuteInterval = 5;
+    [ActionSheetDatePicker showPickerWithTitle:@"" datePickerMode:UIDatePickerModeTime selectedDate:_whenDate doneBlock:^(ActionSheetDatePicker *picker, id selectionDate, id origin) {
+        
+        NSLog(@"when date is %@", selectionDate);
+        _whenDate = (NSDate *)selectionDate;
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"HH:mm"];
+        NSString *formattedDateString = [dateFormatter stringFromDate:_whenDate];
+        NSLog(@"formattedDateString: %@", formattedDateString);
+        [_whenButton setTitle:[NSString stringWithFormat:@"When: %@", formattedDateString] forState:UIControlStateNormal];
+    } cancelBlock:nil origin:sender];
+    
+    
+    /*NSInteger minuteInterval = 5;
     //clamp date
     NSInteger referenceTimeInterval = (NSInteger)[self.whenDate timeIntervalSinceReferenceDate];
     NSInteger remainingSeconds = referenceTimeInterval % (minuteInterval *60);
@@ -163,12 +175,12 @@
     
     ActionSheetDatePicker *datePicker = [[ActionSheetDatePicker alloc] initWithTitle:@"Select a time" datePickerMode:UIDatePickerModeTime selectedDate:self.whenDate target:self action:@selector(timeWasSelected:element:) origin:sender];
     datePicker.minuteInterval = minuteInterval;
-    /*[datePicker addCustomButtonWithTitle:@"value" value:[NSDate date]];
-      [datePicker addCustomButtonWithTitle:@"sel" target:self selector:@selector(dateSelector:)];
-      [datePicker addCustomButtonWithTitle:@"Block" actionBlock:^{
-          NSLog(@"Block invoked");
-      }];*/
-    [datePicker showActionSheetPicker];
+    //[datePicker addCustomButtonWithTitle:@"value" value:[NSDate date]];
+    //  [datePicker addCustomButtonWithTitle:@"sel" target:self selector:@selector(dateSelector:)];
+    //  [datePicker addCustomButtonWithTitle:@"Block" actionBlock:^{
+    //      NSLog(@"Block invoked");
+    //  }];
+    [datePicker showActionSheetPicker];*/
 }
 
 -(void)timeWasSelected:(NSDate *)selectedTime element:(id)element {
