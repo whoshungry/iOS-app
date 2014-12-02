@@ -110,6 +110,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     }];
 }
 
+#pragma mark - Table View methods
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return lobbies.count;
 }
@@ -156,6 +158,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
     [self performSegueWithIdentifier:@"maintosummary" sender:self];
 }
+
+#pragma mark - Segue methods
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

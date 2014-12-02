@@ -172,7 +172,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     }];
 }
 
-
 - (IBAction)goHome:(id)sender {
     [locationManager stopUpdatingLocation];
 }
@@ -522,6 +521,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSLog(@"places is %@",_allPlaces);
 }*/
 
+#pragma mark - Table View methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([tableView isEqual:self.restaurantTable]) {
@@ -533,8 +533,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if ([tableView isEqual:self.restaurantTable]) {
         return 100;
     } else {
@@ -542,12 +541,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     }
 }
 
-
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"chosen: %li", indexPath.row);
 }
-
-
 
 #pragma mark - UIScrollViewDelegate
 
