@@ -29,6 +29,7 @@
 
 @property (assign, nonatomic) BOOL active;
 @property (assign, nonatomic) BOOL loaded;
+@property BOOL isSummary;
 
 @property (weak, nonatomic) IBOutlet UILabel *whenTimeLbl;
 

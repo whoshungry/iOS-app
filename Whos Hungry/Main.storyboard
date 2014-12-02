@@ -325,7 +325,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zach Beasley wants to eat lunch today at 2pm" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LYI-yY-8GR">
-                                <rect key="frame" x="0.0" y="58" width="600" height="137"/>
+                                <rect key="frame" x="8" y="58" width="584" height="137"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -375,7 +375,7 @@
                                         <rect key="frame" x="0.0" y="355" width="600" height="50"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ Suggest a different place" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="viv-Qg-M6M">
-                                                <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                                                <rect key="frame" x="8" y="0.0" width="584" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="OAH-CZ-1rN"/>
                                                 </constraints>
@@ -388,9 +388,9 @@
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="viv-Qg-M6M" secondAttribute="bottom" id="2Rh-0w-oUD"/>
                                             <constraint firstAttribute="height" constant="50" id="8t6-S1-0Em"/>
-                                            <constraint firstItem="viv-Qg-M6M" firstAttribute="leading" secondItem="EPS-83-rOO" secondAttribute="leading" id="AzZ-Nu-tVQ"/>
+                                            <constraint firstItem="viv-Qg-M6M" firstAttribute="leading" secondItem="EPS-83-rOO" secondAttribute="leading" constant="8" id="AzZ-Nu-tVQ"/>
                                             <constraint firstItem="viv-Qg-M6M" firstAttribute="top" secondItem="EPS-83-rOO" secondAttribute="top" id="Ywr-kE-ZiF"/>
-                                            <constraint firstAttribute="trailing" secondItem="viv-Qg-M6M" secondAttribute="trailing" id="lag-D6-55S"/>
+                                            <constraint firstAttribute="trailing" secondItem="viv-Qg-M6M" secondAttribute="trailing" constant="8" id="lag-D6-55S"/>
                                         </constraints>
                                     </view>
                                     <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="yS6-Zb-cfS">
@@ -448,8 +448,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="5OE-NR-b7Q" secondAttribute="trailing" constant="-16" id="6OZ-Yp-sGa"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="LYI-yY-8GR" secondAttribute="trailing" constant="-16" id="7Ad-dm-g1E"/>
-                            <constraint firstItem="LYI-yY-8GR" firstAttribute="leading" secondItem="3AZ-H2-4ZW" secondAttribute="leadingMargin" constant="-16" id="DgI-xQ-4fl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="LYI-yY-8GR" secondAttribute="trailing" constant="-8" id="7Ad-dm-g1E"/>
+                            <constraint firstItem="LYI-yY-8GR" firstAttribute="leading" secondItem="3AZ-H2-4ZW" secondAttribute="leadingMargin" constant="-8" id="DgI-xQ-4fl"/>
                             <constraint firstItem="cor-Gt-NlZ" firstAttribute="top" secondItem="5OE-NR-b7Q" secondAttribute="bottom" id="Gue-k8-Ith"/>
                             <constraint firstItem="IcT-nh-l8n" firstAttribute="leading" secondItem="3AZ-H2-4ZW" secondAttribute="leadingMargin" constant="-16" id="WXX-wJ-NCo"/>
                             <constraint firstAttribute="centerX" secondItem="zdg-g4-0NK" secondAttribute="centerX" id="Y3u-E0-ZCF"/>

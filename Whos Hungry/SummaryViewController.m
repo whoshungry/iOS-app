@@ -51,7 +51,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     placesCountArray = [NSMutableArray new];
     _loaded = YES;
-    
+    _isSummary = YES;
     self.whenTimeLbl.text = @"okay man";
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -90,35 +90,36 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    if (!_loaded) {
-        _indexPathArray = [NSMutableArray new];
-        
-        [self.friendsGoingTable registerNib:[UINib nibWithNibName:@"RSVPFriendsTableViewCell" bundle:nil] forCellReuseIdentifier:@"MyCustomCell"];
-        self.friendsGoingTable.delegate = self;
-        self.friendsGoingTable.dataSource = self;
-        self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(makeVote:)
-                                                     name:@"MakeVote"
-                                                   object:nil];
-        
-        _currentLobby = [HootLobby new];
-        _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
-        //HootLobby doesn't exist
-        if (!_currentLobby) {
-            NSLog(@"Current Lobby is empty");
+    if (!_isSummary) {
+        [super viewDidLoad];
+        if (!_loaded) {
+            _indexPathArray = [NSMutableArray new];
+            
+            [self.friendsGoingTable registerNib:[UINib nibWithNibName:@"RSVPFriendsTableViewCell" bundle:nil] forCellReuseIdentifier:@"MyCustomCell"];
+            self.friendsGoingTable.delegate = self;
+            self.friendsGoingTable.dataSource = self;
+            self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(makeVote:)
+                                                         name:@"MakeVote"
+                                                       object:nil];
+            
             _currentLobby = [HootLobby new];
+            _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+            //HootLobby doesn't exist
+            if (!_currentLobby) {
+                NSLog(@"Current Lobby is empty");
+                _currentLobby = [HootLobby new];
+            }
+            //HootLobby exists
+            else{
+                NSLog(@"Current Lobby has DATA!");
+                NSLog(@"currnet lobby is %@", _currentLobby);
+                [self createAPIGroup];
+            }
+            
         }
-        //HootLobby exists
-        else{
-            NSLog(@"Current Lobby has DATA!");
-            NSLog(@"currnet lobby is %@", _currentLobby);
-            [self createAPIGroup];
-        }
-
     }
 }
 
@@ -336,7 +337,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 -(void)updateTime {
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-    NSDateComponents *components = [gregorianCalendar components:unitFlags
+    NSCalendarUnit unitCal = (NSCalendarUnit)unitFlags;
+    
+    NSDateComponents *components = [gregorianCalendar components:unitCal
                                                         fromDate:[NSDate new]
                                                           toDate:_currentLobby.expirationTime
                                                          options:0];
