@@ -30,6 +30,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSTimer *theTimer;
     MKPointAnnotation *restaurantPin;
     BOOL viewload;
+    BOOL votingDone;
 }
 
 @end
@@ -46,6 +47,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 -(void)initWithHootLobby:(HootLobby *)hootlobby {
     _currentLobby = hootlobby;
+    _currentLobby.voteid = hootlobby.voteid;
     NSMutableArray *placesIdArray = [NSMutableArray new];
     NSMutableArray *placesNamesArray = [NSMutableArray new];
     NSMutableArray *placesPicsArray = [NSMutableArray new];
@@ -53,7 +55,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSMutableArray *placesYArray = [NSMutableArray new];
     
     placesCountArray = [NSMutableArray new];
-    _loaded = YES;
+    _loaded = NO;
     
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
@@ -67,7 +69,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
     NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *results = (NSDictionary *)responseObject;
+        NSLog(@"responseObject!!: %@", responseObject);
+        NSLog(@"responseObject!!: %@", responseObject[@"choices"]);
+        //NSDictionary *results = (NSDictionary *)responseObject;
+        id results = responseObject;
         NSArray *choices = results[@"choices"];
         NSLog(@"response count: %lu", (unsigned long)choices.count);
         NSLog(@"response objectcttctctct: %@", choices);
@@ -100,7 +105,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    votingDone = NO;
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (votingDone == NO)
         theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                     target:self
                                                   selector:@selector(updateTime:)
@@ -300,18 +307,26 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             restaurantPics = [restaurantPics stringByAppendingString:_currentLobby.placesPicsArray[i]];
             restaurantPics = [restaurantPics stringByAppendingString:@","];
             
-            restaurantX = [restaurantX stringByAppendingString:(NSString *)[_currentLobby.placesXArray[i]stringValue]];
+            NSString *xstr = _currentLobby.placesXArray[i];
+            NSNumber *xnum = [NSNumber numberWithFloat:[xstr floatValue]];
+            restaurantX = [xnum stringValue];
             restaurantX = [restaurantX stringByAppendingString:@","];
             
-            restaurantY = [restaurantY stringByAppendingString:(NSString *)[_currentLobby.placesYArray[i]stringValue]];
+            NSString *ystr = _currentLobby.placesYArray[i];
+            NSNumber *ynum = [NSNumber numberWithFloat:[ystr floatValue]];
+            restaurantY = [ynum stringValue];
             restaurantY = [restaurantY stringByAppendingString:@","];
         }
         else{
             restaurantIds = [restaurantIds stringByAppendingString:_currentLobby.placesIdArray[i]];
             restaurantNames = [restaurantNames stringByAppendingString:_currentLobby.placesNamesArray[i]];
             restaurantPics = [restaurantPics stringByAppendingString:_currentLobby.placesPicsArray[i]];
-            restaurantX = [restaurantX stringByAppendingString:(NSString *)[_currentLobby.placesXArray[i]stringValue]];
-            restaurantY = [restaurantY stringByAppendingString:(NSString *)[_currentLobby.placesYArray[i]stringValue]];
+            NSString *xstr = _currentLobby.placesXArray[i];
+            NSNumber *xnum = [NSNumber numberWithFloat:[xstr floatValue]];
+            restaurantX = [restaurantX stringByAppendingString:[xnum stringValue]];
+            NSString *ystr = _currentLobby.placesYArray[i];
+            NSNumber *ynum = [NSNumber numberWithFloat:[ystr floatValue]];
+            restaurantY = [restaurantY stringByAppendingString:[ynum stringValue]];
         }
     }
     
@@ -331,7 +346,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     NSLog(@"facebook id: %@",_currentLobby.facebookId);
     NSLog(@"group id: %@", groupId);
-    NSLog(@"vote id: %@", _currentLobby.voteType);
+    NSLog(@"vote id: %@", _currentLobby.voteid);
     NSLog(@"expiratation time: %@",_currentLobby.expirationTime);
     
     
@@ -366,6 +381,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"create vote is :%@", responseObject);
         NSDictionary *results = (NSDictionary *) responseObject;
         _currentLobby.voteid = results[@"vote_id"];
+        NSLog(@"vote id assigned is :%@", _currentLobby.voteid);
         [self setSummaryTitle];
         [self.restaurantTable reloadData];
         //[self loadSummary];
@@ -394,8 +410,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 - (IBAction)updateTime:(id)sender {
     NSInteger hoursLeft = 0;
     NSInteger minutesLeft = 0;
-    
-    if ([[NSDate new] compare:_currentLobby.expirationTime] == NSOrderedAscending) {
+
+    //if ([[NSDate new] compare:_currentLobby.expirationTime] == NSOrderedDescending) {
         NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
         NSDateComponents *components = [gregorianCalendar components:unitFlags
@@ -408,14 +424,16 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"time left is :%ld hrs and %ld mins", (long)hoursLeft, (long)minutesLeft);
         
         self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, (long)minutesLeft];
-    } else {
-        self.whenTimeLbl.text = @"Lobby is closed!";
-    }
+    //} else {
+    //    self.whenTimeLbl.text = @"Lobby is closed!";
+   // }
 
     //check if over...
     if (hoursLeft == 0 && minutesLeft <= 0) {
         NSLog(@"donnnneee!!");
+        votingDone = YES;
         [self lobbyFinished];
+        //[self performSelector:@selector(lobbyFinished) withObject:nil afterDelay:30.0];
     }
 }
 

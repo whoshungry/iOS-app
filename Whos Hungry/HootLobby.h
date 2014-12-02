@@ -26,7 +26,7 @@
 
 @property (strong, nonatomic) NSDate* expirationTime;
 @property (strong, nonatomic) NSString* voteType;
-@property (strong, nonatomic) NSString* voteid;
+@property (strong, nonatomic) NSNumber* voteid;
 
 @property (strong, nonatomic) NSString* winnerRestID;
 @property (strong, nonatomic) NSString* winnerRestName;

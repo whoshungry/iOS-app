@@ -155,7 +155,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"index path is: %@", lobbies[indexPath.row]);
     chosenHoot = (HootLobby *)lobbies[indexPath.row];
-
+    NSLog(@"chosen hoot chosen is :  %@", chosenHoot);
     [self performSegueWithIdentifier:@"maintosummary" sender:self];
 }
 

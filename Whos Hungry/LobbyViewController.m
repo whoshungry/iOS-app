@@ -52,17 +52,21 @@
     //Transfer WhenTime to HootLobby
     //Transfer voteType to HootLobby
     HootLobby* tempLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    //[dateComponents setDay:-1];
+    NSDate *realWhenDate = [[NSCalendar currentCalendar] dateByAddingComponents:dateComponents toDate:_whenDate options:0];
     
     if (!tempLobby) {
         tempLobby = [HootLobby new];
         NSLog(@"Current Lobby is empty");
-        tempLobby.expirationTime = _whenDate;
+        tempLobby.expirationTime = realWhenDate;
         tempLobby.voteType = _voteType;
         [self saveCustomObject:tempLobby];
     }
     else{
         NSLog(@"Current Lobby has DATA!");
-        tempLobby.expirationTime = _whenDate;
+        tempLobby.expirationTime = realWhenDate;
         tempLobby.voteType = _voteType;
         [self saveCustomObject:tempLobby];
     }
