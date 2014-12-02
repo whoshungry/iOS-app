@@ -465,7 +465,7 @@
                     <navigationItem key="navigationItem" id="8vi-rE-1Ka"/>
                     <connections>
                         <outlet property="friendsGoingTable" destination="yS6-Zb-cfS" id="X73-xD-zGG"/>
-                        <outlet property="mapView" destination="eUL-xv-8Dp" id="eay-Pa-Fdo"/>
+                        <outlet property="mapView" destination="eUL-xv-8Dp" id="ZkK-Cp-CTC"/>
                         <outlet property="restaurantTable" destination="Gu5-7R-QQ8" id="HQR-aS-VPh"/>
                         <outlet property="summaryTitleLbl" destination="LYI-yY-8GR" id="7N9-tM-O0p"/>
                         <outlet property="whenTimeLbl" destination="PpS-YC-g0F" id="Lhi-0n-qv4"/>

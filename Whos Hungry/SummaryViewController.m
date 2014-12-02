@@ -419,7 +419,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                                                               toDate:_currentLobby.expirationTime
                                                              options:0];
         hoursLeft = components.hour;
-        minutesLeft = components.minute + 0; //plus 1 to include the chosen time, plus 0 not t0
+        minutesLeft = components.minute + 1; //plus 1 to include the chosen time, plus 0 not t0
         
         NSLog(@"time left is :%ld hrs and %ld mins", (long)hoursLeft, (long)minutesLeft);
         
