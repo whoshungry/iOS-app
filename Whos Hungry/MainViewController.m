@@ -134,7 +134,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     HootLobby *chosenLobby = (HootLobby *)lobbies[indexPath.row];
     NSLog(@"chosen lobby is :::::: %@", chosenLobby);
-    cell.whereLabel.text = @"Chipotle"; //winner restaurant
+    //cell.whereLabel.text = @"Chipotle"; //winner restaurant
     cell.backgroundImage.image = [UIImage imageNamed:@"chipotle.jpg"]; //winner restaurant pic
 
     //when isn't working :(
@@ -143,7 +143,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSString *formattedWhenTime = [dateFormatter stringFromDate:chosenLobby.expirationTime];
     cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
     
-
+    cell.whereLabel.text = chosenLobby.winnerRestName;
     cell.titleLabel.text = chosenLobby.voteType;
     cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you", chosenLobby.facebookName];
     cell.friendsImage.image = hostImages[indexPath.row];
