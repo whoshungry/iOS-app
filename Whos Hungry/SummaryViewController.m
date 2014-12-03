@@ -22,6 +22,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 @interface SummaryViewController (){
     CLLocationCoordinate2D restaurantCoor;
+    CLLocationCoordinate2D userCoor;
     int votedIndex;
     //NSString *groupid;
     NSString *voteid;
@@ -105,36 +106,62 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        [locationManager requestWhenInUseAuthorization];
+        [locationManager requestAlwaysAuthorization];
+    }
+        
+    CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
+    if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
+        authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
+        authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        
+        self.mapView.showsUserLocation = YES;
+        [locationManager startUpdatingLocation];
+        
+    } else {
+        NSLog(@"or nah");
+    }
+    
     votingDone = NO;
-    dispatch_async(dispatch_get_main_queue(), ^{
+    //dispatch_async(dispatch_get_main_queue(), ^{
         if (votingDone == NO)
-        theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+        theTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
                                                     target:self
                                                   selector:@selector(updateTime:)
                                                   userInfo:nil
                                                    repeats:YES];
-    });
+    //});
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    [locationManager startUpdatingLocation];
     
     if (viewload == NO) {
-    if (FBSession.activeSession.isOpen)
-    {
-        [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-            NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/me/picture?type=large&return_ssl_resources=1"]];
-            selfImage = [UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)];
-        }];
-    }
-    
+        if (FBSession.activeSession.isOpen)
+        {
+            [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/me/picture?type=large&return_ssl_resources=1"]];
+                selfImage = [UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)];
+            }];
+        }
+        
         _indexPathArray = [NSMutableArray new];
         
         [self.friendsGoingTable registerNib:[UINib nibWithNibName:@"RSVPFriendsTableViewCell" bundle:nil] forCellReuseIdentifier:@"MyCustomCell"];
         self.friendsGoingTable.delegate = self;
         self.friendsGoingTable.dataSource = self;
         self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(makeVote:)
-                                                     name:@"MakeVote"
-                                                   object:nil];
         
         _currentLobby = [HootLobby new];
         _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
@@ -145,9 +172,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         }
         //HootLobby exists
         else{
-                NSLog(@"Current Lobby has DATA!");
-                //NSLog(@"currnet lobby is %@", _currentLobby);
-                [self createAPIGroup];
+            NSLog(@"Current Lobby has DATA!");
+            //NSLog(@"currnet lobby is %@", _currentLobby);
+            [self createAPIGroup];
         }
         viewload = YES;
     }
@@ -185,6 +212,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (IBAction)goHome:(id)sender {
     [locationManager stopUpdatingLocation];
+    [theTimer invalidate];
+    theTimer = nil;
 }
 
 #pragma mark - Location methods
@@ -236,7 +265,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     NSLog(@"New Location %f %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
     _currentLocation = newLocation;
-    [locationManager stopUpdatingLocation];
+    //[locationManager stopUpdatingLocation];
 }
 
 #pragma mark - NSUserDefaults methods
@@ -419,7 +448,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                                                               toDate:_currentLobby.expirationTime
                                                              options:0];
         hoursLeft = components.hour;
-        minutesLeft = components.minute + 1; //plus 1 to include the chosen time, plus 0 not t0
+        minutesLeft = components.minute + 0; //plus 1 to include the chosen time, plus 0 not t0
         
         NSLog(@"time left is :%ld hrs and %ld mins", (long)hoursLeft, (long)minutesLeft);
         
@@ -443,6 +472,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     self.active = NO;
     self.mapView.hidden = NO;
+    self.restaurantTable.hidden = YES;
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
@@ -466,8 +496,27 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"current lobby x rrrr: %@", _currentLobby.winnerRestX);
         NSLog(@"current lobby y rrrr: %@", _currentLobby.winnerRestY);
         
+        restaurantCoor = CLLocationCoordinate2DMake([_currentLobby.winnerRestX floatValue], [_currentLobby.winnerRestY floatValue]);
+        restaurantPin = [[MKPointAnnotation alloc] init];
+        restaurantPin.coordinate = restaurantCoor;
+        NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
+        restaurantPin.title = _currentLobby.winnerRestName;
+        [self.mapView addAnnotation:restaurantPin];
+        
+        NSLog(@"updated! %@", _currentLocation);
+        CLLocation *user = [[CLLocation alloc] initWithLatitude:_currentLocation.coordinate.latitude longitude:_currentLocation.coordinate.longitude];
+        CLLocation *locale = [[CLLocation alloc] initWithLatitude:restaurantCoor.latitude longitude:restaurantCoor.longitude];
+        CLLocationDistance distance = [user distanceFromLocation:locale];
+        
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(restaurantCoor, distance*2, distance*2);
+        [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+        
         [_restaurantTable reloadData];
-    } failure:nil];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        {
+            NSLog(@"FUCK DIS SHIT!");
+        }
+    }];
     
     CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
     if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
@@ -477,15 +526,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         self.mapView.showsUserLocation = YES;
         [locationManager startUpdatingLocation];
         
-        restaurantCoor = CLLocationCoordinate2DMake([_currentLobby.winnerRestX floatValue], [_currentLobby.winnerRestY floatValue]);
-        restaurantPin = [[MKPointAnnotation alloc] init];
-        restaurantPin.coordinate = restaurantCoor;
-        NSLog(@"restaurant coordinates %f, %f", restaurantCoor.latitude, restaurantCoor.longitude);
-        restaurantPin.title = _currentLobby.winnerRestName;
-        [self.mapView addAnnotation:restaurantPin];
+
     } else {
         NSLog(@"or nah");
-        //[self viewDidLoad];
     }
 }
 
