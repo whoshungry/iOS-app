@@ -41,8 +41,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    [self.locationManager requestWhenInUseAuthorization];
-    [self.locationManager requestAlwaysAuthorization];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        [self.locationManager requestWhenInUseAuthorization];
+        [self.locationManager requestAlwaysAuthorization];
+    }
     
     CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
     if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||

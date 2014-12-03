@@ -48,7 +48,7 @@
                     </view>
                     <connections>
                         <outlet property="loginButton" destination="Xqb-KC-iFG" id="N0d-FJ-0nE"/>
-                        <segue destination="zCp-ye-fgq" kind="presentation" identifier="mainScreenSegue" id="lKP-gu-0e7"/>
+                        <segue destination="zCp-ye-fgq" kind="modal" identifier="mainScreenSegue" id="lKP-gu-0e7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -108,13 +108,13 @@
                     <navigationItem key="navigationItem" title="explore" id="kqN-zK-BPh">
                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="Nxr-f4-C1h">
                             <connections>
-                                <segue destination="al3-eM-JUg" kind="show" id="ET2-bc-Qfv"/>
+                                <segue destination="al3-eM-JUg" kind="modal" id="bB8-ry-w5b"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="5sy-76-9Fh" id="clv-zG-ak6"/>
-                        <segue destination="wgV-7D-ZgK" kind="presentation" identifier="maintosummary" id="Co6-IX-UKd"/>
+                        <segue destination="wgV-7D-ZgK" kind="modal" identifier="maintosummary" id="Co6-IX-UKd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RsM-xV-Txx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -164,7 +164,7 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <segue destination="CV8-be-G0e" kind="presentation" identifier="WhereSegue" id="GFp-ha-eOY"/>
+                                                    <segue destination="CV8-be-G0e" kind="modal" identifier="WhereSegue" id="GFp-ha-eOY"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEg-NE-irr">
@@ -441,7 +441,7 @@
                                 </state>
                                 <connections>
                                     <action selector="goHome:" destination="wgV-7D-ZgK" eventType="touchUpInside" id="QEL-LV-WHj"/>
-                                    <segue destination="zCp-ye-fgq" kind="presentation" id="g8t-bX-AwB"/>
+                                    <segue destination="zCp-ye-fgq" kind="modal" id="g8t-bX-AwB"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -479,6 +479,7 @@
         <scene sceneID="qpl-19-Wdl">
             <objects>
                 <navigationController id="CV8-be-G0e" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="pna-8N-hVd"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="iBG-gn-MNz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -614,6 +615,6 @@
         <image name="lunch.gif" width="1200" height="1200"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="g8t-bX-AwB"/>
+        <segue reference="lKP-gu-0e7"/>
     </inferredMetricsTieBreakers>
 </document>
