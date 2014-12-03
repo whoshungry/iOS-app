@@ -257,8 +257,11 @@
                                             <constraint firstItem="Y9x-tc-c9P" firstAttribute="width" secondItem="fnc-59-wQX" secondAttribute="height" multiplier="1:1" id="z7x-RD-hUa"/>
                                         </constraints>
                                     </view>
-                                    <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RzH-Zj-joL">
+                                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RzH-Zj-joL">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="JbJ-wp-cmE"/>
+                                        </constraints>
                                         <items>
                                             <navigationItem title="Create Lobby" id="Z1I-TE-IFL">
                                                 <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="1dJ-WF-kcZ"/>
@@ -269,6 +272,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="dk9-iQ-GKs" firstAttribute="trailing" secondItem="Kgl-VV-940" secondAttribute="trailing" id="9ms-XN-hCD"/>
+                                    <constraint firstItem="RzH-Zj-joL" firstAttribute="top" secondItem="fT2-L1-POI" secondAttribute="top" id="AhK-mD-clL"/>
                                     <constraint firstItem="Kgl-VV-940" firstAttribute="leading" secondItem="fT2-L1-POI" secondAttribute="leading" id="OmX-gA-kfv"/>
                                     <constraint firstAttribute="bottom" secondItem="dk9-iQ-GKs" secondAttribute="bottom" id="RgR-Cb-3LW"/>
                                     <constraint firstAttribute="bottom" secondItem="dk9-iQ-GKs" secondAttribute="bottom" id="ZWz-Dr-HdW"/>
@@ -276,7 +280,9 @@
                                     <constraint firstItem="dk9-iQ-GKs" firstAttribute="leading" secondItem="fT2-L1-POI" secondAttribute="leading" id="cUN-Ct-Kpb"/>
                                     <constraint firstAttribute="centerX" secondItem="Kgl-VV-940" secondAttribute="centerX" id="ct9-ip-bu5"/>
                                     <constraint firstItem="dk9-iQ-GKs" firstAttribute="top" secondItem="Kgl-VV-940" secondAttribute="bottom" priority="999" constant="92" id="eoi-C3-w5z"/>
+                                    <constraint firstAttribute="trailing" secondItem="RzH-Zj-joL" secondAttribute="trailing" id="hHF-Nc-oqZ"/>
                                     <constraint firstItem="dk9-iQ-GKs" firstAttribute="leading" secondItem="Kgl-VV-940" secondAttribute="leading" id="hPp-VF-5io"/>
+                                    <constraint firstItem="RzH-Zj-joL" firstAttribute="leading" secondItem="fT2-L1-POI" secondAttribute="leading" id="jWC-KQ-jyJ"/>
                                     <constraint firstItem="Kgl-VV-940" firstAttribute="top" secondItem="fT2-L1-POI" secondAttribute="top" constant="120" id="ouM-Se-Pw8"/>
                                     <constraint firstAttribute="trailing" secondItem="dk9-iQ-GKs" secondAttribute="trailing" id="vcD-ny-0fI"/>
                                     <constraint firstAttribute="trailing" secondItem="Kgl-VV-940" secondAttribute="trailing" id="xh5-aD-jcf"/>
