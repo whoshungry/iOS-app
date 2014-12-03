@@ -28,6 +28,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //[self clearAllGroups];
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     chosenHoot = [HootLobby new];
@@ -53,8 +56,18 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     }];
 }
 
+-(void) clearAllGroups {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:[NSString stringWithFormat:@"%@apis/initialize_db", BaseURLString] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseData) {
+        NSLog(@"cleared the data base: %@", responseData);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
 -(void) getGroupsWithID:(NSString *) fbid {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSLog(@"userid from get groups is :%@", fbid);
     NSDictionary *params = @{@"user_id": fbid};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_lobby_friend", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseData) {
         NSLog(@"JSON: %@", responseData);

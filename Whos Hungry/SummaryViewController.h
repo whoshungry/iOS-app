@@ -27,6 +27,8 @@
     CLLocationManager *locationManager;
 }
 
+@property (nonatomic, retain) NSTimer *theTimer;
+
 @property (assign, nonatomic) BOOL active;
 @property (assign, nonatomic) BOOL loaded;
 @property BOOL isSummary;

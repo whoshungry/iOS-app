@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -48,7 +48,7 @@
                     </view>
                     <connections>
                         <outlet property="loginButton" destination="Xqb-KC-iFG" id="N0d-FJ-0nE"/>
-                        <segue destination="zCp-ye-fgq" kind="modal" identifier="mainScreenSegue" id="lKP-gu-0e7"/>
+                        <segue destination="zCp-ye-fgq" kind="presentation" identifier="mainScreenSegue" id="lKP-gu-0e7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -108,13 +108,13 @@
                     <navigationItem key="navigationItem" title="explore" id="kqN-zK-BPh">
                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="Nxr-f4-C1h">
                             <connections>
-                                <segue destination="al3-eM-JUg" kind="modal" id="bB8-ry-w5b"/>
+                                <segue destination="al3-eM-JUg" kind="show" id="ET2-bc-Qfv"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="5sy-76-9Fh" id="clv-zG-ak6"/>
-                        <segue destination="wgV-7D-ZgK" kind="modal" identifier="maintosummary" id="Co6-IX-UKd"/>
+                        <segue destination="wgV-7D-ZgK" kind="presentation" identifier="maintosummary" id="Co6-IX-UKd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RsM-xV-Txx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -164,7 +164,7 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <segue destination="CV8-be-G0e" kind="modal" identifier="WhereSegue" id="GFp-ha-eOY"/>
+                                                    <segue destination="CV8-be-G0e" kind="presentation" identifier="WhereSegue" id="GFp-ha-eOY"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEg-NE-irr">
@@ -355,7 +355,7 @@
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1hr 47min left" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PpS-YC-g0F">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PpS-YC-g0F">
                                                 <rect key="frame" x="442" y="0.0" width="150" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="150" id="jhF-dH-AVN"/>
@@ -447,7 +447,7 @@
                                 </state>
                                 <connections>
                                     <action selector="goHome:" destination="wgV-7D-ZgK" eventType="touchUpInside" id="QEL-LV-WHj"/>
-                                    <segue destination="zCp-ye-fgq" kind="modal" id="g8t-bX-AwB"/>
+                                    <segue destination="zCp-ye-fgq" kind="presentation" id="g8t-bX-AwB"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -485,7 +485,6 @@
         <scene sceneID="qpl-19-Wdl">
             <objects>
                 <navigationController id="CV8-be-G0e" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="pna-8N-hVd"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="iBG-gn-MNz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -621,6 +620,6 @@
         <image name="lunch.gif" width="1200" height="1200"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lKP-gu-0e7"/>
+        <segue reference="g8t-bX-AwB"/>
     </inferredMetricsTieBreakers>
 </document>

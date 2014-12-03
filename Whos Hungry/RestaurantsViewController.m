@@ -103,7 +103,8 @@
             NSURL * imageURL = [NSURL URLWithString:urlStr];
             NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
             UIImage * image = [UIImage imageWithData:imageData];
-            [restImages addObject:image];
+            if (image != nil)
+                [restImages addObject:image];
             
         }
         [self.restaurantsTable reloadData];
