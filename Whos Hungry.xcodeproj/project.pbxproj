@@ -111,6 +111,8 @@
 		C36C416C1A0B2B7000F37668 /* HootGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C416A1A0B2B7000F37668 /* HootGroupCell.m */; };
 		C36C416D1A0B2B7000F37668 /* HootGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */; };
 		C36C416F1A0B3B3100F37668 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C36C416E1A0B3B3100F37668 /* FacebookSDK.framework */; };
+		C3A9988D1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3A9988C1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png */; };
+		C3A9988F1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3A9988E1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -280,6 +282,8 @@
 		C36C416A1A0B2B7000F37668 /* HootGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HootGroupCell.m; sourceTree = "<group>"; };
 		C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HootGroupCell.xib; sourceTree = "<group>"; };
 		C36C416E1A0B3B3100F37668 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		C3A9988C1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownvoteIcon(Who'sHungry).png"; sourceTree = "<group>"; };
+		C3A9988E1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UpvoteIcon(Who'sHungry).png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -338,6 +342,8 @@
 		1B9713CA1A0B35F500A2F46E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C3A9988C1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png */,
+				C3A9988E1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png */,
 				1BED85AB1A22A1300092C69E /* logosquare.png */,
 				1BED85A31A22657D0092C69E /* greenarrow.png */,
 				1BED85A41A22657D0092C69E /* redarrow.png */,
@@ -657,6 +663,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3A9988F1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png in Resources */,
 				1BD830691A19C55D006F0789 /* owlsound.caf in Resources */,
 				1BF5C6341A0EEF83006D4D00 /* coffeePressed.jpeg in Resources */,
 				1BF5C6361A0EEF83006D4D00 /* drinksPressed.png in Resources */,
@@ -664,6 +671,7 @@
 				1B9713D81A0B365100A2F46E /* final login image.png in Resources */,
 				1B0ED51C1A15459A00639614 /* downvote.png in Resources */,
 				1BD7009E1A211C1A00D32F95 /* list@2x.png in Resources */,
+				C3A9988D1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png in Resources */,
 				1BF5C7471A0F4198006D4D00 /* thisguy.png in Resources */,
 				1B9713D61A0B362700A2F46E /* owlintro.png in Resources */,
 				1BD830641A197CA6006F0789 /* final thumbnail.png in Resources */,
