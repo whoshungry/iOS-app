@@ -28,7 +28,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSString *voteid;
     UIImage *selfImage;
     NSMutableArray *placesCountArray;
-    NSTimer *theTimer;
     MKPointAnnotation *restaurantPin;
     BOOL viewload;
     BOOL votingDone;
@@ -107,46 +106,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
-        [locationManager requestWhenInUseAuthorization];
-        [locationManager requestAlwaysAuthorization];
-    }
-        
-    CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
-    if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
-        authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
-        authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        
-        self.mapView.showsUserLocation = YES;
-        [locationManager startUpdatingLocation];
-        
-    } else {
-        NSLog(@"or nah");
-    }
-    
-    votingDone = NO;
-    //dispatch_async(dispatch_get_main_queue(), ^{
-        if (votingDone == NO)
-        theTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
-                                                    target:self
-                                                  selector:@selector(updateTime:)
-                                                  userInfo:nil
-                                                   repeats:YES];
-    //});
-}
-
--(void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
-    [locationManager startUpdatingLocation];
-    
     if (viewload == NO) {
         if (FBSession.activeSession.isOpen)
         {
@@ -178,7 +137,20 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         }
         viewload = YES;
     }
+    
+    //if (votingDone == NO) {
+        self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                    target:self
+                                                  selector:@selector(updateTime:)
+                                                  userInfo:nil
+                                                   repeats:NO];
+    //}
 }
+
+-(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    }
 
 -(void) makeVote:(NSNotification *)note {
     NSLog(@"making vote!!" );
@@ -212,8 +184,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (IBAction)goHome:(id)sender {
     [locationManager stopUpdatingLocation];
-    [theTimer invalidate];
-    theTimer = nil;
+    [self.theTimer invalidate];
+    self.theTimer = nil;
 }
 
 #pragma mark - Location methods
@@ -369,7 +341,11 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSDate *endDate = _currentLobby.expirationTime;
     NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
     unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
-    NSDateComponents *components = [gregorian components:unitFlags fromDate:startDate
+    
+    if (endDate == nil) {
+        endDate = [NSDate new];
+    }
+      NSDateComponents *components = [gregorian components:unitFlags fromDate:startDate
                                                   toDate:endDate options:0];
     NSInteger minsLeft = [components minute];
     
@@ -441,6 +417,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSInteger minutesLeft = 0;
 
     //if ([[NSDate new] compare:_currentLobby.expirationTime] == NSOrderedDescending) {
+    
+    if (_currentLobby.expirationTime == nil)
+        _currentLobby.expirationTime = [NSDate new];
+    
         NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
         NSDateComponents *components = [gregorianCalendar components:unitFlags
@@ -463,16 +443,39 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         votingDone = YES;
         [self lobbyFinished];
         //[self performSelector:@selector(lobbyFinished) withObject:nil afterDelay:30.0];
+    } else {
+        [self performSelector:@selector(updateTime:) withObject:nil afterDelay:1.0];
     }
 }
 
 -(void) lobbyFinished {
-    [theTimer invalidate];
-    theTimer = nil;
+   [self.theTimer invalidate];
+    self.theTimer = nil;
     
     self.active = NO;
     self.mapView.hidden = NO;
     self.restaurantTable.hidden = YES;
+    
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        [locationManager requestWhenInUseAuthorization];
+        [locationManager requestAlwaysAuthorization];
+    }
+    
+    CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
+    if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
+        authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
+        authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        
+        self.mapView.showsUserLocation = YES;
+        [locationManager startUpdatingLocation];
+        
+    } else {
+        NSLog(@"or nah");
+    }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
@@ -518,18 +521,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         }
     }];
     
-    CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
-    if (authorizationStatus == kCLAuthorizationStatusAuthorized ||
-        authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
-        authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        
-        self.mapView.showsUserLocation = YES;
-        [locationManager startUpdatingLocation];
-        
-
-    } else {
-        NSLog(@"or nah");
-    }
 }
 
 /*- (void)loadSummary{

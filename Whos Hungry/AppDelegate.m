@@ -63,9 +63,9 @@
                                                                instantiateViewControllerWithIdentifier: @"SummaryViewController"];
             //controller.loaded = YES;
             //[controller initFromGroupID:dictionary[@"group_id"] andVoteID:dictionary[@"vote_id"]];
-            [ROOTVIEW presentViewController:controller animated:YES completion:^(void) {
+            //[ROOTVIEW presentViewController:controller animated:YES completion:^(void) {
                 
-            }];
+            //}];
         }
     }
     
@@ -83,9 +83,9 @@
                                                                  instantiateViewControllerWithIdentifier: @"SummaryViewController"];
     //controller.loaded = YES;
     //[controller initFromGroupID:userInfo[@"group_id"] andVoteID:userInfo[@"vote_id"]];
-    [ROOTVIEW presentViewController:controller animated:YES completion:^(void) {
+    //[ROOTVIEW presentViewController:controller animated:YES completion:^(void) {
         
-    }];
+    //}];
 }
 
 - (BOOL)application:(UIApplication *)application
