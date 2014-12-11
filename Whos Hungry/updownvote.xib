@@ -43,6 +43,22 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRV-QR-0qz">
                     <rect key="frame" x="0.0" y="57" width="536" height="57"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="☆☆☆☆☆" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ZY-xI-K4q">
+                            <rect key="frame" x="8" y="28" width="528" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="mkm-q2-Kqr"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="8ZY-xI-K4q" secondAttribute="bottom" constant="8" id="F9O-Pn-qh3"/>
+                        <constraint firstItem="8ZY-xI-K4q" firstAttribute="leading" secondItem="dRV-QR-0qz" secondAttribute="leading" constant="8" id="J6c-Nr-QBx"/>
+                        <constraint firstAttribute="trailing" secondItem="8ZY-xI-K4q" secondAttribute="trailing" id="bZw-gZ-1hc"/>
+                    </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TR4-5S-vPt">
                     <rect key="frame" x="536" y="0.0" width="88" height="114"/>
