@@ -99,6 +99,11 @@
 		1BF5C7451A0F3FC9006D4D00 /* 02_blurred_backgrounds.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1BF5C7441A0F3FC9006D4D00 /* 02_blurred_backgrounds.jpg */; };
 		1BF5C7471A0F4198006D4D00 /* thisguy.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BF5C7461A0F4198006D4D00 /* thisguy.png */; };
 		C313981A1A12EFF200DE18EC /* HootLobby.m in Sources */ = {isa = PBXBuildFile; fileRef = C31398191A12EFF200DE18EC /* HootLobby.m */; };
+		C3247BA71A3CDAAF007BDC36 /* logosquare_title.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BA61A3CDAAF007BDC36 /* logosquare_title.png */; };
+		C3247BAC1A3CE1B3007BDC36 /* CoffeeIcon(who'shungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BA81A3CE1B3007BDC36 /* CoffeeIcon(who'shungry).png */; };
+		C3247BAD1A3CE1B3007BDC36 /* DinnerIcon(who'shungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BA91A3CE1B3007BDC36 /* DinnerIcon(who'shungry).png */; };
+		C3247BAE1A3CE1B3007BDC36 /* DrinksIcon(who'shungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BAA1A3CE1B3007BDC36 /* DrinksIcon(who'shungry).png */; };
+		C3247BAF1A3CE1B3007BDC36 /* LunchIcon(who'shungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BAB1A3CE1B3007BDC36 /* LunchIcon(who'shungry).png */; };
 		C36C41371A0B206600F37668 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41361A0B206600F37668 /* main.m */; };
 		C36C413A1A0B206600F37668 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41391A0B206600F37668 /* AppDelegate.m */; };
 		C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C413C1A0B206600F37668 /* LoginViewController.m */; };
@@ -259,6 +264,11 @@
 		1BF5C7461A0F4198006D4D00 /* thisguy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thisguy.png; sourceTree = "<group>"; };
 		C31398181A12EFF200DE18EC /* HootLobby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HootLobby.h; sourceTree = "<group>"; };
 		C31398191A12EFF200DE18EC /* HootLobby.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HootLobby.m; sourceTree = "<group>"; };
+		C3247BA61A3CDAAF007BDC36 /* logosquare_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logosquare_title.png; sourceTree = "<group>"; };
+		C3247BA81A3CE1B3007BDC36 /* CoffeeIcon(who'shungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CoffeeIcon(who'shungry).png"; sourceTree = "<group>"; };
+		C3247BA91A3CE1B3007BDC36 /* DinnerIcon(who'shungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DinnerIcon(who'shungry).png"; sourceTree = "<group>"; };
+		C3247BAA1A3CE1B3007BDC36 /* DrinksIcon(who'shungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DrinksIcon(who'shungry).png"; sourceTree = "<group>"; };
+		C3247BAB1A3CE1B3007BDC36 /* LunchIcon(who'shungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LunchIcon(who'shungry).png"; sourceTree = "<group>"; };
 		C36C41311A0B206600F37668 /* Whos Hungry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whos Hungry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C36C41351A0B206600F37668 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C36C41361A0B206600F37668 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -342,9 +352,14 @@
 		1B9713CA1A0B35F500A2F46E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C3247BA81A3CE1B3007BDC36 /* CoffeeIcon(who'shungry).png */,
+				C3247BA91A3CE1B3007BDC36 /* DinnerIcon(who'shungry).png */,
+				C3247BAA1A3CE1B3007BDC36 /* DrinksIcon(who'shungry).png */,
+				C3247BAB1A3CE1B3007BDC36 /* LunchIcon(who'shungry).png */,
 				C398740D1A3930020009FC3E /* GetDirectionsIcon(who'shungry).png */,
 				C3A9988C1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png */,
 				C3A9988E1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png */,
+				C3247BA61A3CDAAF007BDC36 /* logosquare_title.png */,
 				1BED85AB1A22A1300092C69E /* logosquare.png */,
 				1BED85A31A22657D0092C69E /* greenarrow.png */,
 				1BED85A41A22657D0092C69E /* redarrow.png */,
@@ -668,6 +683,7 @@
 				1BF5C6341A0EEF83006D4D00 /* coffeePressed.jpeg in Resources */,
 				1BF5C6361A0EEF83006D4D00 /* drinksPressed.png in Resources */,
 				1BF5C4EB1A0EA751006D4D00 /* pencil.png in Resources */,
+				C3247BAF1A3CE1B3007BDC36 /* LunchIcon(who'shungry).png in Resources */,
 				1B9713D81A0B365100A2F46E /* final login image.png in Resources */,
 				1B0ED51C1A15459A00639614 /* downvote.png in Resources */,
 				1BD7009E1A211C1A00D32F95 /* list@2x.png in Resources */,
@@ -680,7 +696,9 @@
 				1BF5C6281A0EDD42006D4D00 /* drinks.png in Resources */,
 				1B9713D31A0B362700A2F46E /* login-button-small-pressed@2x.png in Resources */,
 				1BF5C6291A0EDD42006D4D00 /* lunch.gif in Resources */,
+				C3247BA71A3CDAAF007BDC36 /* logosquare_title.png in Resources */,
 				C36C416D1A0B2B7000F37668 /* HootGroupCell.xib in Resources */,
+				C3247BAE1A3CE1B3007BDC36 /* DrinksIcon(who'shungry).png in Resources */,
 				1BF5C4EF1A0EAD17006D4D00 /* nickcage.jpg in Resources */,
 				1BED85A51A22657D0092C69E /* greenarrow.png in Resources */,
 				1BF5C6261A0EDD42006D4D00 /* coffee.jpeg in Resources */,
@@ -693,7 +711,9 @@
 				1BD42CF31A212780008796F9 /* RSVPFriendsTableViewCell.xib in Resources */,
 				1B0ED51D1A15459A00639614 /* upvote.png in Resources */,
 				1BF5C7451A0F3FC9006D4D00 /* 02_blurred_backgrounds.jpg in Resources */,
+				C3247BAD1A3CE1B3007BDC36 /* DinnerIcon(who'shungry).png in Resources */,
 				1BED85AC1A22A1300092C69E /* logosquare.png in Resources */,
+				C3247BAC1A3CE1B3007BDC36 /* CoffeeIcon(who'shungry).png in Resources */,
 				1BD7007F1A2115F000D32F95 /* bae2.jpg in Resources */,
 				1BF5C6351A0EEF83006D4D00 /* dinnerPressed.jpeg in Resources */,
 				1BED85A61A22657D0092C69E /* redarrow.png in Resources */,

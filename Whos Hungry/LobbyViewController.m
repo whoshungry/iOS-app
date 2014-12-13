@@ -28,17 +28,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    _orangeColor = [UIColor colorWithRed:(232.0/255.0) green:(111.0/255.0) blue:(73.0/255.0) alpha:1.0];
     greenColor = [UIColor colorWithRed:(91.0/255.0) green:(186.0/255.0) blue:(71.0/255.0) alpha:1.0];
     
     NSDate *thirtyMinsLater = [[NSDate date] dateByAddingTimeInterval:60*30];
     _whenDate = thirtyMinsLater;
-    
     UIBarButtonItem *inviteFriendsBtn = [[UIBarButtonItem alloc]
                                    initWithTitle:@"Invite Friends"
                                    style:UIBarButtonItemStylePlain
                                    target:self
                                    action:@selector(inviteFriends:)];
+     
     self.navigationItem.rightBarButtonItem = inviteFriendsBtn;
 }
 
@@ -196,49 +196,49 @@
 }
 
 - (IBAction)lunchBtnPressed:(id)sender {
-    self.lunchBtn.layer.borderColor = greenColor.CGColor;
+    self.lunchBtn.layer.borderColor = _orangeColor.CGColor;
     self.lunchBtn.layer.borderWidth = 3.0f;
-    self.dinnerBtn.layer.borderColor = greenColor.CGColor;
+    self.dinnerBtn.layer.borderColor = _orangeColor.CGColor;
     self.dinnerBtn.layer.borderWidth = 0.0f;
-    self.coffeeBtn.layer.borderColor = greenColor.CGColor;
+    self.coffeeBtn.layer.borderColor = _orangeColor.CGColor;
     self.coffeeBtn.layer.borderWidth = 0.0f;
-    self.drinksBtn.layer.borderColor = greenColor.CGColor;
+    self.drinksBtn.layer.borderColor = _orangeColor.CGColor;
     self.drinksBtn.layer.borderWidth = 0.0f;
     _voteType = @"lunch";
 }
 
 - (IBAction)dinnerBtnPressed:(id)sender {
-    self.lunchBtn.layer.borderColor = greenColor.CGColor;
+    self.lunchBtn.layer.borderColor = _orangeColor.CGColor;
     self.lunchBtn.layer.borderWidth = 0.0f;
-    self.dinnerBtn.layer.borderColor = greenColor.CGColor;
+    self.dinnerBtn.layer.borderColor = _orangeColor.CGColor;
     self.dinnerBtn.layer.borderWidth = 3.0f;
-    self.coffeeBtn.layer.borderColor = greenColor.CGColor;
+    self.coffeeBtn.layer.borderColor = _orangeColor.CGColor;
     self.coffeeBtn.layer.borderWidth = 0.0f;
-    self.drinksBtn.layer.borderColor = greenColor.CGColor;
+    self.drinksBtn.layer.borderColor = _orangeColor.CGColor;
     self.drinksBtn.layer.borderWidth = 0.0f;
     _voteType = @"dinner";
 }
 
 - (IBAction)coffeeBtnPressed:(id)sender {
-    self.lunchBtn.layer.borderColor = greenColor.CGColor;
+    self.lunchBtn.layer.borderColor = _orangeColor.CGColor;
     self.lunchBtn.layer.borderWidth = 0.0f;
-    self.dinnerBtn.layer.borderColor = greenColor.CGColor;
+    self.dinnerBtn.layer.borderColor = _orangeColor.CGColor;
     self.dinnerBtn.layer.borderWidth = 0.0f;
-    self.coffeeBtn.layer.borderColor = greenColor.CGColor;
+    self.coffeeBtn.layer.borderColor = _orangeColor.CGColor;
     self.coffeeBtn.layer.borderWidth = 3.0f;
-    self.drinksBtn.layer.borderColor = greenColor.CGColor;
+    self.drinksBtn.layer.borderColor = _orangeColor.CGColor;
     self.drinksBtn.layer.borderWidth = 0.0f;
     _voteType = @"cafe";
 }
 
 - (IBAction)drinksBtnPressed:(id)sender {
-    self.lunchBtn.layer.borderColor = greenColor.CGColor;
+    self.lunchBtn.layer.borderColor = _orangeColor.CGColor;
     self.lunchBtn.layer.borderWidth = 0.0f;
-    self.dinnerBtn.layer.borderColor = greenColor.CGColor;
+    self.dinnerBtn.layer.borderColor = _orangeColor.CGColor;
     self.dinnerBtn.layer.borderWidth = 0.0f;
-    self.coffeeBtn.layer.borderColor = greenColor.CGColor;
+    self.coffeeBtn.layer.borderColor = _orangeColor.CGColor;
     self.coffeeBtn.layer.borderWidth = 0.0f;
-    self.drinksBtn.layer.borderColor = greenColor.CGColor;
+    self.drinksBtn.layer.borderColor = _orangeColor.CGColor;
     self.drinksBtn.layer.borderWidth = 3.0f;
     _voteType = @"drinks";
 }

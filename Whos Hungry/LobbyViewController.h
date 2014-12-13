@@ -26,5 +26,7 @@
 
 @property (strong, nonatomic) NSString* voteType;
 @property (strong, nonatomic) NSDate* whenDate;
+@property UIColor* orangeColor;
+@property (strong, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
 @end
