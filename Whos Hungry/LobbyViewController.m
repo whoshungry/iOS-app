@@ -28,7 +28,7 @@
 
 -(void)addImageOnTopOfTheNavigationBar {
     //UIImage* tempImage = [UIImage imageNamed:@"logosquare.png"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logosquare copy.png"]];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logosquare_transparent.png"]];
     [imageView sizeToFit];
     imageView.frame = CGRectMake(self.navigationController.navigationBar.frame.size.width/2.0 - self.navigationController.navigationBar.frame.size.height/2.0, self.navigationController.navigationBar.frame.origin.y, self.navigationController.navigationBar.frame.size.height, self.navigationController.navigationBar.frame.size.height); //set the proper frame here
     [self.navigationController.view addSubview:imageView];

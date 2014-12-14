@@ -26,11 +26,25 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 @implementation MainViewController
 
+
+//NEed to modify different heights of the view because it doesnt work well in all devices
+-(void)addImageOnTopOfTheNavigationBar {
+    //UIImage* tempImage = [UIImage imageNamed:@"logosquare.png"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lobby_bar.png"]];
+    //[imageView sizeToFit];
+    imageView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.origin.y, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height + 50); //set the proper frame here
+    self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
+    UIImage *tempImage = [imageView image];
+    //self.navigationController.navigationBar.barTintColor = [UIColor colorWithPatternImage:tempImage];
+    [self.navigationController.view addSubview:imageView];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     //[self clearAllGroups];
-    
+    [self addImageOnTopOfTheNavigationBar];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     chosenHoot = [HootLobby new];

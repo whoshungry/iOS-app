@@ -105,6 +105,8 @@
 		C3247BAE1A3CE1B3007BDC36 /* DrinksIcon(who'shungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BAA1A3CE1B3007BDC36 /* DrinksIcon(who'shungry).png */; };
 		C3247BAF1A3CE1B3007BDC36 /* LunchIcon(who'shungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BAB1A3CE1B3007BDC36 /* LunchIcon(who'shungry).png */; };
 		C3247BB11A3D7AB7007BDC36 /* logosquare copy.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BB01A3D7AB7007BDC36 /* logosquare copy.png */; };
+		C3247BB31A3DD944007BDC36 /* logosquare_transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BB21A3DD944007BDC36 /* logosquare_transparent.png */; };
+		C3247BB51A3DE282007BDC36 /* lobby_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BB41A3DE282007BDC36 /* lobby_bar.png */; };
 		C36C41371A0B206600F37668 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41361A0B206600F37668 /* main.m */; };
 		C36C413A1A0B206600F37668 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41391A0B206600F37668 /* AppDelegate.m */; };
 		C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C413C1A0B206600F37668 /* LoginViewController.m */; };
@@ -271,6 +273,8 @@
 		C3247BAA1A3CE1B3007BDC36 /* DrinksIcon(who'shungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DrinksIcon(who'shungry).png"; sourceTree = "<group>"; };
 		C3247BAB1A3CE1B3007BDC36 /* LunchIcon(who'shungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LunchIcon(who'shungry).png"; sourceTree = "<group>"; };
 		C3247BB01A3D7AB7007BDC36 /* logosquare copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logosquare copy.png"; sourceTree = "<group>"; };
+		C3247BB21A3DD944007BDC36 /* logosquare_transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logosquare_transparent.png; sourceTree = "<group>"; };
+		C3247BB41A3DE282007BDC36 /* lobby_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lobby_bar.png; sourceTree = "<group>"; };
 		C36C41311A0B206600F37668 /* Whos Hungry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whos Hungry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C36C41351A0B206600F37668 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C36C41361A0B206600F37668 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -354,6 +358,7 @@
 		1B9713CA1A0B35F500A2F46E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C3247BB21A3DD944007BDC36 /* logosquare_transparent.png */,
 				C3247BB01A3D7AB7007BDC36 /* logosquare copy.png */,
 				C3247BA81A3CE1B3007BDC36 /* CoffeeIcon(who'shungry).png */,
 				C3247BA91A3CE1B3007BDC36 /* DinnerIcon(who'shungry).png */,
@@ -368,6 +373,7 @@
 				1BED85A41A22657D0092C69E /* redarrow.png */,
 				1BD42CF61A21353D008796F9 /* rightarrow.png */,
 				1BD42CF41A213206008796F9 /* bae5.jpeg */,
+				C3247BB41A3DE282007BDC36 /* lobby_bar.png */,
 				1BD700971A211C1A00D32F95 /* check@2x.png */,
 				1BD700981A211C1A00D32F95 /* clock@2x.png */,
 				1BD700991A211C1A00D32F95 /* cross@2x.png */,
@@ -722,6 +728,7 @@
 				1BF5C6351A0EEF83006D4D00 /* dinnerPressed.jpeg in Resources */,
 				1BED85A61A22657D0092C69E /* redarrow.png in Resources */,
 				1BD7009C1A211C1A00D32F95 /* clock@2x.png in Resources */,
+				C3247BB51A3DE282007BDC36 /* lobby_bar.png in Resources */,
 				1BF5C6271A0EDD42006D4D00 /* dinner.png in Resources */,
 				1BF5C6371A0EEF83006D4D00 /* lunchPressed.jpeg in Resources */,
 				C36C41451A0B206600F37668 /* LaunchScreen.xib in Resources */,
@@ -735,6 +742,7 @@
 				1BD830661A19A9AB006F0789 /* owl.mp3 in Resources */,
 				1B0ED5191A1544EE00639614 /* updownvote.xib in Resources */,
 				1B9713D41A0B362700A2F46E /* login-button-small.png in Resources */,
+				C3247BB31A3DD944007BDC36 /* logosquare_transparent.png in Resources */,
 				1BEFBB4C1A2ECF7800773567 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -261,18 +261,6 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dk9-iQ-GKs" userLabel="View - when and where">
                                         <rect key="frame" x="0.0" y="322" width="600" height="278"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9CV-L6-CFx">
-                                                <rect key="frame" x="0.0" y="8" width="600" height="127"/>
-                                                <color key="backgroundColor" red="0.94901960784313721" green="0.43529411764705883" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                                <state key="normal" title="when:">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="chooseWhenDate:" destination="al3-eM-JUg" eventType="touchUpInside" id="cmT-wf-hnD"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JTN-MO-8qH">
                                                 <rect key="frame" x="0.0" y="143" width="600" height="127"/>
                                                 <color key="backgroundColor" red="0.52549019607843139" green="0.74901960784313726" blue="0.63921568627450975" alpha="1" colorSpace="calibratedRGB"/>
@@ -283,6 +271,18 @@
                                                 </state>
                                                 <connections>
                                                     <segue destination="CV8-be-G0e" kind="presentation" identifier="WhereSegue" id="GFp-ha-eOY"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9CV-L6-CFx">
+                                                <rect key="frame" x="0.0" y="8" width="600" height="127"/>
+                                                <color key="backgroundColor" red="0.94901960784313721" green="0.43529411764705883" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                                <state key="normal" title="when:">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="chooseWhenDate:" destination="al3-eM-JUg" eventType="touchUpInside" id="cmT-wf-hnD"/>
                                                 </connections>
                                             </button>
                                         </subviews>
