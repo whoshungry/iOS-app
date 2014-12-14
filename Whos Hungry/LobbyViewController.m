@@ -26,8 +26,19 @@
 
 @implementation LobbyViewController
 
+-(void)addImageOnTopOfTheNavigationBar {
+    //UIImage* tempImage = [UIImage imageNamed:@"logosquare.png"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logosquare copy.png"]];
+    [imageView sizeToFit];
+    imageView.frame = CGRectMake(self.navigationController.navigationBar.frame.size.width/2.0 - self.navigationController.navigationBar.frame.size.height/2.0, self.navigationController.navigationBar.frame.origin.y, self.navigationController.navigationBar.frame.size.height, self.navigationController.navigationBar.frame.size.height); //set the proper frame here
+    [self.navigationController.view addSubview:imageView];
+    
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self addImageOnTopOfTheNavigationBar];
     _orangeColor = [UIColor colorWithRed:(232.0/255.0) green:(111.0/255.0) blue:(73.0/255.0) alpha:1.0];
     greenColor = [UIColor colorWithRed:(91.0/255.0) green:(186.0/255.0) blue:(71.0/255.0) alpha:1.0];
     
