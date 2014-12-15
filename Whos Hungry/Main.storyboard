@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -189,7 +189,7 @@
                                                             <constraint firstAttribute="height" constant="3" id="IDt-zi-gW7"/>
                                                         </constraints>
                                                     </view>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nave your event" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EAt-d0-S4m">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name your event" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EAt-d0-S4m">
                                                         <rect key="frame" x="8" y="20" width="584" height="30"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="CcL-qK-8P7"/>
@@ -331,6 +331,7 @@
                         <outlet property="dinnerBtn" destination="Y9x-tc-c9P" id="Cbd-sD-lUL"/>
                         <outlet property="drinksBtn" destination="fnc-59-wQX" id="g3G-47-XGl"/>
                         <outlet property="lunchBtn" destination="R9U-Nq-4kq" id="u0f-6W-vgV"/>
+                        <outlet property="nameOfEvent" destination="EAt-d0-S4m" id="4x1-q1-J1J"/>
                         <outlet property="navigationBar" destination="RzH-Zj-joL" id="EuA-kS-cc5"/>
                         <outlet property="whenButton" destination="9CV-L6-CFx" id="ig0-Go-HV8"/>
                     </connections>

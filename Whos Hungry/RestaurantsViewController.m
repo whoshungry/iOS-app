@@ -46,22 +46,21 @@
     _locationFound = FALSE;
     _selectionCount = 0;
     
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    [locationManager requestWhenInUseAuthorization];
-    [locationManager requestAlwaysAuthorization];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        [self.locationManager requestWhenInUseAuthorization];
+        [self.locationManager requestAlwaysAuthorization];
+    }
     
     CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
     if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
         authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        NSLog(@"getting loc");
-        [self.locationManager startUpdatingLocation];
-        [self.locationManager stopUpdatingLocation];
         [self.locationManager startUpdatingLocation];
     }
-
+    
     // Do any additional setup after loading the view.
     self.restaurantsTable.backgroundColor = [UIColor clearColor];
     self.restaurantsTable.opaque = NO;

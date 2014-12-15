@@ -10,7 +10,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "HootLobby.h"
 
-@interface LobbyViewController : UIViewController <FBFriendPickerDelegate>
+@interface LobbyViewController : UIViewController <FBFriendPickerDelegate, UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *nameOfEvent;
 @property (weak, nonatomic) IBOutlet UIButton *lunchBtn;
 @property (weak, nonatomic) IBOutlet UIButton *dinnerBtn;
 @property (weak, nonatomic) IBOutlet UIButton *coffeeBtn;
