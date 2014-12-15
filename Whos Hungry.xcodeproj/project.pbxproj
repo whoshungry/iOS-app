@@ -107,6 +107,11 @@
 		C3247BB11A3D7AB7007BDC36 /* logosquare copy.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BB01A3D7AB7007BDC36 /* logosquare copy.png */; };
 		C3247BB31A3DD944007BDC36 /* logosquare_transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BB21A3DD944007BDC36 /* logosquare_transparent.png */; };
 		C3247BB51A3DE282007BDC36 /* lobby_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BB41A3DE282007BDC36 /* lobby_bar.png */; };
+		C3247BBF1A3E1E15007BDC36 /* circled_owl.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BBE1A3E1E15007BDC36 /* circled_owl.png */; };
+		C3247BC11A3E90FB007BDC36 /* intro_owl.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BC01A3E90FB007BDC36 /* intro_owl.png */; };
+		C3247BC31A3E93E1007BDC36 /* owl_try_1.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BC21A3E93E1007BDC36 /* owl_try_1.png */; };
+		C3247BC51A3E9464007BDC36 /* owl_try_2.png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BC41A3E9464007BDC36 /* owl_try_2.png */; };
+		C3247BC71A3EA325007BDC36 /* NumberofFriendsIcon(Who'sHungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3247BC61A3EA325007BDC36 /* NumberofFriendsIcon(Who'sHungry).png */; };
 		C36C41371A0B206600F37668 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41361A0B206600F37668 /* main.m */; };
 		C36C413A1A0B206600F37668 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C41391A0B206600F37668 /* AppDelegate.m */; };
 		C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C413C1A0B206600F37668 /* LoginViewController.m */; };
@@ -275,6 +280,11 @@
 		C3247BB01A3D7AB7007BDC36 /* logosquare copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logosquare copy.png"; sourceTree = "<group>"; };
 		C3247BB21A3DD944007BDC36 /* logosquare_transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logosquare_transparent.png; sourceTree = "<group>"; };
 		C3247BB41A3DE282007BDC36 /* lobby_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lobby_bar.png; sourceTree = "<group>"; };
+		C3247BBE1A3E1E15007BDC36 /* circled_owl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circled_owl.png; sourceTree = "<group>"; };
+		C3247BC01A3E90FB007BDC36 /* intro_owl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_owl.png; sourceTree = "<group>"; };
+		C3247BC21A3E93E1007BDC36 /* owl_try_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = owl_try_1.png; sourceTree = "<group>"; };
+		C3247BC41A3E9464007BDC36 /* owl_try_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = owl_try_2.png; sourceTree = "<group>"; };
+		C3247BC61A3EA325007BDC36 /* NumberofFriendsIcon(Who'sHungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NumberofFriendsIcon(Who'sHungry).png"; sourceTree = "<group>"; };
 		C36C41311A0B206600F37668 /* Whos Hungry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whos Hungry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C36C41351A0B206600F37668 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C36C41361A0B206600F37668 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -376,6 +386,7 @@
 				C3247BB41A3DE282007BDC36 /* lobby_bar.png */,
 				1BD700971A211C1A00D32F95 /* check@2x.png */,
 				1BD700981A211C1A00D32F95 /* clock@2x.png */,
+				C3247BBE1A3E1E15007BDC36 /* circled_owl.png */,
 				1BD700991A211C1A00D32F95 /* cross@2x.png */,
 				1BD7009A1A211C1A00D32F95 /* list@2x.png */,
 				1BD7007B1A2115F000D32F95 /* bae2.jpg */,
@@ -391,11 +402,15 @@
 				1BF5C6311A0EEF83006D4D00 /* dinnerPressed.jpeg */,
 				1BF5C6321A0EEF83006D4D00 /* drinksPressed.png */,
 				1BF5C6331A0EEF83006D4D00 /* lunchPressed.jpeg */,
+				C3247BC01A3E90FB007BDC36 /* intro_owl.png */,
 				1BF5C6221A0EDD42006D4D00 /* coffee.jpeg */,
 				1BF5C6231A0EDD42006D4D00 /* dinner.png */,
+				C3247BC21A3E93E1007BDC36 /* owl_try_1.png */,
+				C3247BC41A3E9464007BDC36 /* owl_try_2.png */,
 				1BF5C6241A0EDD42006D4D00 /* drinks.png */,
 				1BF5C6251A0EDD42006D4D00 /* lunch.gif */,
 				1BF5C4F01A0EAD8D006D4D00 /* friendsicon.png */,
+				C3247BC61A3EA325007BDC36 /* NumberofFriendsIcon(Who'sHungry).png */,
 				1BF5C4EE1A0EAD17006D4D00 /* nickcage.jpg */,
 				1BF5C4EC1A0EACBE006D4D00 /* chiptole.png */,
 				1BF5C4EA1A0EA751006D4D00 /* pencil.png */,
@@ -699,9 +714,12 @@
 				C3A9988D1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png in Resources */,
 				1BF5C7471A0F4198006D4D00 /* thisguy.png in Resources */,
 				1B9713D61A0B362700A2F46E /* owlintro.png in Resources */,
+				C3247BC51A3E9464007BDC36 /* owl_try_2.png in Resources */,
+				C3247BBF1A3E1E15007BDC36 /* circled_owl.png in Resources */,
 				1BD830641A197CA6006F0789 /* final thumbnail.png in Resources */,
 				1BD7009B1A211C1A00D32F95 /* check@2x.png in Resources */,
 				1B9713D11A0B362700A2F46E /* AustinLocation.gpx in Resources */,
+				C3247BC11A3E90FB007BDC36 /* intro_owl.png in Resources */,
 				1BF5C6281A0EDD42006D4D00 /* drinks.png in Resources */,
 				1B9713D31A0B362700A2F46E /* login-button-small-pressed@2x.png in Resources */,
 				1BF5C6291A0EDD42006D4D00 /* lunch.gif in Resources */,
@@ -711,6 +729,7 @@
 				1BF5C4EF1A0EAD17006D4D00 /* nickcage.jpg in Resources */,
 				1BED85A51A22657D0092C69E /* greenarrow.png in Resources */,
 				1BF5C6261A0EDD42006D4D00 /* coffee.jpeg in Resources */,
+				C3247BC31A3E93E1007BDC36 /* owl_try_1.png in Resources */,
 				1BD42CF51A213206008796F9 /* bae5.jpeg in Resources */,
 				1BF5C6391A0EF10B006D4D00 /* jennifer.jpg in Resources */,
 				C3247BB11A3D7AB7007BDC36 /* logosquare copy.png in Resources */,
@@ -721,6 +740,7 @@
 				1BD42CF31A212780008796F9 /* RSVPFriendsTableViewCell.xib in Resources */,
 				1B0ED51D1A15459A00639614 /* upvote.png in Resources */,
 				1BF5C7451A0F3FC9006D4D00 /* 02_blurred_backgrounds.jpg in Resources */,
+				C3247BC71A3EA325007BDC36 /* NumberofFriendsIcon(Who'sHungry).png in Resources */,
 				C3247BAD1A3CE1B3007BDC36 /* DinnerIcon(who'shungry).png in Resources */,
 				1BED85AC1A22A1300092C69E /* logosquare.png in Resources */,
 				C3247BAC1A3CE1B3007BDC36 /* CoffeeIcon(who'shungry).png in Resources */,

@@ -29,4 +29,5 @@
 @property UIColor* orangeColor;
 @property (strong, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
+@property (strong, nonatomic) UIImageView* imageView;
 @end

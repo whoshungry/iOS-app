@@ -275,7 +275,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9CV-L6-CFx">
                                                 <rect key="frame" x="0.0" y="8" width="600" height="127"/>
-                                                <color key="backgroundColor" red="0.94901960784313721" green="0.43529411764705883" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" red="0.94117647058823528" green="0.43137254901960786" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                                 <state key="normal" title="when:">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

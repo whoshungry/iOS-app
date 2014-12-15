@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *friendsBtn;
 @property (weak, nonatomic) IBOutlet UIButton *publicBtn;
 
+@property (strong, nonatomic) UIImageView* imageView;
+
 - (IBAction)friendsBtnPressed:(id)sender;
 - (IBAction)publicBtnPressed:(id)sender;
 

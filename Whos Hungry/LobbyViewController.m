@@ -28,17 +28,18 @@
 
 -(void)addImageOnTopOfTheNavigationBar {
     //UIImage* tempImage = [UIImage imageNamed:@"logosquare.png"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logosquare_transparent.png"]];
-    [imageView sizeToFit];
-    imageView.frame = CGRectMake(self.navigationController.navigationBar.frame.size.width/2.0 - self.navigationController.navigationBar.frame.size.height/2.0, self.navigationController.navigationBar.frame.origin.y, self.navigationController.navigationBar.frame.size.height, self.navigationController.navigationBar.frame.size.height); //set the proper frame here
-    [self.navigationController.view addSubview:imageView];
+    _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logosquare_transparent.png"]];
+    [_imageView sizeToFit];
+    _imageView.frame = CGRectMake(self.navigationController.navigationBar.frame.size.width/2.0 - self.navigationController.navigationBar.frame.size.height/2.0, self.navigationController.navigationBar.frame.origin.y, self.navigationController.navigationBar.frame.size.height, self.navigationController.navigationBar.frame.size.height); //set the proper frame here
+    [_imageView setAnimationDuration:1.0];
+    _imageView.alpha = 1.0f;
+    [self.navigationController.view addSubview:_imageView];
     
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self addImageOnTopOfTheNavigationBar];
     _orangeColor = [UIColor colorWithRed:(232.0/255.0) green:(111.0/255.0) blue:(73.0/255.0) alpha:1.0];
     greenColor = [UIColor colorWithRed:(91.0/255.0) green:(186.0/255.0) blue:(71.0/255.0) alpha:1.0];
     
@@ -55,8 +56,16 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self addImageOnTopOfTheNavigationBar];
     if (_voteType == nil)
         [self lunchBtnPressed:nil];
+}
+
+- (void) viewWillDisappear:(BOOL)animated{
+    [_imageView setAnimationDuration:2.25];
+    _imageView.alpha = 0.0f;
+    [_imageView startAnimating];
+    [_imageView removeFromSuperview];
 }
 
 -(IBAction)inviteFriends:(id)sender {
@@ -166,7 +175,6 @@
 
 - (IBAction)chooseWhenDate:(id)sender {
     [ActionSheetDatePicker showPickerWithTitle:@"" datePickerMode:UIDatePickerModeTime selectedDate:_whenDate doneBlock:^(ActionSheetDatePicker *picker, id selectionDate, id origin) {
-        
         NSLog(@"when date is %@", selectionDate);
         _whenDate = (NSDate *)selectionDate;
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

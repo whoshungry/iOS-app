@@ -30,21 +30,24 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 //NEed to modify different heights of the view because it doesnt work well in all devices
 -(void)addImageOnTopOfTheNavigationBar {
     //UIImage* tempImage = [UIImage imageNamed:@"logosquare.png"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lobby_bar.png"]];
+    _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"owl_try_2.png"]];
     //[imageView sizeToFit];
-    imageView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.origin.y, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height + 50); //set the proper frame here
-    self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
-    UIImage *tempImage = [imageView image];
+    _imageView.frame = CGRectMake(self.navigationController.navigationBar.frame.origin.x + 10.0, self.navigationController.navigationBar.frame.origin.y, self.navigationController.navigationBar.frame.size.height * (3.0/2.0), self.navigationController.navigationBar.frame.size.height * (3.0/2.0) + [self addSizeforDevice]); //set the proper frame here
+    //self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
     //self.navigationController.navigationBar.barTintColor = [UIColor colorWithPatternImage:tempImage];
-    [self.navigationController.view addSubview:imageView];
+    [self.navigationController.view addSubview:_imageView];
     
+}
+
+-(float)addSizeforDevice{
+    NSLog(@"%@",[[UIDevice currentDevice] name]);
+    return 0;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     //[self clearAllGroups];
-    [self addImageOnTopOfTheNavigationBar];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     chosenHoot = [HootLobby new];
@@ -68,6 +71,18 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             // See: https://developers.facebook.com/docs/ios/errors
         }
     }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"BYEBYE");
+    [_imageView removeFromSuperview];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    self.navigationItem.title = @"Who's hungry?";
+
+    [self addImageOnTopOfTheNavigationBar];
+
 }
 
 -(void) clearAllGroups {
@@ -174,6 +189,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     cell.titleLabel.text = chosenLobby.voteType;
     cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you", chosenLobby.facebookName];
     cell.friendsImage.image = hostImages[indexPath.row];
+    cell.friendsImage.layer.cornerRadius = cell.friendsImage.image.size.width / 2 - 5.0;
+    cell.friendsImage.clipsToBounds = YES;
+    cell.friendsImage.layer.borderWidth = 2.0f;
+    cell.friendsImage.layer.borderColor = [UIColor colorWithRed:134.0/255.0 green:191.0/255.0 blue:163.0/255.0 alpha:1.0].CGColor;
     //cell.hostImage.image = hostImages[indexPath.row];
 
     return cell;
