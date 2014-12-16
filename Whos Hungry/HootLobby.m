@@ -31,6 +31,8 @@
     [encoder encodeObject:_winnerRestPic forKey:@"winnerRestPic"];
     [encoder encodeObject:_winnerRestX forKey:@"winnerRestX"];
     [encoder encodeObject:_winnerRestY forKey:@"winnerRestY"];
+    [encoder encodeObject:_placesRankingArray forKey:@"placesRankingArray"];
+
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -56,6 +58,8 @@
         _winnerRestPic = [decoder decodeObjectForKey:@"winnerRestPic"];
         _winnerRestX = [decoder decodeObjectForKey:@"winnerRestX"];
         _winnerRestY = [decoder decodeObjectForKey:@"winnerRestY"];
+        _placesRankingArray = [decoder decodeObjectForKey:@"placesRankingArray"];
+
     }
     return self;
 }

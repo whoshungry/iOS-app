@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSMutableArray* placesPicsArray;
 @property (strong, nonatomic) NSMutableArray* placesXArray;
 @property (strong, nonatomic) NSMutableArray* placesYArray;
+@property (strong, nonatomic) NSMutableArray* placesRankingArray;
 
 @property (strong, nonatomic) NSDate* expirationTime;
 @property (strong, nonatomic) NSString* voteType;

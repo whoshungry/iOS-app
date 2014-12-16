@@ -33,8 +33,10 @@
     _restaurantPicArray = [NSMutableArray new];
     _restaurantXArray = [NSMutableArray new];
     _restaurantYArray = [NSMutableArray new];
+    _restaurantRatingArray = [NSMutableArray new];
     restImages = [NSMutableArray new];
     _allPlaces = [NSMutableArray new];
+    
     
     [self initRestaurants];
 }
@@ -274,6 +276,7 @@
         
         [_restaurantXArray addObject:chosenResponse[@"geometry"][@"location"][@"lat"]];
         [_restaurantYArray addObject:chosenResponse[@"geometry"][@"location"][@"lng"]];
+        [_restaurantRatingArray addObject:chosenResponse[@"rating"]];
     }
     else
     {
@@ -322,6 +325,7 @@
     [_restaurantPicArray removeAllObjects];
     [_restaurantXArray removeAllObjects];
     [_restaurantYArray removeAllObjects];
+    [_restaurantRatingArray removeAllObjects];
     
     //reload data again to display checkmarks
     [self.restaurantsTable reloadData];
@@ -369,6 +373,7 @@
     tempLobby.placesPicsArray = _restaurantPicArray;
     tempLobby.placesXArray = _restaurantXArray;
     tempLobby.placesYArray = _restaurantYArray;
+    tempLobby.placesRankingArray = _restaurantRatingArray;
     [self saveCustomObject:tempLobby];
 }
 

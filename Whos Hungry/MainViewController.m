@@ -46,7 +46,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [_coverIndicator startAnimating];
+    _coverIndicator.color = [UIColor colorWithRed:240.0/255.0 green:110.0/255.0 blue:72.0/255.0 alpha:1.0];
     //[self clearAllGroups];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -194,7 +195,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     cell.friendsImage.layer.borderWidth = 2.0f;
     cell.friendsImage.layer.borderColor = [UIColor colorWithRed:134.0/255.0 green:191.0/255.0 blue:163.0/255.0 alpha:1.0].CGColor;
     //cell.hostImage.image = hostImages[indexPath.row];
-
     return cell;
 }
 
@@ -203,6 +203,24 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     chosenHoot = (HootLobby *)lobbies[indexPath.row];
     NSLog(@"chosen hoot chosen is :  %@", chosenHoot);
     [self performSegueWithIdentifier:@"maintosummary" sender:self];
+}
+
+-(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
+        NSLog(@"END OF LOADING");
+        [_coverIndicator stopAnimating];
+        [UIView animateWithDuration:0.75 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            _coverView.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            NSLog(@"DONE!");
+            _coverView.hidden = YES;
+
+        }];
+
+        //end of loading
+        //for example [activityIndicator stopAnimating];
+    }
 }
 
 #pragma mark - Segue methods

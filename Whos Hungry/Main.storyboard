@@ -95,14 +95,45 @@
                                     <outlet property="delegate" destination="pae-8W-Jcf" id="bmN-gt-HEh"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1UM-jf-7iN">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="intro_owl.png" translatesAutoresizingMaskIntoConstraints="NO" id="Fsh-8I-uR3">
+                                        <rect key="frame" x="224" y="233" width="152" height="133"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="Fsh-8I-uR3" secondAttribute="height" multiplier="8:7" id="UCe-Kc-XLw"/>
+                                            <constraint firstAttribute="width" constant="152" id="ddO-v9-chA"/>
+                                            <constraint firstAttribute="height" constant="133" id="f5t-kz-pUB"/>
+                                        </constraints>
+                                    </imageView>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="jTR-rZ-H0r">
+                                        <rect key="frame" x="282" y="165" width="37" height="37"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="37" id="Xze-fX-mWG"/>
+                                            <constraint firstAttribute="height" constant="37" id="dWw-ht-qOd"/>
+                                        </constraints>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="Fsh-8I-uR3" secondAttribute="centerY" id="Mbd-sN-xXg"/>
+                                    <constraint firstItem="Fsh-8I-uR3" firstAttribute="top" secondItem="jTR-rZ-H0r" secondAttribute="bottom" constant="31" id="OJF-0Z-8tw"/>
+                                    <constraint firstAttribute="centerX" secondItem="jTR-rZ-H0r" secondAttribute="centerX" id="T8j-eH-pd1"/>
+                                    <constraint firstAttribute="centerX" secondItem="Fsh-8I-uR3" secondAttribute="centerX" id="dAT-tD-Mih"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="5sy-76-9Fh" firstAttribute="leading" secondItem="Xnu-0X-Xif" secondAttribute="leadingMargin" constant="-16" id="5FU-jY-amb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="5sy-76-9Fh" secondAttribute="trailing" constant="-16" id="5fE-4u-UnK"/>
                             <constraint firstAttribute="centerX" secondItem="5sy-76-9Fh" secondAttribute="centerX" id="HuA-fo-ElU"/>
+                            <constraint firstAttribute="trailing" secondItem="1UM-jf-7iN" secondAttribute="trailing" id="Kh9-7E-bqc"/>
+                            <constraint firstItem="KK0-da-AoP" firstAttribute="top" secondItem="1UM-jf-7iN" secondAttribute="bottom" id="N32-yC-PXh"/>
+                            <constraint firstItem="1UM-jf-7iN" firstAttribute="leading" secondItem="Xnu-0X-Xif" secondAttribute="leading" id="ceB-mR-Bzd"/>
                             <constraint firstAttribute="centerY" secondItem="5sy-76-9Fh" secondAttribute="centerY" id="lxF-Nz-BMa"/>
                             <constraint firstItem="5sy-76-9Fh" firstAttribute="top" secondItem="Xnu-0X-Xif" secondAttribute="topMargin" id="tHi-nV-mWK"/>
+                            <constraint firstItem="1UM-jf-7iN" firstAttribute="top" secondItem="Xnu-0X-Xif" secondAttribute="top" id="wqg-d0-Xlb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="explore" id="kqN-zK-BPh">
@@ -113,6 +144,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="coverIndicator" destination="jTR-rZ-H0r" id="YcW-yH-FKe"/>
+                        <outlet property="coverView" destination="1UM-jf-7iN" id="V0P-lk-hGq"/>
                         <outlet property="tableView" destination="5sy-76-9Fh" id="clv-zG-ak6"/>
                         <segue destination="wgV-7D-ZgK" kind="presentation" identifier="maintosummary" id="Co6-IX-UKd"/>
                     </connections>
@@ -733,6 +766,7 @@
         <image name="GetDirectionsIcon(who'shungry).png" width="300" height="321"/>
         <image name="LunchIcon(who'shungry).png" width="300" height="321"/>
         <image name="final login image.png" width="246" height="263"/>
+        <image name="intro_owl.png" width="497" height="434"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="g8t-bX-AwB"/>
