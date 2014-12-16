@@ -31,10 +31,12 @@
     _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logosquare_transparent.png"]];
     [_imageView sizeToFit];
     _imageView.frame = CGRectMake(self.navigationController.navigationBar.frame.size.width/2.0 - self.navigationController.navigationBar.frame.size.height/2.0, self.navigationController.navigationBar.frame.origin.y, self.navigationController.navigationBar.frame.size.height, self.navigationController.navigationBar.frame.size.height); //set the proper frame here
-    [_imageView setAnimationDuration:1.0];
-    _imageView.alpha = 1.0f;
     [self.navigationController.view addSubview:_imageView];
-    
+    _imageView.alpha = 0.0f;
+    [UIView animateWithDuration:0.3 delay:0.1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        _imageView.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+    }];
 }
 
 
@@ -62,9 +64,6 @@
 }
 
 - (void) viewWillDisappear:(BOOL)animated{
-    [_imageView setAnimationDuration:2.25];
-    _imageView.alpha = 0.0f;
-    [_imageView startAnimating];
     [_imageView removeFromSuperview];
 }
 
