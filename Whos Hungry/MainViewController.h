@@ -16,6 +16,8 @@
 
 @property (strong, nonatomic) UIImageView* imageView;
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *coverIndicator;
+@property (strong, nonatomic) IBOutlet UIView *coverView;
 - (IBAction)friendsBtnPressed:(id)sender;
 - (IBAction)publicBtnPressed:(id)sender;
 

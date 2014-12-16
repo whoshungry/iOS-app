@@ -42,6 +42,7 @@
 @property NSMutableArray* restaurantPicArray;
 @property NSMutableArray* restaurantXArray;
 @property NSMutableArray* restaurantYArray;
+@property NSMutableArray* restaurantRatingArray;
 @property NSString* facebookId;
 @property NSString* facebookName;
 
