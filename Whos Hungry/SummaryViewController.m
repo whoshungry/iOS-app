@@ -97,7 +97,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"current lobby pics rrrr: %@", _currentLobby.placesPicsArray);
         
         [self setSummaryTitle];
-        [_restaurantTable reloadData];
+        //[_restaurantTable reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -124,6 +124,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         
         _currentLobby = [HootLobby new];
         _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+        
+        /*
         //HootLobby doesn't exist
         if (!_currentLobby) {
             NSLog(@"Current Lobby is empty");
@@ -133,6 +135,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         else{
             NSLog(@"Current Lobby has DATA!");
             //NSLog(@"currnet lobby is %@", _currentLobby);
+            [self createAPIGroup];
+        }
+        */
+        if (!_isFromMain) {
             [self createAPIGroup];
         }
         viewload = YES;
@@ -186,6 +192,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [locationManager stopUpdatingLocation];
     [self.theTimer invalidate];
     self.theTimer = nil;
+    //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    //[prefs setObject:0 forKey:LOBBY_KEY];
 }
 
 #pragma mark - Location methods
@@ -290,7 +298,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     }];
 }
 
-- (void) createAPIVoteWithGroupId:(NSNumber*)groupId{
+-(void) createAPIVoteWithGroupId:(NSNumber*)groupId{
     NSString* restaurantIds = @"";
     NSString* restaurantNames = @"";
     NSString* restaurantPics = @"";
@@ -455,6 +463,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     self.active = NO;
     self.mapView.hidden = NO;
     self.restaurantTable.hidden = YES;
+    self.votingCompleteView.hidden = NO;
+    self.votingIncompleteView.hidden = YES;
     
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
@@ -633,6 +643,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             //CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
             float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
             //float distance = 50.0f;
+            NSLog(@"Current row is %d", indexPath.row);
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
         } else {

@@ -621,6 +621,8 @@
                         <outlet property="mapView" destination="eUL-xv-8Dp" id="ZkK-Cp-CTC"/>
                         <outlet property="restaurantTable" destination="Gu5-7R-QQ8" id="HQR-aS-VPh"/>
                         <outlet property="summaryTitleLbl" destination="LYI-yY-8GR" id="7N9-tM-O0p"/>
+                        <outlet property="votingCompleteView" destination="0bZ-r4-AEb" id="cUj-46-pMB"/>
+                        <outlet property="votingIncompleteView" destination="5OE-NR-b7Q" id="Fh3-yM-vhV"/>
                         <outlet property="whenTimeLbl" destination="PpS-YC-g0F" id="Lhi-0n-qv4"/>
                     </connections>
                 </viewController>
