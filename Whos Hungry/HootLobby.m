@@ -68,5 +68,34 @@
     return [self.voteid compare:otherObject.voteid];
 }
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    id copy = [[[self class] alloc] init];
+    
+    if (copy) {
+        [copy setFacebookId:self.facebookId];
+        [copy setFacebookPic:self.facebookPic];
+        [copy setFacebookName:self.facebookName];
+        [copy setGroupid:self.groupid];
+        [copy setFacebookbInvitatitions:self.facebookbInvitatitions];
+        [copy setExpirationTime:self.expirationTime];
+        [copy setPlacesIdArray:self.placesIdArray];
+        [copy setPlacesNamesArray:self.placesNamesArray];
+        [copy setPlacesPicsArray:self.placesPicsArray];
+        [copy setPlacesXArray:self.placesXArray];
+        [copy setPlacesYArray:self.placesYArray];
+        [copy setVoteType:self.voteType];
+        [copy setVoteid:self.voteid];
+        [copy setWinnerRestID:self.winnerRestID];
+        [copy setWinnerRestName:self.winnerRestName];
+        [copy setWinnerRestPic:self.winnerRestPic];
+        [copy setWinnerRestX:self.winnerRestX];
+        [copy setWinnerRestY:self.winnerRestY];
+        [copy setPlacesRankingArray:self.placesRankingArray];
+    }
+    
+    return copy;
+}
+
 
 @end

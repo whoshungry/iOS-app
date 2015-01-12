@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface HootLobby : NSObject
+@interface HootLobby : NSObject <NSCopying>
 
 @property (strong, nonatomic) NSNumber* groupid;
 
