@@ -31,6 +31,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     MKPointAnnotation *restaurantPin;
     BOOL viewload;
     BOOL votingDone;
+    
+    HootLobby *lobby;
 }
 
 @end
@@ -61,7 +63,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     /////////
     //Temporary fix for expirationTime
     PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
-    [query whereKey:@"groupId" equalTo:_currentLobby.groupid];
+    [query whereKey:@"groupId" equalTo:hootlobby.groupid];
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         if (!object) {
             NSLog(@"The getFirstObject request failed.");
@@ -69,7 +71,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             // The find succeeded.
             NSLog(@"Successfully retrieved the object.");
             NSLog(@"Expiration time is: %@",object[@"expirationTime"]);
-            _currentLobby.expirationTime = object[@"expirationTime"];
+            hootlobby.expirationTime = object[@"expirationTime"];
             
         }
     }];
@@ -78,9 +80,11 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
     
     _isLobbyDone = TRUE;
-    _currentLobby = hootlobby;
-    _currentLobby.voteid = hootlobby.voteid;
-    
+
+    lobby = [HootLobby new];
+    lobby = [hootlobby copy];
+    _currentLobby = [HootLobby new];
+    _currentLobby = [hootlobby copy];
     NSMutableArray *placesIdArray = [NSMutableArray new];
     NSMutableArray *placesNamesArray = [NSMutableArray new];
     NSMutableArray *placesPicsArray = [NSMutableArray new];
@@ -119,20 +123,20 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             
         }
         
-        _currentLobby.placesIdArray = placesIdArray;
-        _currentLobby.placesNamesArray = placesNamesArray;
-        _currentLobby.placesPicsArray = placesPicsArray;
-        _currentLobby.placesXArray = placesXArray;
-        _currentLobby.placesYArray = placesYArray;
+        lobby.placesIdArray = placesIdArray;
+        lobby.placesNamesArray = placesNamesArray;
+        lobby.placesPicsArray = placesPicsArray;
+        lobby.placesXArray = placesXArray;
+        lobby.placesYArray = placesYArray;
         
-        NSLog(@"current lobby ids rrrr: %@", _currentLobby.placesIdArray);
-        NSLog(@"current lobby names rrrr: %@", _currentLobby.placesNamesArray);
-        NSLog(@"current lobby pics rrrr: %@", _currentLobby.placesPicsArray);
+        NSLog(@"current lobby ids rrrr: %@", lobby.placesIdArray);
+        NSLog(@"current lobby names rrrr: %@", lobby.placesNamesArray);
+        NSLog(@"current lobby pics rrrr: %@", lobby.placesPicsArray);
         
-
+        _currentLobby = [lobby copy];
         
         [self setSummaryTitle];
-        //[_restaurantTable reloadData];
+        [_restaurantTable reloadData];
         self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                          target:self
                                                        selector:@selector(updateTime:)
@@ -463,8 +467,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
     //if ([[NSDate new] compare:_currentLobby.expirationTime] == NSOrderedDescending) {
     
-    if (_currentLobby.expirationTime == nil)
-        _currentLobby.expirationTime = [NSDate new];
+    //if (_currentLobby.expirationTime == nil)
+        _currentLobby.expirationTime = [[NSDate date] dateByAddingTimeInterval:30*60];
     
         NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;

@@ -53,6 +53,14 @@
                                    action:@selector(inviteFriends:)];
      
     self.navigationItem.rightBarButtonItem = inviteFriendsBtn;
+    
+    self.nameOfEvent.delegate = self;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 -(void) viewWillAppear:(BOOL)animated {
