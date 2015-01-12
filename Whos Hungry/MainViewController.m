@@ -105,6 +105,10 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         if (data != nil) {
             NSArray *groups = data[@"lobbies"];
             NSLog(@"found sooooo many groups: %li", (unsigned long)groups.count);
+            if (groups.count == 0) {
+                [self.coverIndicator stopAnimating];
+                self.coverView.hidden = YES;
+            }
             for (int i = 0; i < groups.count; i++) {
                 HootLobby *lobby = [[HootLobby alloc] init];
                 NSLog(@"gorups object ids: %@", [groups objectAtIndex:i]);
@@ -231,9 +235,23 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     {
         SummaryViewController *vc = [segue destinationViewController];
         vc.loaded = YES;
+        vc.isFromMain = YES;
         NSLog(@"the chosen group id is :%@", chosenHoot.groupid);
         NSLog(@"the chosen vote id is :%@", chosenHoot.voteid);
         [vc initWithHootLobby:chosenHoot];
+    }
+}
+
+- (void)panGesture:(UIPanGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        _startLocation = [sender locationInView:self.view];
+    }
+    else if (sender.state == UIGestureRecognizerStateEnded) {
+        CGPoint stopLocation = [sender locationInView:self.view];
+        CGFloat dx = stopLocation.x - _startLocation.x;
+        CGFloat dy = stopLocation.y - _startLocation.y;
+        CGFloat distance = sqrt(dx*dx + dy*dy );
+        NSLog(@"Distance: %f", distance);
     }
 }
 

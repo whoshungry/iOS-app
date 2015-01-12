@@ -31,6 +31,7 @@
 
 @property (assign, nonatomic) BOOL active;
 @property (assign, nonatomic) BOOL loaded;
+@property (assign, nonatomic) BOOL isFromMain;
 @property BOOL isSummary;
 
 @property (weak, nonatomic) IBOutlet UILabel *whenTimeLbl;
@@ -46,5 +47,7 @@
 @property (strong, nonatomic) CLLocation* currentLocation;
 - (IBAction)goHome:(id)sender;
 -(void)initWithHootLobby:(HootLobby *)hootlobby;
+@property (strong, nonatomic) IBOutlet UIView *votingCompleteView;
 
+@property (strong, nonatomic) IBOutlet UIView *votingIncompleteView;
 @end

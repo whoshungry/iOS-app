@@ -39,7 +39,6 @@
     }];
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     _orangeColor = [UIColor colorWithRed:(232.0/255.0) green:(111.0/255.0) blue:(73.0/255.0) alpha:1.0];

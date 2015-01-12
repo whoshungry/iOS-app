@@ -88,7 +88,7 @@
         for (int i = 0; i < amount; i++) {
             NSDictionary *currentPlace = placesData[i];
             [_allPlaces addObject:currentPlace];
-            NSLog(@"currnet plae is %@:", currentPlace);
+            NSLog(@"current place is %@:", currentPlace);
             
             [emptyVotingDict setObject:@(0) forKey:currentPlace[@"name"]];
             

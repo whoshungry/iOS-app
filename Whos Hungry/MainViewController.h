@@ -21,5 +21,7 @@
 - (IBAction)friendsBtnPressed:(id)sender;
 - (IBAction)publicBtnPressed:(id)sender;
 
+@property CGPoint startLocation;
+
 @end
   
