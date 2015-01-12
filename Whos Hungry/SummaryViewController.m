@@ -37,6 +37,14 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 @implementation SummaryViewController
 
+/*
+ Need to check for 4 different access
+ 1. Initial access from ADMIN when when/where/who is first selected
+ 2. Access from the ADMIN after going HOME and trying to modify vote or, if done, check map
+ 3. Access from FRIENDS to initially vote.
+ 4. Access from FRIENDS after already voting to modify vote or, if done, check map.
+ */
+
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self != nil) {
@@ -45,7 +53,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     return self;
 }
 
+//This method is accessed ONLY when user is coming from MainVC. This means the lobby was already made.
+//Need to check for 2 things:
+//  1. If it is FRIEND, then 
 -(void)initWithHootLobby:(HootLobby *)hootlobby {
+    
+    /////////
+    //Temporary fix for expirationTime
     PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
     [query whereKey:@"groupId" equalTo:_currentLobby.groupid];
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
@@ -59,10 +73,14 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             
         }
     }];
+    /////////
+    
+
     
     _isLobbyDone = TRUE;
     _currentLobby = hootlobby;
     _currentLobby.voteid = hootlobby.voteid;
+    
     NSMutableArray *placesIdArray = [NSMutableArray new];
     NSMutableArray *placesNamesArray = [NSMutableArray new];
     NSMutableArray *placesPicsArray = [NSMutableArray new];
@@ -81,7 +99,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     self.mapView.delegate = self;
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
     NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"responseObject!!: %@", responseObject);
@@ -253,8 +270,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     return pinView;
 }
 
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     NSLog(@"updated! %@", userLocation);
     CLLocation *user = [[CLLocation alloc] initWithLatitude:userLocation.coordinate.latitude longitude:userLocation.coordinate.longitude];
     CLLocation *locale = [[CLLocation alloc] initWithLatitude:restaurantCoor.latitude longitude:restaurantCoor.longitude];
@@ -264,8 +280,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     NSLog(@"didFailWithError: %@", error);
 }
 
@@ -277,15 +292,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 #pragma mark - NSUserDefaults methods
 
--(void)saveCustomObject:(HootLobby *)object
-{
+-(void)saveCustomObject:(HootLobby *)object{
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSData *myEncodedObject = [NSKeyedArchiver archivedDataWithRootObject:object];
     [prefs setObject:myEncodedObject forKey:LOBBY_KEY];
 }
 
--(HootLobby *)loadCustomObjectWithKey:(NSString*)key
-{
+-(HootLobby *)loadCustomObjectWithKey:(NSString*)key{
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSData *myEncodedObject = [prefs objectForKey:key];
     HootLobby *obj = (HootLobby *)[NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
@@ -391,19 +404,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    /*user_id : <facebook_id>
-    group_id : <group_id>
-    vote_type : <lunch, dinner ..> # lunch, dinner, coffee, beer
-    expiration_time : <absolute expiration time>
-    expiration_time_number : <relative expiration time : minute>
-    ex. 15, 30, 45, 60, 120 ...
-    restaurant_ids : <string of ids of restaurants>
-    ex. “12341234,12312341234”
-    restaurant_names : <stringof names>
-    restaurant_pics : <string of pic_urls>
-    restaurant_locations_x : strings of x
-    restaurant_locations_y : strings of y*/
     
     NSDictionary *params = @{@"user_id": _currentLobby.facebookId,
                              @"group_id": groupId,
@@ -711,8 +711,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
 }
 
-- (NSArray *)rightButtons
-{
+- (NSArray *)rightButtons{
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
     [rightUtilityButtons sw_addUtilityButtonWithColor:
      [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0]
@@ -724,8 +723,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     return rightUtilityButtons;
 }
 
-- (NSArray *)leftButtons
-{
+- (NSArray *)leftButtons{
     NSMutableArray *leftUtilityButtons = [NSMutableArray new];
     
     [leftUtilityButtons sw_addUtilityButtonWithColor:
@@ -754,8 +752,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 #pragma mark - SWTableViewDelegate
 
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state
-{
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state{
     switch (state) {
         case 0:
             NSLog(@"utility buttons closed");
@@ -772,8 +769,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     }
 }
 
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerLeftUtilityButtonWithIndex:(NSInteger)index
-{
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerLeftUtilityButtonWithIndex:(NSInteger)index{
     RSVPFriendsTableViewCell *theCell = (RSVPFriendsTableViewCell *)cell;
     NSIndexPath *path = [NSIndexPath indexPathWithIndex:index];
     switch (index) {
@@ -791,8 +787,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [theCell setNeedsDisplay];
 }
 
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
-{
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index{
     switch (index) {
         case 0:
         {
@@ -817,14 +812,12 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     }
 }
 
-- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
-{
+- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell{
     // allow just one cell's utility button to be open at once
     return YES;
 }
 
-- (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state
-{
+- (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state{
     switch (state) {
         case 1:
             // set to NO to disable all left utility buttons appearing
