@@ -275,7 +275,7 @@
         
         [_restaurantXArray addObject:chosenResponse[@"geometry"][@"location"][@"lat"]];
         [_restaurantYArray addObject:chosenResponse[@"geometry"][@"location"][@"lng"]];
-        [_restaurantRatingArray addObject:chosenResponse[@"rating"]];
+        //[_restaurantRatingArray addObject:chosenResponse[@"rating"]];
     }
     else
     {

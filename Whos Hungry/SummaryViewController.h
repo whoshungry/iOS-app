@@ -50,4 +50,6 @@
 @property (strong, nonatomic) IBOutlet UIView *votingCompleteView;
 
 @property (strong, nonatomic) IBOutlet UIView *votingIncompleteView;
+
+@property BOOL isLobbyDone;
 @end

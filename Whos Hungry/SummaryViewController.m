@@ -46,6 +46,21 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 }
 
 -(void)initWithHootLobby:(HootLobby *)hootlobby {
+    PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
+    [query whereKey:@"groupId" equalTo:_currentLobby.groupid];
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        if (!object) {
+            NSLog(@"The getFirstObject request failed.");
+        } else {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved the object.");
+            NSLog(@"Expiration time is: %@",object[@"expirationTime"]);
+            _currentLobby.expirationTime = object[@"expirationTime"];
+            
+        }
+    }];
+    
+    _isLobbyDone = TRUE;
     _currentLobby = hootlobby;
     _currentLobby.voteid = hootlobby.voteid;
     NSMutableArray *placesIdArray = [NSMutableArray new];
@@ -84,6 +99,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             [placesXArray addObject:currentRest[@"restaurant_location_x"]];
             [placesYArray addObject:currentRest[@"restaurant_location_y"]];
             [placesCountArray addObject:currentRest[@"count"]];
+            
         }
         
         _currentLobby.placesIdArray = placesIdArray;
@@ -96,8 +112,16 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         NSLog(@"current lobby names rrrr: %@", _currentLobby.placesNamesArray);
         NSLog(@"current lobby pics rrrr: %@", _currentLobby.placesPicsArray);
         
+
+        
         [self setSummaryTitle];
         //[_restaurantTable reloadData];
+        self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                         target:self
+                                                       selector:@selector(updateTime:)
+                                                       userInfo:nil
+                                                        repeats:NO];
+        //}
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -106,7 +130,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if (viewload == NO) {
+    if (!_isLobbyDone) {
         if (FBSession.activeSession.isOpen)
         {
             [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -121,7 +145,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         self.friendsGoingTable.delegate = self;
         self.friendsGoingTable.dataSource = self;
         self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        
+        self.votingCompleteView.hidden = YES;
+        self.votingIncompleteView.hidden = NO;
         _currentLobby = [HootLobby new];
         _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
         
@@ -142,15 +167,17 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             [self createAPIGroup];
         }
         viewload = YES;
+        //if (votingDone == NO) {
+        self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                         target:self
+                                                       selector:@selector(updateTime:)
+                                                       userInfo:nil
+                                                        repeats:NO];
+        //}
+
     }
     
-    //if (votingDone == NO) {
-        self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                    target:self
-                                                  selector:@selector(updateTime:)
-                                                  userInfo:nil
-                                                   repeats:NO];
-    //}
+
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -390,6 +417,16 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
                              @"restaurant_locations_y":restaurantY
                              };
     NSLog(@"params for create vote :%@", params);
+    NSLog(@"EXPIRATION TIME IS %@",_currentLobby.expirationTime);
+    
+    /////////
+    //Temporary solution to date issue
+    PFObject *expObject = [PFObject objectWithClassName:@"GroupExpiration"];
+    expObject[@"expirationTime"] = _currentLobby.expirationTime;
+    expObject[@"groupId"] = groupId;
+    [expObject saveInBackground];
+    /////////
+
     [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"create vote is :%@", responseObject);
         NSDictionary *results = (NSDictionary *) responseObject;
@@ -449,8 +486,11 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     if (hoursLeft == 0 && minutesLeft <= 0) {
         NSLog(@"donnnneee!!");
         votingDone = YES;
+        self.votingIncompleteView.hidden = YES;
+        self.votingCompleteView.hidden = NO;
         [self lobbyFinished];
-        //[self performSelector:@selector(lobbyFinished) withObject:nil afterDelay:30.0];
+
+        
     } else {
         [self performSelector:@selector(updateTime:) withObject:nil afterDelay:1.0];
     }

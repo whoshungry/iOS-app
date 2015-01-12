@@ -22,10 +22,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FBLoginView class];
     
-    /*[Parse setApplicationId:@"iBeTBcjpF8acRlEdj6RVTbQHtnnLUZOkHgE5revO"
+    [Parse setApplicationId:@"iBeTBcjpF8acRlEdj6RVTbQHtnnLUZOkHgE5revO"
                   clientKey:@"lIK6djquppHAcj2tikjubAo8lI8X6uk0fdJx9sxn"];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-    [PFFacebookUtils initializeFacebook];*/
+    //[PFFacebookUtils initializeFacebook];
     NSLog(@"Registering for push notifications...");
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
     {

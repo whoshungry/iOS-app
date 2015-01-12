@@ -29,12 +29,8 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 //NEed to modify different heights of the view because it doesnt work well in all devices
 -(void)addImageOnTopOfTheNavigationBar {
-    //UIImage* tempImage = [UIImage imageNamed:@"logosquare.png"];
     _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"owl_try_2.png"]];
-    //[imageView sizeToFit];
     _imageView.frame = CGRectMake(self.navigationController.navigationBar.frame.origin.x + 10.0, self.navigationController.navigationBar.frame.origin.y, self.navigationController.navigationBar.frame.size.height * (3.0/2.0), self.navigationController.navigationBar.frame.size.height * (3.0/2.0) + [self addSizeforDevice]); //set the proper frame here
-    //self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
-    //self.navigationController.navigationBar.barTintColor = [UIColor colorWithPatternImage:tempImage];
     [self.navigationController.view addSubview:_imageView];
     
 }
