@@ -179,7 +179,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     //Finds location for the first time only and ONLY if it is ADMIN
-    if (!_locationFound) {
+    //if (!_locationFound) {
         NSLog(@"going through it man %@", locations[0]);
         _currentLocation = locations[0];
         _currentCentre = _currentLocation.coordinate;
@@ -191,7 +191,7 @@
             [self getRestInfo:@"food"];
         }
         [locationManager stopUpdatingLocation];
-    }
+    //}
 
 }
 

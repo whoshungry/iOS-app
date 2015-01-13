@@ -33,6 +33,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     BOOL votingDone;
     
     HootLobby *lobby;
+    BOOL isAdmin;
 }
 
 @end
@@ -83,6 +84,13 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [locationManager requestWhenInUseAuthorization];
     
     self.mapView.delegate = self;
+    
+    
+    NSString *facebookID = [[NSUserDefaults standardUserDefaults] objectForKey:@"id"];
+    NSString *facebookName = [[NSUserDefaults standardUserDefaults] objectForKey:@"username"];
+    if ([_currentLobby.facebookName isEqualToString:facebookName]) {
+        isAdmin = YES;
+    }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
@@ -299,6 +307,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 #pragma mark - AWS API methods
 
 -(void) createAPIGroup {
+    isAdmin = YES;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString* facebookString = @"";
     for (int i = 0; i < _currentLobby.facebookbInvitatitions.count; i++) {
