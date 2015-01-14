@@ -56,6 +56,15 @@ typedef enum accessType
  4. Access from FRIENDS after already voting to modify vote or, if done, check map.
  */
 
+
+/*
+//THINGS TO FIX
+1. Tell Sungwon to fix repeated names when reloading names from Server
+2. enum is not working as it should
+
+ 
+*/
+
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self != nil) {
@@ -85,8 +94,12 @@ typedef enum accessType
     }
     else if (accessType == FRIEND_FIRST){
         //Load clean view and be ready to make vote
-        _voteArray = nil;
-        
+        //_voteArray = nil;
+        NSString *strFromInt = [NSString stringWithFormat:@"%d",hootlobby.groupid.intValue];
+        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
+        for (int i = 0; i < _voteArray.count; i++) {
+            NSLog(@"VOTE ARRAY #%d is : %@", i, _voteArray[i]);
+        }
     }
     else if (accessType == FRIEND_RETURNS){
         NSString *strFromInt = [NSString stringWithFormat:@"%d",hootlobby.groupid.intValue];
@@ -167,7 +180,7 @@ typedef enum accessType
             NSLog(@"current lobby pics rrrr: %@", lobby.placesPicsArray);
             
             _currentLobby = [lobby copy];
-            
+            [_restaurantTable reloadData];
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
@@ -223,6 +236,8 @@ typedef enum accessType
     self.votingCompleteView.hidden = YES;
     self.votingIncompleteView.hidden = NO;
     
+    self.restaurantTable.delegate = self;
+    self.restaurantTable.dataSource = self;
     [_restaurantTable reloadData];
     
     viewload = YES;
@@ -259,17 +274,39 @@ typedef enum accessType
     }];
 }
 
+-(NSArray *)cellsForTableView:(UITableView *)tableView
+{
+    NSInteger sections = tableView.numberOfSections;
+    NSMutableArray *cells = [[NSMutableArray alloc]  init];
+    for (int section = 0; section < sections; section++) {
+        NSInteger rows =  [tableView numberOfRowsInSection:section];
+        for (int row = 0; row < rows; row++) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+            UpDownVoteView *cell = (UpDownVoteView*)[self.restaurantTable cellForRowAtIndexPath:indexPath];//**here, for those cells not in current screen, cell is nil**
+            [cells addObject:cell];
+        }
+    }
+    return cells;
+}
+
 - (IBAction)goHome:(id)sender {
     [locationManager stopUpdatingLocation];
     [self.theTimer invalidate];
     self.theTimer = nil;
     
+    _voteArray = [NSMutableArray new];
+    NSArray* tableCellArray = [self cellsForTableView:_restaurantTable];
+    for (int i = 0; i < tableCellArray.count; i++) {
+        [_voteArray addObject:@([tableCellArray[i] votes])];
+    }
+    
     //Update array with group ID key
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    if (!_voteArray) {
+    if (_voteArray) {
         [prefs setObject:_voteArray forKey:[NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue]];
         [prefs synchronize];
     }
+
 }
 
 #pragma mark - Location methods
@@ -658,6 +695,15 @@ typedef enum accessType
             NSLog(@"Current row is %d", indexPath.row);
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
+            if (_voteArray && indexPath.row < _voteArray.count) {
+                
+                cell.votes = [[NSString stringWithFormat:@"%@",_voteArray[indexPath.row]] intValue];
+                cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
+                [cell enableDisable:cell.votes];
+            }
+            else{
+                cell.voteLbl.text = @"0";
+            }
         } else {
             CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_currentLobby.placesXArray[indexPath.row] doubleValue] longitude:(CLLocationDegrees)[_currentLobby.placesYArray[indexPath.row] doubleValue]];
             float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
@@ -680,9 +726,7 @@ typedef enum accessType
     //Cell is from Friends Table
     if([tableView isEqual:self.friendsGoingTable]) {
         static NSString *cellIdentifier = @"MyCustomCell";
-        
         RSVPFriendsTableViewCell *cell = (RSVPFriendsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-        
         cell.leftUtilityButtons = [self leftButtons];
         cell.rightUtilityButtons = [self rightButtons];
         cell.delegate = self;
