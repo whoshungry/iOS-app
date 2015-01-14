@@ -39,6 +39,14 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 @implementation SummaryViewController
 
+typedef enum accessType
+{
+    ADMIN_FIRST,
+    ADMIN_RETURNS,
+    FRIEND_FIRST,
+    FRIEND_RETURNS
+} accessType;
+
 /*
  Need to check for 4 different access
  1. Initial access from ADMIN when when/where/who is first selected
@@ -58,9 +66,32 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 //This method is accessed ONLY when user is coming from MainVC. This means the lobby was already made.
 //Need to check for 2 things:
 //  1. If it is FRIEND, then 
--(void)initWithHootLobby:(HootLobby *)hootlobby {
+-(void)initWithHootLobby:(HootLobby *)hootlobby withOption:(int)accessType{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    _voteArray = [NSMutableArray new];
+
+    if (accessType == ADMIN_FIRST) {
+        //Initialize all the groups and create vote
+        [self createAPIGroup];
+        _voteArray = nil;
+
+    }
+    else if (accessType == ADMIN_RETURNS){
+        NSString *strFromInt = [NSString stringWithFormat:@"%d",hootlobby.groupid.intValue];
+        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
+
+    }
+    else if (accessType == FRIEND_FIRST){
+        //Load clean view and be ready to make vote
+        _voteArray = nil;
+        
+    }
+    else if (accessType == FRIEND_RETURNS){
+        NSString *strFromInt = [NSString stringWithFormat:@"%d",hootlobby.groupid.intValue];
+        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
+    }
     
-    /////////
+    /***************************************************************************************/
     //Temporary fix for expirationTime
     PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
     [query whereKey:@"groupId" equalTo:hootlobby.groupid];
@@ -75,130 +106,127 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             
         }
     }];
-    /////////
+    
+    
+    
+     _loaded = NO;
+    
+
+   
     
 
     
-    _isLobbyDone = TRUE;
 
-    lobby = [HootLobby new];
-    lobby = [hootlobby copy];
-    _currentLobby = [HootLobby new];
-    _currentLobby = [hootlobby copy];
-    NSMutableArray *placesIdArray = [NSMutableArray new];
-    NSMutableArray *placesNamesArray = [NSMutableArray new];
-    NSMutableArray *placesPicsArray = [NSMutableArray new];
-    NSMutableArray *placesXArray = [NSMutableArray new];
-    NSMutableArray *placesYArray = [NSMutableArray new];
+
     
-    placesCountArray = [NSMutableArray new];
-    _loaded = NO;
+
     
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    [locationManager requestWhenInUseAuthorization];
-    
-    self.mapView.delegate = self;
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
-    [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"responseObject!!: %@", responseObject);
-        NSLog(@"responseObject!!: %@", responseObject[@"choices"]);
-        //NSDictionary *results = (NSDictionary *)responseObject;
-        id results = responseObject;
-        NSArray *choices = results[@"choices"];
-        NSLog(@"response count: %lu", (unsigned long)choices.count);
-        NSLog(@"response objectcttctctct: %@", choices);
-        for (int i = 0; i < choices.count; i++) {
-            NSDictionary *currentRest = choices[i];
-            [placesIdArray addObject:currentRest[@"restaurant_id"]];
-            [placesNamesArray addObject:currentRest[@"restaurant_name"]];
-            [placesPicsArray addObject:currentRest[@"restaurant_picture"]];
-            [placesXArray addObject:currentRest[@"restaurant_location_x"]];
-            [placesYArray addObject:currentRest[@"restaurant_location_y"]];
-            [placesCountArray addObject:currentRest[@"count"]];
+    if (accessType != ADMIN_FIRST) {
+        //accesses restaurants names and vote counts and saves it in "currentLobby" variable
+        /***************************************************************************************/
+        lobby = [HootLobby new];
+        lobby = [hootlobby copy];
+        _currentLobby = [HootLobby new];
+        _currentLobby = [hootlobby copy];
+        NSMutableArray *placesIdArray = [NSMutableArray new];
+        NSMutableArray *placesNamesArray = [NSMutableArray new];
+        NSMutableArray *placesPicsArray = [NSMutableArray new];
+        NSMutableArray *placesXArray = [NSMutableArray new];
+        NSMutableArray *placesYArray = [NSMutableArray new];
+        placesCountArray = [NSMutableArray new];
+        
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
+        [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"responseObject!!: %@", responseObject);
+            NSLog(@"responseObject!!: %@", responseObject[@"choices"]);
+            //NSDictionary *results = (NSDictionary *)responseObject;
+            id results = responseObject;
+            NSArray *choices = results[@"choices"];
+            NSLog(@"response count: %lu", (unsigned long)choices.count);
+            NSLog(@"response objectcttctctct: %@", choices);
+            for (int i = 0; i < choices.count; i++) {
+                NSDictionary *currentRest = choices[i];
+                [placesIdArray addObject:currentRest[@"restaurant_id"]];
+                [placesNamesArray addObject:currentRest[@"restaurant_name"]];
+                [placesPicsArray addObject:currentRest[@"restaurant_picture"]];
+                [placesXArray addObject:currentRest[@"restaurant_location_x"]];
+                [placesYArray addObject:currentRest[@"restaurant_location_y"]];
+                [placesCountArray addObject:currentRest[@"count"]];
+                
+            }
             
-        }
-        
-        lobby.placesIdArray = placesIdArray;
-        lobby.placesNamesArray = placesNamesArray;
-        lobby.placesPicsArray = placesPicsArray;
-        lobby.placesXArray = placesXArray;
-        lobby.placesYArray = placesYArray;
-        
-        NSLog(@"current lobby ids rrrr: %@", lobby.placesIdArray);
-        NSLog(@"current lobby names rrrr: %@", lobby.placesNamesArray);
-        NSLog(@"current lobby pics rrrr: %@", lobby.placesPicsArray);
-        
-        _currentLobby = [lobby copy];
-        
-        [self setSummaryTitle];
-        [_restaurantTable reloadData];
-        self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                         target:self
-                                                       selector:@selector(updateTime:)
-                                                       userInfo:nil
-                                                        repeats:NO];
-        //}
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
+            lobby.placesIdArray = placesIdArray;
+            lobby.placesNamesArray = placesNamesArray;
+            lobby.placesPicsArray = placesPicsArray;
+            lobby.placesXArray = placesXArray;
+            lobby.placesYArray = placesYArray;
+            
+            NSLog(@"current lobby ids rrrr: %@", lobby.placesIdArray);
+            NSLog(@"current lobby names rrrr: %@", lobby.placesNamesArray);
+            NSLog(@"current lobby pics rrrr: %@", lobby.placesPicsArray);
+            
+            _currentLobby = [lobby copy];
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
+    }
+
 }
+
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if (!_isLobbyDone) {
-        if (FBSession.activeSession.isOpen)
-        {
-            [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/me/picture?type=large&return_ssl_resources=1"]];
-                selfImage = [UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)];
-            }];
-        }
-        
-        _indexPathArray = [NSMutableArray new];
-        
-        [self.friendsGoingTable registerNib:[UINib nibWithNibName:@"RSVPFriendsTableViewCell" bundle:nil] forCellReuseIdentifier:@"MyCustomCell"];
-        self.friendsGoingTable.delegate = self;
-        self.friendsGoingTable.dataSource = self;
-        self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        self.votingCompleteView.hidden = YES;
-        self.votingIncompleteView.hidden = NO;
-        _currentLobby = [HootLobby new];
-        _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
-        
-        /*
-        //HootLobby doesn't exist
-        if (!_currentLobby) {
-            NSLog(@"Current Lobby is empty");
-            _currentLobby = [HootLobby new];
-        }
-        //HootLobby exists
-        else{
-            NSLog(@"Current Lobby has DATA!");
-            //NSLog(@"currnet lobby is %@", _currentLobby);
-            [self createAPIGroup];
-        }
-        */
-        if (!_isFromMain) {
-            [self createAPIGroup];
-        }
-        viewload = YES;
-        //if (votingDone == NO) {
-        self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                         target:self
-                                                       selector:@selector(updateTime:)
-                                                       userInfo:nil
-                                                        repeats:NO];
-        //}
-
+    [self setSummaryTitle];
+    
+    //Get picture of user
+    /***************************************************************************************/
+    if (FBSession.activeSession.isOpen)
+    {
+        [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/me/picture?type=large&return_ssl_resources=1"]];
+            selfImage = [UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)];
+        }];
     }
     
-
+    //Map initialization and authorization
+    /***************************************************************************************/
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [locationManager requestWhenInUseAuthorization];
+    self.mapView.delegate = self;
+    
+    //Set the timer
+    /***************************************************************************************/
+    self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                     target:self
+                                                   selector:@selector(updateTime:)
+                                                   userInfo:nil
+                                                    repeats:NO];
+    
+    //Initializes and creates table
+    /***************************************************************************************/
+    [self.friendsGoingTable registerNib:[UINib nibWithNibName:@"RSVPFriendsTableViewCell" bundle:nil] forCellReuseIdentifier:@"MyCustomCell"];
+    self.friendsGoingTable.delegate = self;
+    self.friendsGoingTable.dataSource = self;
+    self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    
+    
+    
+    _indexPathArray = [NSMutableArray new];
+    self.votingCompleteView.hidden = YES;
+    self.votingIncompleteView.hidden = NO;
+    
+    [_restaurantTable reloadData];
+    
+    viewload = YES;
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -215,10 +243,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         sender = (UpDownVoteView *)[theData objectForKey:@"sender"];
     }
     
-    //user_id : <facebook_id>
-    //group_id : <group_id>
-    //choice : <id of restaurant>
-    //status :  <status “+1”, “0”, “-1”>
     
     NSLog(@"restaurant list ids: %@", _currentLobby.placesIdArray);
     NSLog(@"voted restaurant id : %@", _currentLobby.placesIdArray[sender.index]);
@@ -240,8 +264,11 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [locationManager stopUpdatingLocation];
     [self.theTimer invalidate];
     self.theTimer = nil;
-    //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    //[prefs setObject:0 forKey:LOBBY_KEY];
+    
+    //Update array with group ID key
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:_voteArray forKey:[NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue]];
+    [prefs synchronize];
 }
 
 #pragma mark - Location methods
@@ -577,63 +604,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
 }
 
-/*- (void)loadSummary{
-    //Goes through all place_id's and stores them in _allPlaces array
-    for (int i = 0; i < _currentLobby.placesIdArray.count; i++) {
-        [self queryGooglePlacesWithPlaceId:_currentLobby.placesIdArray[i]];
-    }
-}
-
--(void)loadRestaurantNames{
-    NSLog(@"count is %li", (unsigned long)_allPlaces.count);
-    for (int j = 0; j < _allPlaces.count; j++) {
-        UpDownVoteView *tempCell = [UpDownVoteView new];
-        NSIndexPath *tempIndex = _indexPathArray[j];
-        tempCell = (UpDownVoteView*)[_restaurantTable cellForRowAtIndexPath:tempIndex];
-        //UpDownVoteView *cell = [self.restaurantTable cellForRowAtIndexPath:_indexPathArray[j]];
-
-        tempCell.restaurantLabel.text = _allPlaces[j][@"name"];
-    }
-}
-
--(void) queryGooglePlacesWithPlaceId:(NSString*)placeId{
-    NSLog(@"going through google places!!!");
-    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?placeid=%@&key=%@",placeId,GOOGLE_API_KEY];
-    NSURL *googleRequestURL=[NSURL URLWithString:url];
-    
-    // Retrieve the results of the URL.
-    dispatch_async(kBgQueue, ^{
-        NSData* data = [NSData dataWithContentsOfURL: googleRequestURL];
-        [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
-    });
-}
-
--(void)fetchedData:(NSData *)responseData {
-    //parse out the json data
-    NSLog(@"fetched data is @!!:!! %@: ", responseData);
-    NSError* error;
-    NSDictionary* json = [NSJSONSerialization
-                          JSONObjectWithData:responseData
-                          
-                          options:kNilOptions
-                          error:&error];
-    NSLog(@"placccccccce: %@", json);
-    
-    NSLog(@"ferrror %@ ", error);
-
-    //NSLog(@"JSON is %@",json);
-    //The results from Google will be an array obtained from the NSDictionary object with the key "results".
-    NSArray* place = [json objectForKey:@"result"];
-    NSLog(@"placcce: %@", place);
-    
-    [_allPlaces addObject:place];
-    if (_allPlaces.count == _currentLobby.placesIdArray.count) {
-        [self loadRestaurantNames];
-        //[_restaurantTable reloadData];
-    }
-    NSLog(@"places is %@",_allPlaces);
-}*/
-
 #pragma mark - Table View methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -654,16 +624,12 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     }
 }
 
--(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"chosen: %li", indexPath.row);
-}
-
 #pragma mark - UIScrollViewDelegate
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //Cell is from Restaurant's Table
     if ([tableView isEqual:self.restaurantTable]) {
         static NSString *simpleTableIdentifier = @"UpDownVoteView";
-        
         UpDownVoteView *cell = (UpDownVoteView *)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
         if (cell == nil)
         {
@@ -695,12 +661,20 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
-            cell.votes = (int)placesCountArray[indexPath.row];
-            cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
+            if (_voteArray && indexPath.row < _voteArray.count) {
+                
+                cell.votes = (int)_voteArray[indexPath.row];
+                cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
+            }
+            else{
+                NSLog(@"ARRAY EMPTY OR OUT OF BOUNDS");
+            }
         }
         
         return cell;
     }
+    
+    //Cell is from Friends Table
     else {
         static NSString *cellIdentifier = @"MyCustomCell";
         
@@ -739,16 +713,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     return leftUtilityButtons;
 }
-
-// Set row height on an individual basis
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return [self rowHeightForIndexPath:indexPath];
-//}
-//
-//- (CGFloat)rowHeightForIndexPath:(NSIndexPath *)indexPath {
-//    return ([indexPath row] * 10) + 60;
-//}
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     // Set background color of cell here if you don't want default white
