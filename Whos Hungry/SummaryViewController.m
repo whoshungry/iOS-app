@@ -61,6 +61,7 @@ typedef enum accessType
 //THINGS TO FIX
 1. Tell Sungwon to fix repeated names when reloading names from Server
 2. enum is not working as it should
+3. Fix timer issues
 
  
 */
@@ -130,10 +131,10 @@ typedef enum accessType
                 NSLog(@"Successfully retrieved the object.");
                 NSLog(@"Expiration time is: %@",object[@"expirationTime"]);
                 hootlobby.expirationTime = object[@"expirationTime"];
-                
-            }
+                _currentLobby.expirationTime = object[@"expirationTime"];
+                [self setSummaryTitle];
+                }
         }];
-        
         
         //accesses restaurants names and vote counts and saves it in "currentLobby" variable
         /***************************************************************************************/
@@ -215,13 +216,7 @@ typedef enum accessType
     [locationManager requestWhenInUseAuthorization];
     self.mapView.delegate = self;
     
-    //Set the timer
-    /***************************************************************************************/
-    self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                     target:self
-                                                   selector:@selector(updateTime:)
-                                                   userInfo:nil
-                                                    repeats:NO];
+
     
     //Initializes and creates table
     /***************************************************************************************/
@@ -230,7 +225,14 @@ typedef enum accessType
     self.friendsGoingTable.dataSource = self;
     self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
-    
+    //Set the timer
+    /***************************************************************************************/
+    self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                     target:self
+                                                   selector:@selector(updateTime:)
+                                                   userInfo:nil
+                                                    repeats:YES];
+
     
     _indexPathArray = [NSMutableArray new];
     self.votingCompleteView.hidden = YES;
@@ -530,27 +532,18 @@ typedef enum accessType
 - (IBAction)updateTime:(id)sender {
     NSInteger hoursLeft = 0;
     NSInteger minutesLeft = 0;
-
-    //if ([[NSDate new] compare:_currentLobby.expirationTime] == NSOrderedDescending) {
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    NSDateComponents *components = [gregorianCalendar components:unitFlags
+                                                        fromDate:[NSDate new]
+                                                          toDate:_currentLobby.expirationTime
+                                                         options:0];
+    hoursLeft = components.hour;
+    minutesLeft = components.minute + 0; //plus 1 to include the chosen time, plus 0 not t0
     
-    //if (_currentLobby.expirationTime == nil)
-        _currentLobby.expirationTime = [[NSDate date] dateByAddingTimeInterval:30*60];
+    NSLog(@"time left is :%ld hrs and %ld mins", (long)hoursLeft, (long)minutesLeft);
     
-        NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-        NSDateComponents *components = [gregorianCalendar components:unitFlags
-                                                            fromDate:[NSDate new]
-                                                              toDate:_currentLobby.expirationTime
-                                                             options:0];
-        hoursLeft = components.hour;
-        minutesLeft = components.minute + 0; //plus 1 to include the chosen time, plus 0 not t0
-        
-        NSLog(@"time left is :%ld hrs and %ld mins", (long)hoursLeft, (long)minutesLeft);
-        
-        self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, (long)minutesLeft];
-    //} else {
-    //    self.whenTimeLbl.text = @"Lobby is closed!";
-   // }
+    self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, (long)minutesLeft];
 
     //check if over...
     if (hoursLeft == 0 && minutesLeft <= 0) {
@@ -562,7 +555,8 @@ typedef enum accessType
 
         
     } else {
-        [self performSelector:@selector(updateTime:) withObject:nil afterDelay:1.0];
+        NSLog(@"QWDAEFGRSHTDJTYNRSEARGV");
+        //[self performSelector:@selector(updateTime:) withObject:nil afterDelay:1.0];
     }
 }
 
