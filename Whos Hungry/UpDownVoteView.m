@@ -49,6 +49,19 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"MakeVote" object:self userInfo:dataDict];
 }
 
+-(void) enableDisable:(int)property {
+    if (property == -1) {
+        self.upBtn.enabled = YES;
+        self.downBtn.enabled = NO;
+    } else if (property == 0) {
+        self.upBtn.enabled = YES;
+        self.downBtn.enabled = YES;
+    } else if (property == 1) {
+        self.upBtn.enabled = NO;
+        self.downBtn.enabled = YES;
+    }
+}
+
 -(void) setVoteLbl:(UILabel *)voteLbl {
     self.voteLbl = voteLbl;
     if ([voteLbl.text isEqualToString:@"-1"]) {

@@ -22,5 +22,5 @@
 @property (strong, nonatomic) IBOutlet UILabel *distanceLabel;
 - (IBAction)voteUp:(id)sender;
 - (IBAction)voteDown:(id)sender;
-
+-(void) enableDisable:(int)property;
 @end
