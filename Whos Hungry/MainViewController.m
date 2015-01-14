@@ -20,11 +20,21 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSMutableArray *lobbies;
     NSMutableArray *hostImages;
     HootLobby *chosenHoot;
+    BOOL isAdmin;
+    
+    __block NSString *facebookID;
 }
 
 @end
 
 @implementation MainViewController
+
+typedef enum accessType {
+    ADMIN_FIRST,
+    ADMIN_RETURNS,
+    FRIEND_FIRST,
+    FRIEND_RETURNS
+} accessType;
 
 
 //NEed to modify different heights of the view because it doesnt work well in all devices
@@ -55,7 +65,6 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     [self.tableView reloadData];
     
-    __block NSString *facebookID;
     
     [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
@@ -68,6 +77,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
             // See: https://developers.facebook.com/docs/ios/errors
         }
     }];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -201,6 +211,12 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"index path is: %@", lobbies[indexPath.row]);
     chosenHoot = (HootLobby *)lobbies[indexPath.row];
+    
+    //checks if admin
+    if ([chosenHoot.facebookName isEqualToString:facebookID]) {
+        isAdmin = YES;
+    }
+    
     NSLog(@"chosen hoot chosen is :  %@", chosenHoot);
     [self performSegueWithIdentifier:@"maintosummary" sender:self];
 }
@@ -232,9 +248,17 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         SummaryViewController *vc = [segue destinationViewController];
         vc.loaded = YES;
         vc.isFromMain = YES;
-        NSLog(@"the chosen group id is :%@", chosenHoot.groupid);
-        NSLog(@"the chosen vote id is :%@", chosenHoot.voteid);
-        [vc initWithHootLobby:chosenHoot];
+        
+        if (isAdmin) {
+            [vc initWithHootLobby:chosenHoot withOption:ADMIN_RETURNS];
+        } else {
+            NSArray *votedArr = [[NSUserDefaults standardUserDefaults] objectForKey:[chosenHoot.groupid stringValue]];
+            if (votedArr) {
+                [vc initWithHootLobby:chosenHoot withOption:FRIEND_FIRST];
+            } else {
+                [vc initWithHootLobby:chosenHoot withOption:FRIEND_RETURNS];
+            }
+        }
     }
 }
 

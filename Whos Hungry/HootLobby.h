@@ -35,4 +35,6 @@
 @property (strong, nonatomic) NSNumber* winnerRestX;
 @property (strong, nonatomic) NSNumber* winnerRestY;
 
+@property (nonatomic, assign) BOOL didAdminCreate;
+
 @end

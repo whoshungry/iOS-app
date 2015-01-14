@@ -32,6 +32,7 @@
     [encoder encodeObject:_winnerRestX forKey:@"winnerRestX"];
     [encoder encodeObject:_winnerRestY forKey:@"winnerRestY"];
     [encoder encodeObject:_placesRankingArray forKey:@"placesRankingArray"];
+    [encoder encodeObject:@(_didAdminCreate) forKey:@"didAdminCreate"];
 
 }
 
@@ -59,7 +60,7 @@
         _winnerRestX = [decoder decodeObjectForKey:@"winnerRestX"];
         _winnerRestY = [decoder decodeObjectForKey:@"winnerRestY"];
         _placesRankingArray = [decoder decodeObjectForKey:@"placesRankingArray"];
-
+        _didAdminCreate = [decoder decodeObjectForKey:@"didAdminCreate"];
     }
     return self;
 }
@@ -92,6 +93,7 @@
         [copy setWinnerRestX:self.winnerRestX];
         [copy setWinnerRestY:self.winnerRestY];
         [copy setPlacesRankingArray:self.placesRankingArray];
+        [copy setDidAdminCreate:self.didAdminCreate];
     }
     
     return copy;

@@ -33,6 +33,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     BOOL votingDone;
     
     HootLobby *lobby;
+    BOOL isAdmin;
 }
 
 @end
@@ -90,6 +91,7 @@ typedef enum accessType
         NSString *strFromInt = [NSString stringWithFormat:@"%d",hootlobby.groupid.intValue];
         _voteArray = [prefs mutableArrayValueForKey:strFromInt];
     }
+
     
     /***************************************************************************************/
     //Temporary fix for expirationTime
@@ -339,6 +341,7 @@ typedef enum accessType
 #pragma mark - AWS API methods
 
 -(void) createAPIGroup {
+    isAdmin = YES;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString* facebookString = @"";
     for (int i = 0; i < _currentLobby.facebookbInvitatitions.count; i++) {
