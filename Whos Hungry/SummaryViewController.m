@@ -99,7 +99,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    [locationManager requestWhenInUseAuthorization];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        [locationManager requestWhenInUseAuthorization];
+    }
     
     self.mapView.delegate = self;
     
@@ -110,6 +112,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
         isAdmin = YES;
     }
     
+    if (_currentLobby.voteid != nil) {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -154,6 +157,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
+    }
 }
 
 - (void)viewDidLoad {
