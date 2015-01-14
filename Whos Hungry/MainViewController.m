@@ -259,7 +259,6 @@ typedef enum accessType {
                 [vc initWithHootLobby:chosenHoot withOption:FRIEND_RETURNS];
             }
         }
-        //[self presentViewController:vc animated:YES completion:nil];
     }
 }
 
