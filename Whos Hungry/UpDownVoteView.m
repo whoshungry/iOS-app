@@ -62,19 +62,6 @@
     }
 }
 
--(void) setVoteLbl:(UILabel *)voteLbl {
-    self.voteLbl = voteLbl;
-    if ([voteLbl.text isEqualToString:@"-1"]) {
-        self.upBtn.enabled = YES;
-        self.downBtn.enabled = NO;
-    } else if ([voteLbl.text isEqualToString:@"0"]) {
-        self.upBtn.enabled = YES;
-        self.downBtn.enabled = YES;
-    } else if ([voteLbl.text isEqualToString:@"1"]) {
-        self.upBtn.enabled = NO;
-        self.downBtn.enabled = YES;
-    }
-}
 
 
 

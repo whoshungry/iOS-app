@@ -266,8 +266,10 @@ typedef enum accessType
     
     //Update array with group ID key
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:_voteArray forKey:[NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue]];
-    [prefs synchronize];
+    if (!_voteArray) {
+        [prefs setObject:_voteArray forKey:[NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue]];
+        [prefs synchronize];
+    }
 }
 
 #pragma mark - Location methods
@@ -665,6 +667,7 @@ typedef enum accessType
                 
                 cell.votes = (int)_voteArray[indexPath.row];
                 cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
+                [cell enableDisable:cell.votes];
             }
             else{
                 cell.voteLbl.text = @"0";
@@ -675,7 +678,7 @@ typedef enum accessType
     }
     
     //Cell is from Friends Table
-    else {
+    if([tableView isEqual:self.friendsGoingTable]) {
         static NSString *cellIdentifier = @"MyCustomCell";
         
         RSVPFriendsTableViewCell *cell = (RSVPFriendsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
@@ -686,7 +689,7 @@ typedef enum accessType
         
         return cell;
     }
-    
+    return 0;
 }
 
 - (NSArray *)rightButtons{
