@@ -46,7 +46,7 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) CLLocation* currentLocation;
 - (IBAction)goHome:(id)sender;
--(void)initWithHootLobby:(HootLobby *)hootlobby;
+-(void)initWithHootLobby:(HootLobby *)hootlobby withOption:(int)accessType;
 @property (strong, nonatomic) IBOutlet UIView *votingCompleteView;
 
 @property (strong, nonatomic) IBOutlet UIView *votingIncompleteView;

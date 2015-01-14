@@ -26,6 +26,13 @@
 
 @implementation LobbyViewController
 
+typedef enum accessType {
+    ADMIN_FIRST,
+    ADMIN_RETURNS,
+    FRIEND_FIRST,
+    FRIEND_RETURNS
+} accessType;
+
 -(void)addImageOnTopOfTheNavigationBar {
     //UIImage* tempImage = [UIImage imageNamed:@"logosquare.png"];
     _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logosquare_transparent.png"]];
@@ -171,7 +178,7 @@
 
 - (void)presentSummaryVC {
     SummaryViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryViewController"];
-    [self.friendPickerController presentViewController:vc animated:YES completion:nil];
+    [vc initWithHootLobby:nil withOption:ADMIN_FIRST];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation

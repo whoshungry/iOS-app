@@ -59,7 +59,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 //This method is accessed ONLY when user is coming from MainVC. This means the lobby was already made.
 //Need to check for 2 things:
 //  1. If it is FRIEND, then 
--(void)initWithHootLobby:(HootLobby *)hootlobby {
+-(void)initWithHootLobby:(HootLobby *)hootlobby withOption:(int)accessType{
     
     /////////
     //Temporary fix for expirationTime
@@ -103,7 +103,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     
     self.mapView.delegate = self;
     
-    
+    //checks if Admin
     NSString *facebookID = [[NSUserDefaults standardUserDefaults] objectForKey:@"id"];
     NSString *facebookName = [[NSUserDefaults standardUserDefaults] objectForKey:@"username"];
     if ([_currentLobby.facebookName isEqualToString:facebookName]) {
