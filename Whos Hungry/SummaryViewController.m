@@ -116,14 +116,6 @@ typedef enum accessType
 
    
     
-
-    
-
-
-    
-
-    
-    
     if (accessType != ADMIN_FIRST) {
         //accesses restaurants names and vote counts and saves it in "currentLobby" variable
         /***************************************************************************************/
