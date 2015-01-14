@@ -11,12 +11,12 @@
 @implementation UpDownVoteView
 
 - (IBAction)voteUp:(id)sender {
-    self.state++;
-    if (self.state == 0) {
+    self.stateInt++;
+    if (self.stateInt == 0) {
         self.votes++;
         self.upBtn.enabled = YES;
         self.downBtn.enabled = YES;
-    } else if (self.state == 1) {
+    } else if (self.stateInt == 1) {
         self.upBtn.enabled = NO;
         self.downBtn.enabled = YES;
         self.votes++;
@@ -29,18 +29,17 @@
 }
 
 - (IBAction)voteDown:(id)sender {
-    self.state--;
-    if (self.state == -1) {
+    self.stateInt--;
+    if (self.stateInt == -1) {
         self.upBtn.enabled = YES;
         self.downBtn.enabled = NO;
         self.votes--;
-    } else if (self.state == 0) {
+    } else if (self.stateInt == 0) {
         self.upBtn.enabled = YES;
         self.downBtn.enabled = YES;
         self.votes--;
         self.upBtn.enabled = YES;
-        self.downBtn.enabled = YES
-        ;
+        self.downBtn.enabled = YES;
     }
     self.status = @"-1";
     self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
@@ -49,14 +48,14 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"MakeVote" object:self userInfo:dataDict];
 }
 
--(void) enableDisable:(int)property {
-    if (property == -1) {
+-(void) enableDisable {
+    if (self.stateInt == -1) {
         self.upBtn.enabled = YES;
         self.downBtn.enabled = NO;
-    } else if (property == 0) {
+    } else if (self.stateInt == 0) {
         self.upBtn.enabled = YES;
         self.downBtn.enabled = YES;
-    } else if (property == 1) {
+    } else if (self.stateInt == 1) {
         self.upBtn.enabled = NO;
         self.downBtn.enabled = YES;
     }

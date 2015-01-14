@@ -53,4 +53,5 @@
 
 @property BOOL isLobbyDone;
 @property NSMutableArray* voteArray;
+@property NSMutableArray* voteStatusArray;
 @end

@@ -11,7 +11,7 @@
 @interface UpDownVoteView : UITableViewCell
 @property (nonatomic, assign) int votes;
 //@property (nonatomic, assign) BOOL voted;
-@property (nonatomic, assign) int state;
+@property (nonatomic, assign) int stateInt;
 @property (nonatomic, assign) NSString* status;
 @property(nonatomic, assign) int index;
 
@@ -22,5 +22,5 @@
 @property (strong, nonatomic) IBOutlet UILabel *distanceLabel;
 - (IBAction)voteUp:(id)sender;
 - (IBAction)voteDown:(id)sender;
--(void) enableDisable:(int)property;
+-(void) enableDisable;
 @end

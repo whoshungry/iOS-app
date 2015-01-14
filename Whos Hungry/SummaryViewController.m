@@ -107,9 +107,6 @@ typedef enum accessType
     }
 
     
-
-    
-    
     
      _loaded = NO;
     
@@ -295,15 +292,19 @@ typedef enum accessType
     self.theTimer = nil;
     
     _voteArray = [NSMutableArray new];
+    _voteStatusArray = [NSMutableArray new];
+    
     NSArray* tableCellArray = [self cellsForTableView:_restaurantTable];
     for (int i = 0; i < tableCellArray.count; i++) {
         [_voteArray addObject:@([tableCellArray[i] votes])];
+        [_voteStatusArray addObject:@([tableCellArray[i] stateInt])];
     }
     
     //Update array with group ID key
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    if (_voteArray) {
+    if (_voteArray && _voteStatusArray) {
         [prefs setObject:_voteArray forKey:[NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue]];
+        [prefs setObject:_voteStatusArray forKey:[NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue]];
         [prefs synchronize];
     }
 
@@ -692,14 +693,14 @@ typedef enum accessType
             //CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
             float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
             //float distance = 50.0f;
-            NSLog(@"Current row is %d", indexPath.row);
+            NSLog(@"Current row is %d", (int)indexPath.row);
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
-            if (_voteArray && indexPath.row < _voteArray.count) {
-                
+            if (_voteArray && indexPath.row < _voteArray.count && _voteStatusArray) {
                 cell.votes = [[NSString stringWithFormat:@"%@",_voteArray[indexPath.row]] intValue];
+                cell.stateInt = [[NSString stringWithFormat:@"%@",_voteStatusArray[indexPath.row]] intValue];
                 cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
-                [cell enableDisable:cell.votes];
+                [cell enableDisable];
             }
             else{
                 cell.voteLbl.text = @"0";
@@ -710,10 +711,10 @@ typedef enum accessType
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
             if (_voteArray && indexPath.row < _voteArray.count) {
-                
-                cell.votes = (int)_voteArray[indexPath.row];
+                cell.votes = [[NSString stringWithFormat:@"%@",_voteArray[indexPath.row]] intValue];
+                cell.stateInt = [[NSString stringWithFormat:@"%@",_voteStatusArray[indexPath.row]] intValue];
                 cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
-                [cell enableDisable:cell.votes];
+                [cell enableDisable];
             }
             else{
                 cell.voteLbl.text = @"0";
