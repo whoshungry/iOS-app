@@ -73,6 +73,7 @@ typedef enum accessType
 
     if (accessType == ADMIN_FIRST) {
         //Initialize all the groups and create vote
+        _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
         [self createAPIGroup];
         _voteArray = nil;
 
@@ -93,21 +94,7 @@ typedef enum accessType
     }
 
     
-    /***************************************************************************************/
-    //Temporary fix for expirationTime
-    PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
-    [query whereKey:@"groupId" equalTo:hootlobby.groupid];
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        if (!object) {
-            NSLog(@"The getFirstObject request failed.");
-        } else {
-            // The find succeeded.
-            NSLog(@"Successfully retrieved the object.");
-            NSLog(@"Expiration time is: %@",object[@"expirationTime"]);
-            hootlobby.expirationTime = object[@"expirationTime"];
-            
-        }
-    }];
+
     
     
     
@@ -117,6 +104,24 @@ typedef enum accessType
    
     
     if (accessType != ADMIN_FIRST) {
+        
+        /***************************************************************************************/
+        //Temporary fix for expirationTime
+        PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
+        [query whereKey:@"groupId" equalTo:hootlobby.groupid];
+        [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            if (!object) {
+                NSLog(@"The getFirstObject request failed.");
+            } else {
+                // The find succeeded.
+                NSLog(@"Successfully retrieved the object.");
+                NSLog(@"Expiration time is: %@",object[@"expirationTime"]);
+                hootlobby.expirationTime = object[@"expirationTime"];
+                
+            }
+        }];
+        
+        
         //accesses restaurants names and vote counts and saves it in "currentLobby" variable
         /***************************************************************************************/
         lobby = [HootLobby new];
@@ -662,7 +667,7 @@ typedef enum accessType
                 cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
             }
             else{
-                NSLog(@"ARRAY EMPTY OR OUT OF BOUNDS");
+                cell.voteLbl.text = @"0";
             }
         }
         

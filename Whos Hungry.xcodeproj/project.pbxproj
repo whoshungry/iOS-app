@@ -127,6 +127,8 @@
 		C398740E1A3930020009FC3E /* GetDirectionsIcon(who'shungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C398740D1A3930020009FC3E /* GetDirectionsIcon(who'shungry).png */; };
 		C3A9988D1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3A9988C1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png */; };
 		C3A9988F1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3A9988E1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png */; };
+		C3B1D4A11A6617C4006CEDD5 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B1D4A01A6617C4006CEDD5 /* libsqlite3.dylib */; };
+		C3B1D4A31A6617CF006CEDD5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B1D4A21A6617CF006CEDD5 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -310,6 +312,8 @@
 		C398740D1A3930020009FC3E /* GetDirectionsIcon(who'shungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GetDirectionsIcon(who'shungry).png"; sourceTree = "<group>"; };
 		C3A9988C1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownvoteIcon(Who'sHungry).png"; sourceTree = "<group>"; };
 		C3A9988E1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UpvoteIcon(Who'sHungry).png"; sourceTree = "<group>"; };
+		C3B1D4A01A6617C4006CEDD5 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		C3B1D4A21A6617CF006CEDD5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,6 +321,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3B1D4A31A6617CF006CEDD5 /* StoreKit.framework in Frameworks */,
+				C3B1D4A11A6617C4006CEDD5 /* libsqlite3.dylib in Frameworks */,
 				1B9713C91A0B335300A2F46E /* SystemConfiguration.framework in Frameworks */,
 				1B9713C51A0B334200A2F46E /* Security.framework in Frameworks */,
 				1B9713C31A0B333C00A2F46E /* QuartzCore.framework in Frameworks */,
@@ -345,6 +351,8 @@
 		1B9713991A0B2A3600A2F46E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C3B1D4A21A6617CF006CEDD5 /* StoreKit.framework */,
+				C3B1D4A01A6617C4006CEDD5 /* libsqlite3.dylib */,
 				1BD700401A21129100D32F95 /* SWTableViewCell */,
 				1BF5C72A1A0F040C006D4D00 /* Pickers */,
 				1BF5C5EB1A0EB7CF006D4D00 /* AFNetworking */,

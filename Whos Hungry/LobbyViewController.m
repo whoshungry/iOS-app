@@ -179,6 +179,7 @@ typedef enum accessType {
 - (void)presentSummaryVC {
     SummaryViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryViewController"];
     [vc initWithHootLobby:nil withOption:ADMIN_FIRST];
+    [self.friendPickerController presentViewController:vc animated:YES completion:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
@@ -277,6 +278,7 @@ typedef enum accessType {
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"WhereSegue"]) {
+        
         UINavigationController *nav = [segue destinationViewController];
         RestaurantsViewController *restVC = (RestaurantsViewController *)nav.topViewController;
         restVC.voteType = _voteType;
