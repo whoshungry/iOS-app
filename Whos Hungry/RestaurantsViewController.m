@@ -210,8 +210,13 @@
         [_restaurantNameArray addObject:chosenResponse[@"name"]];
         [_restaurantPicArray addObject:[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/photo?photoreference=%@&key=%@&sensor=false&maxwidth=320", chosenResponse[@"place_id"], GOOGLE_API_KEY]];
         
-        [_restaurantXArray addObject:chosenResponse[@"geometry"][@"location"][@"lat"]];
-        [_restaurantYArray addObject:chosenResponse[@"geometry"][@"location"][@"lng"]];
+        if (chosenResponse[@"geometry"][@"location"]) {
+            [_restaurantXArray addObject:chosenResponse[@"geometry"][@"location"][@"lat"]];
+            [_restaurantYArray addObject:chosenResponse[@"geometry"][@"location"][@"lng"]];
+        } else {
+            [_restaurantXArray addObject:@"NONE"];
+            [_restaurantYArray addObject:@"NONE"];
+        }
         //[_restaurantRatingArray addObject:chosenResponse[@"rating"]];
     }
     else

@@ -238,8 +238,17 @@ typedef enum accessType {
             [placesIdArray addObject:currentRest[@"restaurant_id"]];
             [placesNamesArray addObject:currentRest[@"restaurant_name"]];
             [placesPicsArray addObject:currentRest[@"restaurant_picture"]];
-            [placesXArray addObject:currentRest[@"restaurant_location_x"]];
-            [placesYArray addObject:currentRest[@"restaurant_location_y"]];
+            if (![currentRest[@"restaurant_location_x"] isEqual:[NSNull null]])
+                [placesXArray addObject:currentRest[@"restaurant_location_x"]];
+            else
+                [placesXArray addObject:@"NONE"];
+            
+            if (![currentRest[@"restaurant_location_y"] isEqual:[NSNull null]]) {
+                [placesYArray addObject:currentRest[@"restaurant_location_y"]];
+            } else {
+                [placesYArray addObject:@"NONE"];
+            }
+
             [placesCountArray addObject:currentRest[@"count"]];
         }
         

@@ -74,137 +74,6 @@ typedef enum accessType
     return self;
 }
 
-//This method is accessed ONLY when user is coming from MainVC. This means the lobby was already made.
-//Need to check for 2 things:
-//  1. If it is FRIEND, then 
--(void)initWithHootLobby:(HootLobby *)hootlobby withOption:(int)accessType{
-    _isInitWithHootLobby = TRUE;
-    _isExpirationUpdated = FALSE;
-
-    NSLog(@"hoot %@", hootlobby);
-
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    _voteArray = [NSMutableArray new];
-
-    if (accessType == ADMIN_FIRST) {
-        //Initialize all the groups and create vote
-
-        _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
-        [self createAPIGroup];
-        _voteArray = nil;
-        _isTimerReadyToBeActivated = TRUE;
-        _isExpirationUpdated = TRUE;
-
-
-
-    }
-    else if (accessType == ADMIN_RETURNS){
-        NSString *strFromInt = [NSString stringWithFormat:@"%d",hootlobby.groupid.intValue];
-        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
-
-    }
-    
-    //This is accessed by ADMIN_RETURNS
-    else if (accessType == FRIEND_FIRST){
-        //Load clean view and be ready to make vote
-        //_voteArray = nil;
-        _currentLobby = hootlobby;
-        NSString *strFromInt = [NSString stringWithFormat:@"%d",hootlobby.groupid.intValue];
-        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
-        for (int i = 0; i < _voteArray.count; i++) {
-            NSLog(@"VOTE ARRAY #%d is : %@", i, _voteArray[i]);
-        }
-    }
-    else if (accessType == FRIEND_RETURNS){
-        NSString *strFromInt = [NSString stringWithFormat:@"%d",hootlobby.groupid.intValue];
-        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
-    }
-
-    
-    
-     _loaded = NO;
-    
-
-   
-    
-    if (accessType != ADMIN_FIRST) {
-        
-        /***************************************************************************************/
-        //Temporary fix for expirationTime
-        PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
-        [query whereKey:@"groupId" equalTo:hootlobby.groupid];
-        [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-            if (!object) {
-                NSLog(@"The getFirstObject request failed.");
-            } else {
-                // The find succeeded.
-                NSLog(@"Successfully retrieved the object.");
-                NSLog(@"Expiration time is: %@",object[@"expirationTime"]);
-                //hootlobby.expirationTime = object[@"expirationTime"];
-                _currentLobby = hootlobby;
-                _currentLobby.expirationTime = object[@"expirationTime"];
-                _isExpirationUpdated = TRUE;
-                [self setSummaryTitle];
-                }
-        }];
-        
-        //accesses restaurants names and vote counts and saves it in "currentLobby" variable
-        /***************************************************************************************/
-
-        NSMutableArray *placesIdArray = [NSMutableArray new];
-        NSMutableArray *placesNamesArray = [NSMutableArray new];
-        NSMutableArray *placesPicsArray = [NSMutableArray new];
-        NSMutableArray *placesXArray = [NSMutableArray new];
-        NSMutableArray *placesYArray = [NSMutableArray new];
-        placesCountArray = [NSMutableArray new];
-        
-        
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
-        [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"responseObject!!: %@", responseObject);
-            NSLog(@"responseObject!!: %@", responseObject[@"choices"]);
-            //NSDictionary *results = (NSDictionary *)responseObject;
-            id results = responseObject;
-            NSArray *choices = results[@"choices"];
-            NSLog(@"response count: %lu", (unsigned long)choices.count);
-            NSLog(@"response objectcttctctct: %@", choices);
-            for (int i = 0; i < choices.count; i++) {
-                NSDictionary *currentRest = choices[i];
-                [placesIdArray addObject:currentRest[@"restaurant_id"]];
-                [placesNamesArray addObject:currentRest[@"restaurant_name"]];
-                [placesPicsArray addObject:currentRest[@"restaurant_picture"]];
-                [placesXArray addObject:currentRest[@"restaurant_location_x"]];
-                [placesYArray addObject:currentRest[@"restaurant_location_y"]];
-                [placesCountArray addObject:currentRest[@"count"]];
-                
-            }
-            
-            lobby.placesIdArray = placesIdArray;
-            lobby.placesNamesArray = placesNamesArray;
-            lobby.placesPicsArray = placesPicsArray;
-            lobby.placesXArray = placesXArray;
-            lobby.placesYArray = placesYArray;
-            _isTimerReadyToBeActivated = TRUE;
-
-            NSLog(@"current lobby ids rrrr: %@", lobby.placesIdArray);
-            NSLog(@"current lobby names rrrr: %@", lobby.placesNamesArray);
-            NSLog(@"current lobby pics rrrr: %@", lobby.placesPicsArray);
-            
-            _currentLobby = [lobby copy];
-            [_restaurantTable reloadData];
-            
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@", error);
-        }];
-    }
-
-}
-
-
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -212,6 +81,7 @@ typedef enum accessType
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     _voteArray = [NSMutableArray new];
+    _voteStatusArray = [NSMutableArray new];
     
     if (_accessType == ADMIN_FIRST) {
         //Initialize all the groups and create vote
@@ -219,6 +89,7 @@ typedef enum accessType
         _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
         [self createAPIGroup];
         _voteArray = nil;
+        _voteStatusArray = nil;
         _isTimerReadyToBeActivated = TRUE;
         _isExpirationUpdated = TRUE;
         
@@ -228,13 +99,14 @@ typedef enum accessType
     else if (_accessType == ADMIN_RETURNS){
         NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
         _voteArray = [prefs mutableArrayValueForKey:strFromInt];
-        
+        _voteStatusArray = [prefs mutableArrayValueForKey:strFromInt];
     }
     
     //This is accessed by ADMIN_RETURNS
     else if (_accessType == FRIEND_FIRST){
         NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
         _voteArray = [prefs mutableArrayValueForKey:strFromInt];
+        _voteStatusArray = [prefs mutableArrayValueForKey:strFromInt];
         for (int i = 0; i < _voteArray.count; i++) {
             NSLog(@"VOTE ARRAY #%d is : %@", i, _voteArray[i]);
         }
@@ -242,6 +114,7 @@ typedef enum accessType
     else if (_accessType == FRIEND_RETURNS){
         NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
         _voteArray = [prefs mutableArrayValueForKey:strFromInt];
+        _voteStatusArray = [prefs mutableArrayValueForKey:strFromInt];
     }
 
     
@@ -341,7 +214,6 @@ typedef enum accessType
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     [locationManager requestWhenInUseAuthorization];
     self.mapView.delegate = self;
-    
 
     
     //Initializes and creates table
@@ -552,36 +424,26 @@ typedef enum accessType
     NSString* restaurantY = @"";
 
     for (int i = 0; i < _currentLobby.placesIdArray.count; i++) {
-        if (i != _currentLobby.placesIdArray.count - 1) {
             restaurantIds = [restaurantIds stringByAppendingString:_currentLobby.placesIdArray[i]];
-            restaurantIds = [restaurantIds stringByAppendingString:@","];
-            
+        
             restaurantNames = [restaurantNames stringByAppendingString:_currentLobby.placesNamesArray[i]];
-            restaurantNames = [restaurantNames stringByAppendingString:@","];
-            
+        
             restaurantPics = [restaurantPics stringByAppendingString:_currentLobby.placesPicsArray[i]];
-            restaurantPics = [restaurantPics stringByAppendingString:@","];
-            
-            NSString *xstr = _currentLobby.placesXArray[i];
-            NSNumber *xnum = [NSNumber numberWithFloat:[xstr floatValue]];
-            restaurantX = [xnum stringValue];
-            restaurantX = [restaurantX stringByAppendingString:@","];
-            
-            NSString *ystr = _currentLobby.placesYArray[i];
-            NSNumber *ynum = [NSNumber numberWithFloat:[ystr floatValue]];
-            restaurantY = [ynum stringValue];
-            restaurantY = [restaurantY stringByAppendingString:@","];
-        }
-        else{
-            restaurantIds = [restaurantIds stringByAppendingString:_currentLobby.placesIdArray[i]];
-            restaurantNames = [restaurantNames stringByAppendingString:_currentLobby.placesNamesArray[i]];
-            restaurantPics = [restaurantPics stringByAppendingString:_currentLobby.placesPicsArray[i]];
+        
             NSString *xstr = _currentLobby.placesXArray[i];
             NSNumber *xnum = [NSNumber numberWithFloat:[xstr floatValue]];
             restaurantX = [restaurantX stringByAppendingString:[xnum stringValue]];
+        
             NSString *ystr = _currentLobby.placesYArray[i];
             NSNumber *ynum = [NSNumber numberWithFloat:[ystr floatValue]];
             restaurantY = [restaurantY stringByAppendingString:[ynum stringValue]];
+
+        if (i != _currentLobby.placesIdArray.count-1) {
+            restaurantIds = [restaurantIds stringByAppendingString:@","];
+            restaurantNames = [restaurantNames stringByAppendingString:@","];
+            restaurantPics = [restaurantPics stringByAppendingString:@","];
+            restaurantX = [restaurantX stringByAppendingString:@","];
+            restaurantY = [restaurantY stringByAppendingString:@","];
         }
     }
     
@@ -822,7 +684,7 @@ typedef enum accessType
         NSLog(@"places %@", _currentLobby);
         
         if (!_loaded) {
-            if ([_currentLobby.placesXArray[indexPath.row] isEqual:[NSNull null]]) {
+            if (![_currentLobby.placesXArray[indexPath.row] isEqual:[NSNull null]]) {
                 CLLocation *placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_currentLobby.placesXArray[indexPath.row] doubleValue] longitude:(CLLocationDegrees)[_currentLobby.placesYArray[indexPath.row] doubleValue]];
                 //CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
                 float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
