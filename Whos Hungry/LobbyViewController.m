@@ -178,8 +178,9 @@ typedef enum accessType {
 
 - (void)presentSummaryVC {
     SummaryViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryViewController"];
-    [vc initWithHootLobby:nil withOption:ADMIN_FIRST];
-    [self.friendPickerController presentViewController:vc animated:YES completion:nil];
+    [self.friendPickerController presentViewController:vc animated:YES completion:^{
+        [vc initWithHootLobby:nil withOption:ADMIN_FIRST];
+    }];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
@@ -192,7 +193,7 @@ typedef enum accessType {
         NSLog(@"when date is %@", selectionDate);
         _whenDate = (NSDate *)selectionDate;
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"HH:mm"];
+        [dateFormatter setDateFormat:@"hh:mm"];
         NSString *formattedDateString = [dateFormatter stringFromDate:_whenDate];
         NSLog(@"formattedDateString: %@", formattedDateString);
         [_whenButton setTitle:[NSString stringWithFormat:@"When: %@", formattedDateString] forState:UIControlStateNormal];
@@ -224,7 +225,7 @@ typedef enum accessType {
     _whenDate = selectedTime;
     
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"HH:mm"];
+    [dateFormatter setDateFormat:@"hh:mm"];
     [self.whenButton setTitle:[dateFormatter stringFromDate:selectedTime] forState:UIControlStateNormal];
 }
 

@@ -124,7 +124,7 @@ typedef enum accessType {
                 
                 NSDate *expectedDate = [groups objectAtIndex:i][@"expected_time"];
                 NSString *voteType = [groups objectAtIndex:i][@"vote_type"];
-                NSString *voteid = [groups objectAtIndex:i][@"vote_id"];
+                NSNumber *voteid = [groups objectAtIndex:i][@"vote_id"];
                 NSNumber *groupid = [groups objectAtIndex:i][@"group_id"];
                 NSString *winnerRestID = [groups objectAtIndex:i][@"winner_restaurant_id"];
                 
@@ -192,7 +192,7 @@ typedef enum accessType {
 
     //when isn't working :(
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"HH:mm"];
+    [dateFormatter setDateFormat:@"hh:mm"];
     NSString *formattedWhenTime = [dateFormatter stringFromDate:chosenLobby.expirationTime];
     cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
     

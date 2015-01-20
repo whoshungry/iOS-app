@@ -33,7 +33,6 @@
     [encoder encodeObject:_winnerRestY forKey:@"winnerRestY"];
     [encoder encodeObject:_placesRankingArray forKey:@"placesRankingArray"];
     [encoder encodeObject:@(_didAdminCreate) forKey:@"didAdminCreate"];
-
 }
 
 - (id)initWithCoder:(NSCoder *)decoder

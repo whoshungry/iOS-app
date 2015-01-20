@@ -77,6 +77,7 @@ typedef enum accessType
 //Need to check for 2 things:
 //  1. If it is FRIEND, then 
 -(void)initWithHootLobby:(HootLobby *)hootlobby withOption:(int)accessType{
+    NSLog(@"hoot %@", hootlobby);
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     _voteArray = [NSMutableArray new];
 
@@ -522,7 +523,7 @@ typedef enum accessType
     }
     
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"HH:mm"];
+    [dateFormatter setDateFormat:@"hh:mm"];
     NSString *normalAtTime = [dateFormatter stringFromDate:_currentLobby.expirationTime];
     
     self.summaryTitleLbl.text = [NSString stringWithFormat:@"%@ wants to %@ today at %@", _currentLobby.facebookName, englishVoteType, normalAtTime];
