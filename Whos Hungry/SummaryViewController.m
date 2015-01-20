@@ -208,6 +208,8 @@ typedef enum accessType
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    NSLog(@"currnet loggy: %@", _currentLobby);
+    
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     _voteArray = [NSMutableArray new];
     
@@ -359,6 +361,8 @@ typedef enum accessType
                                                        selector:@selector(updateTime:)
                                                        userInfo:nil
                                                         repeats:YES];
+    
+    NSLog(@"currnet lobby:%@", _currentLobby);
     
     _indexPathArray = [NSMutableArray new];
     self.votingCompleteView.hidden = YES;
@@ -660,6 +664,7 @@ typedef enum accessType
 }
 
 - (IBAction)updateTime:(id)sender {
+    NSLog(@"currnet lobby:%@", _currentLobby);
     if (_isTimerReadyToBeActivated && _isExpirationUpdated) {
         NSInteger hoursLeft = 0;
         NSInteger minutesLeft = 0;

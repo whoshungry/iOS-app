@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) NSNumber* groupid;
 
-@property (strong, nonatomic) NSNumber* facebookId;
+@property (strong, nonatomic) NSString* facebookId;
 @property (strong, nonatomic) NSString* facebookPic;
 @property (strong, nonatomic) NSString* facebookName;
 

@@ -22,7 +22,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     HootLobby *chosenHoot;
     __block BOOL isAdmin;
     
-    __block NSNumber *facebookID;
+    __block NSString *facebookID;
 }
 
 @end
@@ -42,7 +42,6 @@ typedef enum accessType {
     _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"owl_try_2.png"]];
     _imageView.frame = CGRectMake(self.navigationController.navigationBar.frame.origin.x + 10.0, self.navigationController.navigationBar.frame.origin.y, self.navigationController.navigationBar.frame.size.height * (3.0/2.0), self.navigationController.navigationBar.frame.size.height * (3.0/2.0) + [self addSizeforDevice]); //set the proper frame here
     [self.navigationController.view addSubview:_imageView];
-    
 }
 
 -(float)addSizeforDevice{
@@ -70,7 +69,7 @@ typedef enum accessType {
         if (!error) {
             // Success! Include your code to handle the results here
             NSLog(@"user info: %@", result);
-            facebookID = result[@"id"];
+            facebookID = [NSString stringWithFormat:@"%@", result[@"id"]];
             [self getGroupsWithID:facebookID];
         } else {
             // An error occurred, we need to handle the error
@@ -101,7 +100,7 @@ typedef enum accessType {
     }];
 }
 
--(void) getGroupsWithID:(NSNumber *) fbid {
+-(void) getGroupsWithID:(NSString *) fbid {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSLog(@"userid from get groups is :%@", fbid);
     NSDictionary *params = @{@"user_id": fbid};
@@ -122,7 +121,11 @@ typedef enum accessType {
                 NSString *facebookName = [groups objectAtIndex:i][@"admin_name"];
                 NSString *facebookPicture = [groups objectAtIndex:i][@"admin_picture"];
                 
-                NSDate *expectedDate = [groups objectAtIndex:i][@"expected_time"];
+                NSString *expectedDateStr = [groups objectAtIndex:i][@"expiration_time"];
+                NSDateFormatter *dateFormat = [NSDateFormatter new];
+                [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.000Z"];
+                NSDate *expectedDate = [dateFormat dateFromString:expectedDateStr];
+                
                 NSString *voteType = [groups objectAtIndex:i][@"vote_type"];
                 NSNumber *voteid = [groups objectAtIndex:i][@"vote_id"];
                 NSNumber *groupid = [groups objectAtIndex:i][@"group_id"];
@@ -139,7 +142,7 @@ typedef enum accessType {
                 [hostImages addObject:image];
                 
                 lobby.facebookPic = facebookPicture;
-                lobby.facebookId = facebookId;
+                lobby.facebookId = [NSString stringWithFormat:@"%@",facebookId];
                 lobby.facebookName = facebookName;
                 lobby.winnerRestID = winnerRestID;
                 lobby.expirationTime = expectedDate;
@@ -212,11 +215,8 @@ typedef enum accessType {
     NSLog(@"index path is: %@", lobbies[indexPath.row]);
     chosenHoot = (HootLobby *)lobbies[indexPath.row];
     
-    
-    NSLog(@"~~~~~~~~ %@ vs %@", chosenHoot.facebookId, facebookID);
     //checks if admin
-    if (chosenHoot.facebookId == facebookID) {
-        NSLog(@"made it brah");
+    if ([chosenHoot.facebookId isEqualToString:facebookID]) {
         isAdmin = YES;
     }
     
