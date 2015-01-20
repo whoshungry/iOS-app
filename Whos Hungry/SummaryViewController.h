@@ -37,7 +37,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *whenTimeLbl;
 
 @property (weak, nonatomic) IBOutlet UILabel *summaryTitleLbl;
-@property (strong, nonatomic) __block HootLobby* currentLobby;
+@property (strong, nonatomic) HootLobby* currentLobby;
 @property (strong, nonatomic) NSMutableArray* allPlaces;
 @property (strong, nonatomic) NSMutableArray* indexPathArray;
 @property (strong, nonatomic) IBOutlet UITableView *restaurantTable;

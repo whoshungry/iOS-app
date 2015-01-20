@@ -220,8 +220,42 @@ typedef enum accessType {
         isAdmin = YES;
     }
     
+    NSMutableArray *placesIdArray = [NSMutableArray new];
+    NSMutableArray *placesNamesArray = [NSMutableArray new];
+    NSMutableArray *placesPicsArray = [NSMutableArray new];
+    NSMutableArray *placesXArray = [NSMutableArray new];
+    NSMutableArray *placesYArray = [NSMutableArray new];
+    NSMutableArray *placesCountArray = [NSMutableArray new];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *params = @{@"vote_id": chosenHoot.voteid};
+    [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //NSDictionary *results = (NSDictionary *)responseObject;
+        id results = responseObject;
+        NSArray *choices = results[@"choices"];
+        for (int i = 0; i < choices.count; i++) {
+            NSDictionary *currentRest = choices[i];
+            [placesIdArray addObject:currentRest[@"restaurant_id"]];
+            [placesNamesArray addObject:currentRest[@"restaurant_name"]];
+            [placesPicsArray addObject:currentRest[@"restaurant_picture"]];
+            [placesXArray addObject:currentRest[@"restaurant_location_x"]];
+            [placesYArray addObject:currentRest[@"restaurant_location_y"]];
+            [placesCountArray addObject:currentRest[@"count"]];
+        }
+        
+        chosenHoot.placesIdArray = placesIdArray;
+        chosenHoot.placesNamesArray = placesNamesArray;
+        chosenHoot.placesPicsArray = placesPicsArray;
+        chosenHoot.placesXArray = placesXArray;
+        chosenHoot.placesYArray = placesYArray;
+        
+        [self performSegueWithIdentifier:@"maintosummary" sender:self];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+
+    
     NSLog(@"chosen hoot chosen is :  %@", chosenHoot);
-    [self performSegueWithIdentifier:@"maintosummary" sender:self];
 }
 
 -(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

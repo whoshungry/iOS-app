@@ -254,7 +254,7 @@ typedef enum accessType
         
         /***************************************************************************************/
         //Temporary fix for expirationTime
-        PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
+        /*PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
         [query whereKey:@"groupId" equalTo:_currentLobby.groupid];
         [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
             if (!object) {
@@ -268,12 +268,12 @@ typedef enum accessType
                 _isExpirationUpdated = TRUE;
                 [self setSummaryTitle];
             }
-        }];
+        }];*/
         
         //accesses restaurants names and vote counts and saves it in "currentLobby" variable
         /***************************************************************************************/
         
-        NSMutableArray *placesIdArray = [NSMutableArray new];
+        /*NSMutableArray *placesIdArray = [NSMutableArray new];
         NSMutableArray *placesNamesArray = [NSMutableArray new];
         NSMutableArray *placesPicsArray = [NSMutableArray new];
         NSMutableArray *placesXArray = [NSMutableArray new];
@@ -299,7 +299,6 @@ typedef enum accessType
                 [placesXArray addObject:currentRest[@"restaurant_location_x"]];
                 [placesYArray addObject:currentRest[@"restaurant_location_y"]];
                 [placesCountArray addObject:currentRest[@"count"]];
-                
             }
             
             lobby.placesIdArray = placesIdArray;
@@ -319,7 +318,7 @@ typedef enum accessType
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
-        }];
+        }];*/
     }
 
     
@@ -361,6 +360,7 @@ typedef enum accessType
                                                        selector:@selector(updateTime:)
                                                        userInfo:nil
                                                         repeats:YES];
+    
     
     NSLog(@"currnet lobby:%@", _currentLobby);
     
@@ -620,17 +620,19 @@ typedef enum accessType
                              @"restaurant_names": restaurantNames,
                              @"restaurant_pictures":restaurantPics,
                              @"restaurant_locations_x":restaurantX,
-                             @"restaurant_locations_y":restaurantY
+                             @"restaurant_locations_y":restaurantY,
+                             @"restaurant_stars":@"3, 4, 5",
+                             @"name_of_vote":@"Who's Hungry"
                              };
     NSLog(@"params for create vote :%@", params);
     NSLog(@"EXPIRATION TIME IS %@",_currentLobby.expirationTime);
     
     /////////
     //Temporary solution to date issue
-    PFObject *expObject = [PFObject objectWithClassName:@"GroupExpiration"];
+    /*PFObject *expObject = [PFObject objectWithClassName:@"GroupExpiration"];
     expObject[@"expirationTime"] = _currentLobby.expirationTime;
     expObject[@"groupId"] = groupId;
-    [expObject saveInBackground];
+    [expObject saveInBackground];*/
     /////////
 
     [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -665,7 +667,7 @@ typedef enum accessType
 
 - (IBAction)updateTime:(id)sender {
     NSLog(@"currnet lobby:%@", _currentLobby);
-    if (_isTimerReadyToBeActivated && _isExpirationUpdated) {
+    //if (_isTimerReadyToBeActivated && _isExpirationUpdated) {
         NSInteger hoursLeft = 0;
         NSInteger minutesLeft = 0;
         NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -694,7 +696,7 @@ typedef enum accessType
             NSLog(@"QWDAEFGRSHTDJTYNRSEARGV");
             //[self performSelector:@selector(updateTime:) withObject:nil afterDelay:1.0];
         }
-    }
+   // }
 
 }
 
@@ -820,22 +822,24 @@ typedef enum accessType
         NSLog(@"places %@", _currentLobby);
         
         if (!_loaded) {
-            CLLocation *placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_currentLobby.placesXArray[indexPath.row] doubleValue] longitude:(CLLocationDegrees)[_currentLobby.placesYArray[indexPath.row] doubleValue]];
-            //CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
-            float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
-            //float distance = 50.0f;
-            NSLog(@"Current row is %d", (int)indexPath.row);
-            cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
-            cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
-            //&& _voteStatusArray
-            if (_voteArray && indexPath.row < _voteArray.count ) {
-                cell.votes = [[NSString stringWithFormat:@"%@",_voteArray[indexPath.row]] intValue];
-                cell.stateInt = [[NSString stringWithFormat:@"%@",_voteStatusArray[indexPath.row]] intValue];
-                cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
-                [cell enableDisable];
-            }
-            else{
-                cell.voteLbl.text = @"0";
+            if ([_currentLobby.placesXArray[indexPath.row] isEqual:[NSNull null]]) {
+                CLLocation *placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_currentLobby.placesXArray[indexPath.row] doubleValue] longitude:(CLLocationDegrees)[_currentLobby.placesYArray[indexPath.row] doubleValue]];
+                //CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lat"] doubleValue] longitude:(CLLocationDegrees)[_allPlaces[indexPath.row][@"geometry"][@"location"][@"lng"] doubleValue]];
+                float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
+                //float distance = 50.0f;
+                NSLog(@"Current row is %d", (int)indexPath.row);
+                cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
+                cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
+                //&& _voteStatusArray
+                if (_voteArray && indexPath.row < _voteArray.count ) {
+                    cell.votes = [[NSString stringWithFormat:@"%@",_voteArray[indexPath.row]] intValue];
+                    cell.stateInt = [[NSString stringWithFormat:@"%@",_voteStatusArray[indexPath.row]] intValue];
+                    cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
+                    [cell enableDisable];
+                }
+                else{
+                    cell.voteLbl.text = @"0";
+                }
             }
         } else {
             CLLocation* placeLocation = [[CLLocation alloc] initWithLatitude:(CLLocationDegrees)[_currentLobby.placesXArray[indexPath.row] doubleValue] longitude:(CLLocationDegrees)[_currentLobby.placesYArray[indexPath.row] doubleValue]];
