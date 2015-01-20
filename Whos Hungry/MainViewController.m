@@ -20,9 +20,9 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     NSMutableArray *lobbies;
     NSMutableArray *hostImages;
     HootLobby *chosenHoot;
-    BOOL isAdmin;
+    __block BOOL isAdmin;
     
-    __block NSString *facebookID;
+    __block NSNumber *facebookID;
 }
 
 @end
@@ -101,7 +101,7 @@ typedef enum accessType {
     }];
 }
 
--(void) getGroupsWithID:(NSString *) fbid {
+-(void) getGroupsWithID:(NSNumber *) fbid {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSLog(@"userid from get groups is :%@", fbid);
     NSDictionary *params = @{@"user_id": fbid};
@@ -118,7 +118,7 @@ typedef enum accessType {
             for (int i = 0; i < groups.count; i++) {
                 HootLobby *lobby = [[HootLobby alloc] init];
                 NSLog(@"gorups object ids: %@", [groups objectAtIndex:i]);
-                NSString *facebookId = [groups objectAtIndex:i][@"admin_user"];
+                NSNumber *facebookId = [groups objectAtIndex:i][@"admin_user"];
                 NSString *facebookName = [groups objectAtIndex:i][@"admin_name"];
                 NSString *facebookPicture = [groups objectAtIndex:i][@"admin_picture"];
                 
@@ -212,8 +212,11 @@ typedef enum accessType {
     NSLog(@"index path is: %@", lobbies[indexPath.row]);
     chosenHoot = (HootLobby *)lobbies[indexPath.row];
     
+    
+    NSLog(@"~~~~~~~~ %@ vs %@", chosenHoot.facebookId, facebookID);
     //checks if admin
-    if ([chosenHoot.facebookName isEqualToString:facebookID]) {
+    if (chosenHoot.facebookId == facebookID) {
+        NSLog(@"made it brah");
         isAdmin = YES;
     }
     
