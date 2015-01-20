@@ -11,6 +11,7 @@
 		1B0ED51C1A15459A00639614 /* downvote.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B0ED51A1A15459A00639614 /* downvote.png */; };
 		1B0ED51D1A15459A00639614 /* upvote.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B0ED51B1A15459A00639614 /* upvote.png */; };
 		1B0ED5201A15485100639614 /* UpDownVoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B0ED51F1A15485100639614 /* UpDownVoteView.m */; };
+		1B2D4FE61A6CCC0F00C90DE1 /* LobbyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2D4FE51A6CCC0F00C90DE1 /* LobbyModel.m */; };
 		1B9713B41A0B32F700A2F46E /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9713B21A0B32F700A2F46E /* Parse.framework */; };
 		1B9713B51A0B32F700A2F46E /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9713B31A0B32F700A2F46E /* ParseFacebookUtils.framework */; };
 		1B9713B71A0B330C00A2F46E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9713B61A0B330C00A2F46E /* AudioToolbox.framework */; };
@@ -147,6 +148,8 @@
 		1B0ED51B1A15459A00639614 /* upvote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upvote.png; sourceTree = "<group>"; };
 		1B0ED51E1A15485100639614 /* UpDownVoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpDownVoteView.h; sourceTree = "<group>"; };
 		1B0ED51F1A15485100639614 /* UpDownVoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpDownVoteView.m; sourceTree = "<group>"; };
+		1B2D4FE41A6CCC0F00C90DE1 /* LobbyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LobbyModel.h; sourceTree = "<group>"; };
+		1B2D4FE51A6CCC0F00C90DE1 /* LobbyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LobbyModel.m; sourceTree = "<group>"; };
 		1B9713B21A0B32F700A2F46E /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		1B9713B31A0B32F700A2F46E /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
 		1B9713B61A0B330C00A2F46E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -592,6 +595,8 @@
 				1BD42CF01A212780008796F9 /* RSVPFriendsTableViewCell.m */,
 				1BD42CF11A212780008796F9 /* RSVPFriendsTableViewCell.xib */,
 				C36C41341A0B206600F37668 /* Supporting Files */,
+				1B2D4FE41A6CCC0F00C90DE1 /* LobbyModel.h */,
+				1B2D4FE51A6CCC0F00C90DE1 /* LobbyModel.m */,
 			);
 			path = "Whos Hungry";
 			sourceTree = "<group>";
@@ -802,6 +807,7 @@
 				1BD700AE1A211E5D00D32F95 /* SWTableViewCell.m in Sources */,
 				1BF5C73E1A0F040C006D4D00 /* ActionSheetDatePicker.m in Sources */,
 				1BF5C7401A0F040C006D4D00 /* ActionSheetLocalePicker.m in Sources */,
+				1B2D4FE61A6CCC0F00C90DE1 /* LobbyModel.m in Sources */,
 				1BD700AD1A211E5D00D32F95 /* SWLongPressGestureRecognizer.m in Sources */,
 				1BF5C61C1A0EB7D0006D4D00 /* UIAlertView+AFNetworking.m in Sources */,
 				1BF5C61A1A0EB7D0006D4D00 /* AFNetworkActivityIndicatorManager.m in Sources */,

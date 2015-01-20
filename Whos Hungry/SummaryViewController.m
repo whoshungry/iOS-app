@@ -80,14 +80,22 @@ typedef enum accessType
 -(void)initWithHootLobby:(HootLobby *)hootlobby withOption:(int)accessType{
     _isInitWithHootLobby = TRUE;
     _isExpirationUpdated = FALSE;
+
+    NSLog(@"hoot %@", hootlobby);
+
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     _voteArray = [NSMutableArray new];
 
     if (accessType == ADMIN_FIRST) {
         //Initialize all the groups and create vote
+
         _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
         [self createAPIGroup];
         _voteArray = nil;
+        _isTimerReadyToBeActivated = TRUE;
+        _isExpirationUpdated = TRUE;
+
+
 
     }
     else if (accessType == ADMIN_RETURNS){
@@ -95,9 +103,12 @@ typedef enum accessType
         _voteArray = [prefs mutableArrayValueForKey:strFromInt];
 
     }
+    
+    //This is accessed by ADMIN_RETURNS
     else if (accessType == FRIEND_FIRST){
         //Load clean view and be ready to make vote
         //_voteArray = nil;
+        _currentLobby = hootlobby;
         NSString *strFromInt = [NSString stringWithFormat:@"%d",hootlobby.groupid.intValue];
         _voteArray = [prefs mutableArrayValueForKey:strFromInt];
         for (int i = 0; i < _voteArray.count; i++) {
@@ -129,7 +140,8 @@ typedef enum accessType
                 // The find succeeded.
                 NSLog(@"Successfully retrieved the object.");
                 NSLog(@"Expiration time is: %@",object[@"expirationTime"]);
-                hootlobby.expirationTime = object[@"expirationTime"];
+                //hootlobby.expirationTime = object[@"expirationTime"];
+                _currentLobby = hootlobby;
                 _currentLobby.expirationTime = object[@"expirationTime"];
                 _isExpirationUpdated = TRUE;
                 [self setSummaryTitle];
@@ -138,16 +150,14 @@ typedef enum accessType
         
         //accesses restaurants names and vote counts and saves it in "currentLobby" variable
         /***************************************************************************************/
-        lobby = [HootLobby new];
-        lobby = [hootlobby copy];
-        _currentLobby = [HootLobby new];
-        _currentLobby = [hootlobby copy];
+
         NSMutableArray *placesIdArray = [NSMutableArray new];
         NSMutableArray *placesNamesArray = [NSMutableArray new];
         NSMutableArray *placesPicsArray = [NSMutableArray new];
         NSMutableArray *placesXArray = [NSMutableArray new];
         NSMutableArray *placesYArray = [NSMutableArray new];
         placesCountArray = [NSMutableArray new];
+        
         
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
@@ -175,13 +185,15 @@ typedef enum accessType
             lobby.placesPicsArray = placesPicsArray;
             lobby.placesXArray = placesXArray;
             lobby.placesYArray = placesYArray;
-            
+            _isTimerReadyToBeActivated = TRUE;
+
             NSLog(@"current lobby ids rrrr: %@", lobby.placesIdArray);
             NSLog(@"current lobby names rrrr: %@", lobby.placesNamesArray);
             NSLog(@"current lobby pics rrrr: %@", lobby.placesPicsArray);
             
             _currentLobby = [lobby copy];
             [_restaurantTable reloadData];
+            
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
@@ -196,7 +208,120 @@ typedef enum accessType
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setSummaryTitle];
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    _voteArray = [NSMutableArray new];
+    
+    if (_accessType == ADMIN_FIRST) {
+        //Initialize all the groups and create vote
+        
+        _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
+        [self createAPIGroup];
+        _voteArray = nil;
+        _isTimerReadyToBeActivated = TRUE;
+        _isExpirationUpdated = TRUE;
+        
+        
+        
+    }
+    else if (_accessType == ADMIN_RETURNS){
+        NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
+        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
+        
+    }
+    
+    //This is accessed by ADMIN_RETURNS
+    else if (_accessType == FRIEND_FIRST){
+        NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
+        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
+        for (int i = 0; i < _voteArray.count; i++) {
+            NSLog(@"VOTE ARRAY #%d is : %@", i, _voteArray[i]);
+        }
+    }
+    else if (_accessType == FRIEND_RETURNS){
+        NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
+        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
+    }
+
+    
+    _loaded = NO;
+    
+    
+    
+    
+    if (_accessType != ADMIN_FIRST) {
+        
+        /***************************************************************************************/
+        //Temporary fix for expirationTime
+        PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
+        [query whereKey:@"groupId" equalTo:_currentLobby.groupid];
+        [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            if (!object) {
+                NSLog(@"The getFirstObject request failed.");
+            } else {
+                // The find succeeded.
+                NSLog(@"Successfully retrieved the object.");
+                NSLog(@"Expiration time is: %@",object[@"expirationTime"]);
+                //hootlobby.expirationTime = object[@"expirationTime"];
+                _currentLobby.expirationTime = object[@"expirationTime"];
+                _isExpirationUpdated = TRUE;
+                [self setSummaryTitle];
+            }
+        }];
+        
+        //accesses restaurants names and vote counts and saves it in "currentLobby" variable
+        /***************************************************************************************/
+        
+        NSMutableArray *placesIdArray = [NSMutableArray new];
+        NSMutableArray *placesNamesArray = [NSMutableArray new];
+        NSMutableArray *placesPicsArray = [NSMutableArray new];
+        NSMutableArray *placesXArray = [NSMutableArray new];
+        NSMutableArray *placesYArray = [NSMutableArray new];
+        placesCountArray = [NSMutableArray new];
+        
+        
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
+        [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"responseObject!!: %@", responseObject);
+            NSLog(@"responseObject!!: %@", responseObject[@"choices"]);
+            //NSDictionary *results = (NSDictionary *)responseObject;
+            id results = responseObject;
+            NSArray *choices = results[@"choices"];
+            NSLog(@"response count: %lu", (unsigned long)choices.count);
+            NSLog(@"response objectcttctctct: %@", choices);
+            for (int i = 0; i < choices.count; i++) {
+                NSDictionary *currentRest = choices[i];
+                [placesIdArray addObject:currentRest[@"restaurant_id"]];
+                [placesNamesArray addObject:currentRest[@"restaurant_name"]];
+                [placesPicsArray addObject:currentRest[@"restaurant_picture"]];
+                [placesXArray addObject:currentRest[@"restaurant_location_x"]];
+                [placesYArray addObject:currentRest[@"restaurant_location_y"]];
+                [placesCountArray addObject:currentRest[@"count"]];
+                
+            }
+            
+            lobby.placesIdArray = placesIdArray;
+            lobby.placesNamesArray = placesNamesArray;
+            lobby.placesPicsArray = placesPicsArray;
+            lobby.placesXArray = placesXArray;
+            lobby.placesYArray = placesYArray;
+            _isTimerReadyToBeActivated = TRUE;
+            
+            NSLog(@"current lobby ids rrrr: %@", lobby.placesIdArray);
+            NSLog(@"current lobby names rrrr: %@", lobby.placesNamesArray);
+            NSLog(@"current lobby pics rrrr: %@", lobby.placesPicsArray);
+            
+            _currentLobby = [lobby copy];
+            [_restaurantTable reloadData];
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
+    }
+
+    
+    //[self setSummaryTitle];
     
     //Get picture of user
     /***************************************************************************************/
@@ -225,17 +350,15 @@ typedef enum accessType
     self.friendsGoingTable.dataSource = self;
     self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
-    if ((_isInitWithHootLobby && _isExpirationUpdated) || !_isInitWithHootLobby) {
+
+
         NSLog(@"TIMER ACTIVATED!!!!");
         //Set the timer
-        /***************************************************************************************/
         self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                          target:self
                                                        selector:@selector(updateTime:)
                                                        userInfo:nil
                                                         repeats:YES];
-    }
-
     
     _indexPathArray = [NSMutableArray new];
     self.votingCompleteView.hidden = YES;
@@ -530,41 +653,44 @@ typedef enum accessType
     }
     
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"HH:mm"];
+    [dateFormatter setDateFormat:@"hh:mm"];
     NSString *normalAtTime = [dateFormatter stringFromDate:_currentLobby.expirationTime];
     
     self.summaryTitleLbl.text = [NSString stringWithFormat:@"%@ wants to %@ today at %@", _currentLobby.facebookName, englishVoteType, normalAtTime];
 }
 
 - (IBAction)updateTime:(id)sender {
-    NSInteger hoursLeft = 0;
-    NSInteger minutesLeft = 0;
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-    NSDateComponents *components = [gregorianCalendar components:unitFlags
-                                                        fromDate:[NSDate new]
-                                                          toDate:_currentLobby.expirationTime
-                                                         options:0];
-    hoursLeft = components.hour;
-    minutesLeft = components.minute + 0; //plus 1 to include the chosen time, plus 0 not t0
-    
-    NSLog(@"time left is :%ld hrs and %ld mins", (long)hoursLeft, (long)minutesLeft);
-    
-    self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, (long)minutesLeft];
-
-    //check if over...
-    if (hoursLeft == 0 && minutesLeft <= 0) {
-        NSLog(@"donnnneee!!");
-        votingDone = YES;
-        self.votingIncompleteView.hidden = YES;
-        self.votingCompleteView.hidden = NO;
-        [self lobbyFinished];
-
+    if (_isTimerReadyToBeActivated && _isExpirationUpdated) {
+        NSInteger hoursLeft = 0;
+        NSInteger minutesLeft = 0;
+        NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+        NSDateComponents *components = [gregorianCalendar components:unitFlags
+                                                            fromDate:[NSDate new]
+                                                              toDate:_currentLobby.expirationTime
+                                                             options:0];
+        hoursLeft = components.hour;
+        minutesLeft = components.minute + 0; //plus 1 to include the chosen time, plus 0 not t0
         
-    } else {
-        NSLog(@"QWDAEFGRSHTDJTYNRSEARGV");
-        //[self performSelector:@selector(updateTime:) withObject:nil afterDelay:1.0];
+        NSLog(@"time left is :%ld hrs and %ld mins", (long)hoursLeft, (long)minutesLeft);
+        
+        self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, (long)minutesLeft];
+        
+        //check if over...
+        if (hoursLeft == 0 && minutesLeft <= 0 && _isExpirationUpdated) {
+            NSLog(@"donnnneee!!");
+            votingDone = YES;
+            self.votingIncompleteView.hidden = YES;
+            self.votingCompleteView.hidden = NO;
+            [self lobbyFinished];
+            
+            
+        } else {
+            NSLog(@"QWDAEFGRSHTDJTYNRSEARGV");
+            //[self performSelector:@selector(updateTime:) withObject:nil afterDelay:1.0];
+        }
     }
+
 }
 
 -(void) lobbyFinished {

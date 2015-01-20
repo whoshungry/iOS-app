@@ -124,7 +124,7 @@ typedef enum accessType {
                 
                 NSDate *expectedDate = [groups objectAtIndex:i][@"expected_time"];
                 NSString *voteType = [groups objectAtIndex:i][@"vote_type"];
-                NSString *voteid = [groups objectAtIndex:i][@"vote_id"];
+                NSNumber *voteid = [groups objectAtIndex:i][@"vote_id"];
                 NSNumber *groupid = [groups objectAtIndex:i][@"group_id"];
                 NSString *winnerRestID = [groups objectAtIndex:i][@"winner_restaurant_id"];
                 
@@ -192,7 +192,7 @@ typedef enum accessType {
 
     //when isn't working :(
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"HH:mm"];
+    [dateFormatter setDateFormat:@"hh:mm"];
     NSString *formattedWhenTime = [dateFormatter stringFromDate:chosenLobby.expirationTime];
     cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
     
@@ -248,15 +248,16 @@ typedef enum accessType {
         SummaryViewController *vc = [segue destinationViewController];
         vc.loaded = YES;
         vc.isFromMain = YES;
-        
+        vc.currentLobby = chosenHoot;
         if (isAdmin) {
-            [vc initWithHootLobby:chosenHoot withOption:ADMIN_RETURNS];
+            vc.accessType = ADMIN_RETURNS;
         } else {
             NSArray *votedArr = [[NSUserDefaults standardUserDefaults] objectForKey:[chosenHoot.groupid stringValue]];
             if (votedArr) {
-                [vc initWithHootLobby:chosenHoot withOption:FRIEND_FIRST];
-            } else {
-                [vc initWithHootLobby:chosenHoot withOption:FRIEND_RETURNS];
+                vc.accessType = FRIEND_RETURNS;
+            }
+            else {
+                vc.accessType = FRIEND_FIRST;
             }
         }
     }
