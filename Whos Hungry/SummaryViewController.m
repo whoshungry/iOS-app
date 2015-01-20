@@ -78,6 +78,8 @@ typedef enum accessType
 //Need to check for 2 things:
 //  1. If it is FRIEND, then 
 -(void)initWithHootLobby:(HootLobby *)hootlobby withOption:(int)accessType{
+    _isInitWithHootLobby = TRUE;
+    _isExpirationUpdated = FALSE;
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     _voteArray = [NSMutableArray new];
 
@@ -129,6 +131,7 @@ typedef enum accessType
                 NSLog(@"Expiration time is: %@",object[@"expirationTime"]);
                 hootlobby.expirationTime = object[@"expirationTime"];
                 _currentLobby.expirationTime = object[@"expirationTime"];
+                _isExpirationUpdated = TRUE;
                 [self setSummaryTitle];
                 }
         }];
@@ -222,13 +225,16 @@ typedef enum accessType
     self.friendsGoingTable.dataSource = self;
     self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
-    //Set the timer
-    /***************************************************************************************/
-    self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                     target:self
-                                                   selector:@selector(updateTime:)
-                                                   userInfo:nil
-                                                    repeats:YES];
+    if ((_isInitWithHootLobby && _isExpirationUpdated) || !_isInitWithHootLobby) {
+        NSLog(@"TIMER ACTIVATED!!!!");
+        //Set the timer
+        /***************************************************************************************/
+        self.theTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                         target:self
+                                                       selector:@selector(updateTime:)
+                                                       userInfo:nil
+                                                        repeats:YES];
+    }
 
     
     _indexPathArray = [NSMutableArray new];
@@ -690,7 +696,8 @@ typedef enum accessType
             NSLog(@"Current row is %d", (int)indexPath.row);
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
-            if (_voteArray && indexPath.row < _voteArray.count && _voteStatusArray) {
+            //&& _voteStatusArray
+            if (_voteArray && indexPath.row < _voteArray.count ) {
                 cell.votes = [[NSString stringWithFormat:@"%@",_voteArray[indexPath.row]] intValue];
                 cell.stateInt = [[NSString stringWithFormat:@"%@",_voteStatusArray[indexPath.row]] intValue];
                 cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];

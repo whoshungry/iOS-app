@@ -54,4 +54,7 @@
 @property BOOL isLobbyDone;
 @property NSMutableArray* voteArray;
 @property NSMutableArray* voteStatusArray;
+
+@property BOOL isInitWithHootLobby;
+@property BOOL isExpirationUpdated;
 @end
