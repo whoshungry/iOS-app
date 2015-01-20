@@ -85,10 +85,9 @@ typedef enum accessType {
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    self.navigationItem.title = @"Who's hungry?";
+    self.navigationItem.title = @"Who's Hungry?";
 
     [self addImageOnTopOfTheNavigationBar];
-
 }
 
 -(void) clearAllGroups {
@@ -200,7 +199,9 @@ typedef enum accessType {
     cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
     
     cell.whereLabel.text = chosenLobby.winnerRestName;
-    cell.titleLabel.text = chosenLobby.voteType;
+    if (chosenLobby.voteType == nil)
+        chosenLobby.voteType = @"";
+    cell.titleLabel.text = [NSString stringWithFormat:@"%@", chosenLobby.voteType];
     cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you", chosenLobby.facebookName];
     cell.friendsImage.image = hostImages[indexPath.row];
     cell.friendsImage.layer.cornerRadius = cell.friendsImage.image.size.width / 2 - 5.0;

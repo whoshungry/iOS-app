@@ -120,82 +120,7 @@ typedef enum accessType
     
     _loaded = NO;
     
-    
-    
-    
-    if (_accessType != ADMIN_FIRST) {
-        
-        /***************************************************************************************/
-        //Temporary fix for expirationTime
-        /*PFQuery *query = [PFQuery queryWithClassName:@"GroupExpiration"];
-        [query whereKey:@"groupId" equalTo:_currentLobby.groupid];
-        [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-            if (!object) {
-                NSLog(@"The getFirstObject request failed.");
-            } else {
-                // The find succeeded.
-                NSLog(@"Successfully retrieved the object.");
-                NSLog(@"Expiration time is: %@",object[@"expirationTime"]);
-                //hootlobby.expirationTime = object[@"expirationTime"];
-                _currentLobby.expirationTime = object[@"expirationTime"];
-                _isExpirationUpdated = TRUE;
-                [self setSummaryTitle];
-            }
-        }];*/
-        
-        //accesses restaurants names and vote counts and saves it in "currentLobby" variable
-        /***************************************************************************************/
-        
-        /*NSMutableArray *placesIdArray = [NSMutableArray new];
-        NSMutableArray *placesNamesArray = [NSMutableArray new];
-        NSMutableArray *placesPicsArray = [NSMutableArray new];
-        NSMutableArray *placesXArray = [NSMutableArray new];
-        NSMutableArray *placesYArray = [NSMutableArray new];
-        placesCountArray = [NSMutableArray new];
-        
-        
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
-        [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"responseObject!!: %@", responseObject);
-            NSLog(@"responseObject!!: %@", responseObject[@"choices"]);
-            //NSDictionary *results = (NSDictionary *)responseObject;
-            id results = responseObject;
-            NSArray *choices = results[@"choices"];
-            NSLog(@"response count: %lu", (unsigned long)choices.count);
-            NSLog(@"response objectcttctctct: %@", choices);
-            for (int i = 0; i < choices.count; i++) {
-                NSDictionary *currentRest = choices[i];
-                [placesIdArray addObject:currentRest[@"restaurant_id"]];
-                [placesNamesArray addObject:currentRest[@"restaurant_name"]];
-                [placesPicsArray addObject:currentRest[@"restaurant_picture"]];
-                [placesXArray addObject:currentRest[@"restaurant_location_x"]];
-                [placesYArray addObject:currentRest[@"restaurant_location_y"]];
-                [placesCountArray addObject:currentRest[@"count"]];
-            }
-            
-            lobby.placesIdArray = placesIdArray;
-            lobby.placesNamesArray = placesNamesArray;
-            lobby.placesPicsArray = placesPicsArray;
-            lobby.placesXArray = placesXArray;
-            lobby.placesYArray = placesYArray;
-            _isTimerReadyToBeActivated = TRUE;
-            
-            NSLog(@"current lobby ids rrrr: %@", lobby.placesIdArray);
-            NSLog(@"current lobby names rrrr: %@", lobby.placesNamesArray);
-            NSLog(@"current lobby pics rrrr: %@", lobby.placesPicsArray);
-            
-            _currentLobby = [lobby copy];
-            [_restaurantTable reloadData];
-            
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@", error);
-        }];*/
-    }
-
-    
-    //[self setSummaryTitle];
+    [self setSummaryTitle];
     
     //Get picture of user
     /***************************************************************************************/
@@ -484,7 +409,7 @@ typedef enum accessType
                              @"restaurant_locations_x":restaurantX,
                              @"restaurant_locations_y":restaurantY,
                              @"restaurant_stars":@"3, 4, 5",
-                             @"name_of_vote":@"Who's Hungry"
+                             @"name_of_vote":_currentLobby.name
                              };
     NSLog(@"params for create vote :%@", params);
     NSLog(@"EXPIRATION TIME IS %@",_currentLobby.expirationTime);

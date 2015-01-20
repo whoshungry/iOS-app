@@ -33,6 +33,7 @@
     [encoder encodeObject:_winnerRestY forKey:@"winnerRestY"];
     [encoder encodeObject:_placesRankingArray forKey:@"placesRankingArray"];
     [encoder encodeObject:@(_didAdminCreate) forKey:@"didAdminCreate"];
+    [encoder encodeObject:_name forKey:@"name"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -60,6 +61,7 @@
         _winnerRestY = [decoder decodeObjectForKey:@"winnerRestY"];
         _placesRankingArray = [decoder decodeObjectForKey:@"placesRankingArray"];
         _didAdminCreate = [decoder decodeObjectForKey:@"didAdminCreate"];
+        _name = [decoder decodeObjectForKey:@"name"];
     }
     return self;
 }
@@ -93,6 +95,7 @@
         [copy setWinnerRestY:self.winnerRestY];
         [copy setPlacesRankingArray:self.placesRankingArray];
         [copy setDidAdminCreate:self.didAdminCreate];
+        [copy setName:self.name];
     }
     
     return copy;

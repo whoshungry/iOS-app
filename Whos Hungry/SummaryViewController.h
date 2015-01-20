@@ -61,4 +61,7 @@
 @property BOOL isTimerReadyToBeActivated;
 @property int accessType;
 
+@property (strong, nonatomic) NSString* groupid;
+@property (strong, nonatomic) NSString* voteid;
+
 @end

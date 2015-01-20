@@ -18,6 +18,13 @@
 
 @implementation AppDelegate
 
+typedef enum accessType
+{
+    ADMIN_FIRST,
+    ADMIN_RETURNS,
+    FRIEND_FIRST,
+    FRIEND_RETURNS
+} accessType;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FBLoginView class];
@@ -61,11 +68,13 @@
             
             SummaryViewController *controller = (SummaryViewController*)[mainStoryboard
                                                                instantiateViewControllerWithIdentifier: @"SummaryViewController"];
-            //controller.loaded = YES;
-            //[controller initFromGroupID:dictionary[@"group_id"] andVoteID:dictionary[@"vote_id"]];
-            //[ROOTVIEW presentViewController:controller animated:YES completion:^(void) {
-                
-            //}];
+            
+            //check if admin
+            controller.accessType = ADMIN_RETURNS;
+
+            //create a hootlobby (just like in mainVC)
+            
+            //load Summary VC
         }
     }
     

@@ -73,8 +73,8 @@ typedef enum accessType {
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self addImageOnTopOfTheNavigationBar];
-    if (_voteType == nil)
-        [self lunchBtnPressed:nil];
+    //if (_voteType == nil)
+        //[self lunchBtnPressed:nil];
 }
 
 - (void) viewWillDisappear:(BOOL)animated{
@@ -95,12 +95,14 @@ typedef enum accessType {
         NSLog(@"Current Lobby is empty");
         tempLobby.expirationTime = realWhenDate;
         tempLobby.voteType = _voteType;
+        tempLobby.name = self.nameOfEvent.text;
         [self saveCustomObject:tempLobby];
     }
     else{
         NSLog(@"Current Lobby has DATA!");
         tempLobby.expirationTime = realWhenDate;
         tempLobby.voteType = _voteType;
+        tempLobby.name = self.nameOfEvent.text;
         [self saveCustomObject:tempLobby];
     }
     
