@@ -58,9 +58,9 @@ typedef enum accessType {
     self.tableView.dataSource = self;
     
     //http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    /*UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(loadGroups) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:refreshControl];
+    [self.tableView addSubview:refreshControl];*/
     
     chosenHoot = [HootLobby new];
     //[self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -229,7 +229,15 @@ typedef enum accessType {
     if (chosenLobby.voteType == nil)
         chosenLobby.voteType = @"";
     cell.titleLabel.text = [NSString stringWithFormat:@"%@", chosenLobby.voteType];
-    cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you", chosenLobby.facebookName];
+    
+    //If user is the Admin then the subtitle will say something different
+    if ([chosenLobby.facebookId isEqualToString:facebookID]) {
+        cell.subtitleLabel.text = [NSString stringWithFormat:@"Your friends have been notified"];
+    }
+    else{
+        cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you", chosenLobby.facebookName];
+
+    }
     cell.friendsImage.image = hostImages[indexPath.row];
     cell.friendsImage.layer.cornerRadius = cell.friendsImage.image.size.width / 2 - 5.0;
     cell.friendsImage.clipsToBounds = YES;
