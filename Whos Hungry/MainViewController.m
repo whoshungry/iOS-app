@@ -58,9 +58,9 @@ typedef enum accessType {
     self.tableView.dataSource = self;
     
     //http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller
-    /*UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(loadGroups) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:refreshControl];*/
+    [self.tableView addSubview:refreshControl];
     
     chosenHoot = [HootLobby new];
     //[self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -107,7 +107,6 @@ typedef enum accessType {
 
 -(void) getGroupsWithID:(NSString *) fbid {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSLog(@"userid from get groups is :%@", fbid);
     NSDictionary *params = @{@"user_id": fbid};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_lobby_friend", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseData) {
         NSLog(@"JSON: %@", responseData);
@@ -156,14 +155,12 @@ typedef enum accessType {
                 lobby.groupid = groupid;
                 [lobbies addObject:lobby];
                 
+                
+                NSSortDescriptor *newestOnTop = [[NSSortDescriptor alloc] initWithKey:@"voteid" ascending:NO];
+                [lobbies sortUsingDescriptors:[NSArray arrayWithObject:newestOnTop]];
+                
                 [self.tableView reloadData];
             }
-            
-            /*NSArray *sortedArray = [lobbies sortedArrayUsingSelector:@selector(compare:)];
-            lobbies = [NSMutableArray arrayWithArray:sortedArray];
-            for (int i =0; i < lobbies.count; i++) {
-                NSLog(@"lobbie vote id : %@", [[lobbies objectAtIndex:i] voteid]);
-            }*/
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

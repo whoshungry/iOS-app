@@ -457,6 +457,7 @@ typedef enum accessType
     //if (_isTimerReadyToBeActivated && _isExpirationUpdated) {
         NSInteger hoursLeft = 0;
         NSInteger minutesLeft = 0;
+        NSInteger secondsLeft = 0;
         NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
         NSDateComponents *components = [gregorianCalendar components:unitFlags
@@ -464,14 +465,14 @@ typedef enum accessType
                                                               toDate:_currentLobby.expirationTime
                                                              options:0];
         hoursLeft = components.hour;
-        minutesLeft = components.minute + 0; //plus 1 to include the chosen time, plus 0 not t0
-        
+        minutesLeft = components.minute; //plus 1 to include the chosen time, plus 0 not t0
+        secondsLeft = components.second;
         NSLog(@"time left is :%ld hrs and %ld mins", (long)hoursLeft, (long)minutesLeft);
         
-        self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left", (long)hoursLeft, (long)minutesLeft];
+        self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left %ld secs", (long)hoursLeft, (long)minutesLeft, (long)secondsLeft];
         
         //check if over...
-        if (hoursLeft == 0 && minutesLeft <= 0 && _isExpirationUpdated) {
+        if (hoursLeft == 0 && minutesLeft <= 0 && secondsLeft <= 0 && _isExpirationUpdated) {
             NSLog(@"donnnneee!!");
             votingDone = YES;
             self.votingIncompleteView.hidden = YES;
