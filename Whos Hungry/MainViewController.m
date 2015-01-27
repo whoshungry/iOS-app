@@ -56,15 +56,22 @@ typedef enum accessType {
     //[self clearAllGroups];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    //http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller
+    /*UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(loadGroups) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:refreshControl];*/
+    
     chosenHoot = [HootLobby new];
     //[self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
     
     lobbies = [NSMutableArray new];
     hostImages = [NSMutableArray new];
     
-    [self.tableView reloadData];
-    
-    
+    [self loadGroups];
+}
+
+-(void) loadGroups {
     [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
             // Success! Include your code to handle the results here
@@ -76,7 +83,6 @@ typedef enum accessType {
             // See: https://developers.facebook.com/docs/ios/errors
         }
     }];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -159,7 +165,6 @@ typedef enum accessType {
                 NSLog(@"lobbie vote id : %@", [[lobbies objectAtIndex:i] voteid]);
             }*/
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -169,6 +174,31 @@ typedef enum accessType {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return lobbies.count;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    if (lobbies) {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        return 1;
+        
+    } else {
+        // Display a message when the table is empty
+        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+        
+        messageLabel.text = @"No data is currently available. Please pull down to refresh.";
+        messageLabel.textColor = [UIColor blackColor];
+        messageLabel.numberOfLines = 0;
+        messageLabel.textAlignment = NSTextAlignmentCenter;
+        messageLabel.font = [UIFont fontWithName:@"Palatino-Italic" size:20];
+        [messageLabel sizeToFit];
+        
+        self.tableView.backgroundView = messageLabel;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

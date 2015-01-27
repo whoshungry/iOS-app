@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *publicBtn;
 
 @property (strong, nonatomic) UIImageView* imageView;
+@property (strong, nonatomic) UIRefreshControl* refreshControl;
 
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *coverIndicator;
 @property (strong, nonatomic) IBOutlet UIView *coverView;
