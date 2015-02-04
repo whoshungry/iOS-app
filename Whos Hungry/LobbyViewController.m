@@ -280,7 +280,6 @@ typedef enum accessType {
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"WhereSegue"]) {
-        
         UINavigationController *nav = [segue destinationViewController];
         RestaurantsViewController *restVC = (RestaurantsViewController *)nav.topViewController;
         restVC.voteType = _voteType;

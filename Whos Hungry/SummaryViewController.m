@@ -74,6 +74,10 @@ typedef enum accessType
     return self;
 }
 
+-(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -137,7 +141,12 @@ typedef enum accessType
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    [locationManager requestWhenInUseAuthorization];
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+    {
+        [locationManager requestAlwaysAuthorization];
+        [locationManager requestWhenInUseAuthorization];
+    }
     self.mapView.delegate = self;
 
     
@@ -171,11 +180,6 @@ typedef enum accessType
     
     viewload = YES;
 }
-
--(void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    }
 
 -(void) makeVote:(NSNotification *)note {
     NSLog(@"making vote!!" );
@@ -550,6 +554,12 @@ typedef enum accessType
         
         NSLog(@"updated! %@", _currentLocation);
         CLLocation *user = [[CLLocation alloc] initWithLatitude:_currentLocation.coordinate.latitude longitude:_currentLocation.coordinate.longitude];
+        if (restaurantCoor.latitude == -180){
+            restaurantCoor.latitude = 0;
+        }
+        if (restaurantCoor.longitude == -180) {
+            restaurantCoor.longitude = 0;
+        }
         CLLocation *locale = [[CLLocation alloc] initWithLatitude:restaurantCoor.latitude longitude:restaurantCoor.longitude];
         CLLocationDistance distance = [user distanceFromLocation:locale];
         
