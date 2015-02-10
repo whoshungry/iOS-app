@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,25 +15,52 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bae2.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="7ED-t9-I8B">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bae2.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="7ED-t9-I8B">
                         <rect key="frame" x="131" y="8" width="59" height="59"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="+ 5" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXs-Zw-uPG">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ 5" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXs-Zw-uPG">
                         <rect key="frame" x="287" y="26" width="25" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="mb1-lZ-Ac0"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bae3.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="B75-rb-cZh">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bae3.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="B75-rb-cZh">
                         <rect key="frame" x="220" y="8" width="59" height="59"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="rightarrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZEC-H1-f8N">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rightarrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZEC-H1-f8N">
                         <rect key="frame" x="8" y="21" width="25" height="35"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="7Cx-B4-mPy"/>
+                        </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="jennifer.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="0yz-Ky-ycm">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jennifer.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="0yz-Ky-ycm">
                         <rect key="frame" x="41" y="8" width="59" height="59"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="59" id="xYK-3m-y9G"/>
+                        </constraints>
                     </imageView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="0yz-Ky-ycm" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="BEM-wp-Lrf"/>
+                    <constraint firstItem="hXs-Zw-uPG" firstAttribute="leading" secondItem="B75-rb-cZh" secondAttribute="trailing" constant="8" symbolic="YES" id="Ful-1R-NUv"/>
+                    <constraint firstItem="0yz-Ky-ycm" firstAttribute="leading" secondItem="ZEC-H1-f8N" secondAttribute="trailing" constant="8" symbolic="YES" id="Goy-Fb-Nzx"/>
+                    <constraint firstItem="B75-rb-cZh" firstAttribute="bottom" secondItem="7ED-t9-I8B" secondAttribute="bottom" id="J9V-tP-vGO"/>
+                    <constraint firstItem="ZEC-H1-f8N" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="TOi-7k-qLi"/>
+                    <constraint firstItem="7ED-t9-I8B" firstAttribute="top" secondItem="B75-rb-cZh" secondAttribute="top" id="Tg8-Fa-9G8"/>
+                    <constraint firstItem="hXs-Zw-uPG" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="d45-eU-imv"/>
+                    <constraint firstItem="7ED-t9-I8B" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="diN-8E-ptM"/>
+                    <constraint firstItem="B75-rb-cZh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="i8r-gj-IFr"/>
+                    <constraint firstItem="7ED-t9-I8B" firstAttribute="leading" secondItem="0yz-Ky-ycm" secondAttribute="trailing" constant="31" id="jXo-Co-MBJ"/>
+                    <constraint firstItem="hXs-Zw-uPG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="18" id="mNt-hU-Rdy"/>
+                    <constraint firstItem="0yz-Ky-ycm" firstAttribute="bottom" secondItem="7ED-t9-I8B" secondAttribute="bottom" id="nbY-ER-ACC"/>
+                    <constraint firstItem="7ED-t9-I8B" firstAttribute="top" secondItem="0yz-Ky-ycm" secondAttribute="top" id="pAx-ZE-F7E"/>
+                    <constraint firstItem="B75-rb-cZh" firstAttribute="leading" secondItem="7ED-t9-I8B" secondAttribute="trailing" constant="30" id="ucw-ZB-CFm"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="ZEC-H1-f8N" secondAttribute="bottom" constant="10" id="vHS-fT-hdU"/>
+                    <constraint firstItem="ZEC-H1-f8N" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="13" id="wLV-8S-WiP"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="arrow" destination="ZEC-H1-f8N" id="q0R-s6-8YM"/>
