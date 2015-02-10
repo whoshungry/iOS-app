@@ -28,6 +28,7 @@
 }
 
 @property (nonatomic, retain) NSTimer *theTimer;
+@property (weak, nonatomic) IBOutlet UILabel *winningRestaurantLabel;
 
 @property (assign, nonatomic) BOOL active;
 @property (assign, nonatomic) BOOL loaded;

@@ -81,6 +81,12 @@ typedef enum accessType
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(makeVote:)
+     name:@"makeVote"
+     object:nil];
+    
     NSLog(@"currnet loggy: %@", _currentLobby);
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -95,7 +101,7 @@ typedef enum accessType
         _voteArray = nil;
         _voteStatusArray = nil;
         _isTimerReadyToBeActivated = TRUE;
-        _isExpirationUpdated = TRUE;
+        //_isExpirationUpdated = TRUE;
         
         
         
@@ -279,6 +285,10 @@ typedef enum accessType
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     NSLog(@"updated! %@", userLocation);
     CLLocation *user = [[CLLocation alloc] initWithLatitude:userLocation.coordinate.latitude longitude:userLocation.coordinate.longitude];
+    if (restaurantCoor.latitude == 0)
+        restaurantCoor.latitude = 30;
+    if (restaurantCoor.longitude == 0)
+        restaurantCoor.longitude = -97;
     CLLocation *locale = [[CLLocation alloc] initWithLatitude:restaurantCoor.latitude longitude:restaurantCoor.longitude];
     CLLocationDistance distance = [user distanceFromLocation:locale];
     
@@ -396,7 +406,6 @@ typedef enum accessType
     
     NSLog(@"facebook id: %@",_currentLobby.facebookId);
     NSLog(@"group id: %@", groupId);
-    NSLog(@"vote id: %@", _currentLobby.voteid);
     NSLog(@"expiratation time: %@",_currentLobby.expirationTime);
     
     
@@ -476,7 +485,7 @@ typedef enum accessType
         self.whenTimeLbl.text = [NSString stringWithFormat:@"%ldhr %ld min left %ld secs", (long)hoursLeft, (long)minutesLeft, (long)secondsLeft];
         
         //check if over...
-        if (hoursLeft == 0 && minutesLeft <= 0 && secondsLeft <= 0 && _isExpirationUpdated) {
+        if (hoursLeft == 0 && minutesLeft <= 0 && secondsLeft <= 0) {
             NSLog(@"donnnneee!!");
             votingDone = YES;
             self.votingIncompleteView.hidden = YES;
@@ -534,10 +543,27 @@ typedef enum accessType
         [f setNumberStyle:NSNumberFormatterDecimalStyle];
         
         _currentLobby.winnerRestID = results[@"winner_restaurant_id"];
-        _currentLobby.winnerRestName = results[@"winner_restaurant_name"];
-        _currentLobby.winnerRestPic = results[@"winner_restaurant_picture"];
-        _currentLobby.winnerRestX = [f numberFromString:(NSString *)results[@"winner_restaurant_location_x"]];
-        _currentLobby.winnerRestY = [f numberFromString:(NSString *)results[@"winner_restaurant_location_y"]];
+        if ( _currentLobby.winnerRestID == nil || [_currentLobby.winnerRestID isEqual:[NSNull null]]) {
+            NSLog(@"calculate byhand...");
+            int winnerChoice;
+            int highestVote = 0;
+            for (int i = 0; i < [results[@"choices"] count]; i++) {
+                if ((int)results[@"choices"][i][@"count"] > highestVote){
+                    highestVote = (int)results[@"choices"][i][@"count"];
+                    winnerChoice = i;
+                }
+            }
+            _currentLobby.winnerRestID = results[@"choices"][winnerChoice][@"restaurant_id"];
+            _currentLobby.winnerRestName = results[@"choices"][winnerChoice][@"restaurant_name"];
+            _currentLobby.winnerRestPic = results[@"choices"][winnerChoice][@"restaurant_picture"];
+            _currentLobby.winnerRestX = results[@"choices"][winnerChoice][@"restaurant_location_x"];
+            _currentLobby.winnerRestY = results[@"choices"][winnerChoice][@"restaurant_location_y"];
+        } else {
+            _currentLobby.winnerRestName = results[@"winner_restaurant_name"];
+            _currentLobby.winnerRestPic = results[@"winner_restaurant_picture"];
+            _currentLobby.winnerRestX = [f numberFromString:(NSString *)results[@"winner_restaurant_location_x"]];
+            _currentLobby.winnerRestY = [f numberFromString:(NSString *)results[@"winner_restaurant_location_y"]];
+        }
 
         NSLog(@"current lobby ids rrrr: %@", _currentLobby.winnerRestID);
         NSLog(@"current lobby names rrrr: %@", _currentLobby.winnerRestName);
@@ -565,6 +591,8 @@ typedef enum accessType
         
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(restaurantCoor, distance*2, distance*2);
         [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+        
+        self.winningRestaurantLabel.text = _currentLobby.winnerRestName;
         
         [_restaurantTable reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

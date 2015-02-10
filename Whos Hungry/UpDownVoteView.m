@@ -25,7 +25,7 @@
     self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
     NSDictionary *dataDict = [NSDictionary dictionaryWithObject:self
                                                          forKey:@"sender"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MakeVote" object:self userInfo:dataDict];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"makeVote" object:nil userInfo:dataDict];
 }
 
 - (IBAction)voteDown:(id)sender {
@@ -45,7 +45,7 @@
     self.voteLbl.text = [NSString stringWithFormat:@"%i", self.votes];
     NSDictionary *dataDict = [NSDictionary dictionaryWithObject:self
                                                          forKey:@"sender"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MakeVote" object:self userInfo:dataDict];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"makeVote" object:nil userInfo:dataDict];
 }
 
 -(void) enableDisable {
