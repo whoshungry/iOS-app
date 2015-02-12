@@ -70,7 +70,8 @@ typedef enum accessType
                                                                instantiateViewControllerWithIdentifier: @"SummaryViewController"];
             
             //check if admin
-            controller.accessType = ADMIN_RETURNS;
+            controller.accessType = FRIEND_RETURNS;
+            
 
             //create a hootlobby (just like in mainVC)
             
@@ -85,17 +86,43 @@ typedef enum accessType
 {
     
     NSLog(@"Received notification: %@", userInfo);
-#define ROOTVIEW [[[UIApplication sharedApplication] keyWindow] rootViewController]
     
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
+    NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
+    //NSMutableString *notificationType = [aps objectForKey:@"type"];
+    
+    //NSLog(@"notification type is = %@", notificationType);
+    
+    UIViewController *uvc;
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
-    SummaryViewController *controller = (SummaryViewController*)[mainStoryboard
+    /*if([notificationType isEqualToString:@"FirstInvited"]){
+        SummaryViewController *summaryvc = (SummaryViewController*)[mainStoryboard
                                                                  instantiateViewControllerWithIdentifier: @"SummaryViewController"];
-    //controller.loaded = YES;
-    //[controller initFromGroupID:userInfo[@"group_id"] andVoteID:userInfo[@"vote_id"]];
-    //[ROOTVIEW presentViewController:controller animated:YES completion:^(void) {
-        
-    //}];
+        HootLobby *newHootLobby = [HootLobby new];
+    
+        newHootLobby.groupid = userInfo[@"group_id"];
+        newHootLobby.voteid = userInfo[@"vote_id"];
+    
+        summaryvc.loaded = YES;
+        summaryvc.isFromMain = YES;
+        summaryvc.currentLobby = newHootLobby;
+        summaryvc.accessType = FRIEND_FIRST;
+        uvc = summaryvc;*/
+    //} else if ([notificationType isEqualToString:@"FirstInvited"]) {
+        //SummaryViewController *summaryvc = (SummaryViewController*)[mainStoryboard
+                                                               // instantiateViewControllerWithIdentifier:
+                                                               //     @"SummaryViewController"];
+    
+        //uvc = summaryvc;
+    
+
+    //self.window.rootViewController = summaryvc;
+    
+    //}
+   // [self.window makeKeyAndVisible];
+   // [self.window.rootViewController presentViewController:summaryvc animated:YES completion:NULL];
 }
 
 - (BOOL)application:(UIApplication *)application

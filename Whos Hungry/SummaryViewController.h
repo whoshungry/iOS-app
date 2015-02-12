@@ -28,6 +28,7 @@
 }
 
 @property (nonatomic, retain) NSTimer *theTimer;
+@property (weak, nonatomic) IBOutlet UILabel *winningRestaurantLabel;
 
 @property (assign, nonatomic) BOOL active;
 @property (assign, nonatomic) BOOL loaded;
@@ -51,8 +52,11 @@
 
 @property (strong, nonatomic) IBOutlet UIView *votingIncompleteView;
 
+@property BOOL updatingVotes;
+
 @property BOOL isLobbyDone;
 @property NSMutableArray* voteArray;
+@property NSMutableArray* totalVoteArray;
 @property NSMutableArray* voteStatusArray;
 
 @property BOOL isInitWithHootLobby;
@@ -63,5 +67,7 @@
 
 @property (strong, nonatomic) NSString* groupid;
 @property (strong, nonatomic) NSString* voteid;
+
+-(void) updateVoteCount;
 
 @end
