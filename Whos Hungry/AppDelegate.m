@@ -54,29 +54,20 @@ typedef enum accessType
     [[UINavigationBar appearance] setBarTintColor:orangeColor];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
-    //received push...
-    if (launchOptions != nil)
-    {
-        NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-        if (dictionary != nil)
-        {
-            NSLog(@"Launched from push notification: %@", dictionary);
-        #define ROOTVIEW [[[UIApplication sharedApplication] keyWindow] rootViewController]
-            
-            UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                                     bundle: nil];
-            
-            SummaryViewController *controller = (SummaryViewController*)[mainStoryboard
-                                                               instantiateViewControllerWithIdentifier: @"SummaryViewController"];
-            
-            //check if admin
-            controller.accessType = FRIEND_RETURNS;
-            
-
-            //create a hootlobby (just like in mainVC)
-            
-            //load Summary VC
-        }
+    NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (userInfo) {
+        NSLog(@"needs to start up app completely");
+        
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                                 bundle: nil];
+        
+        SummaryViewController *controller = (SummaryViewController*)[mainStoryboard
+                                                                     instantiateViewControllerWithIdentifier: @"SummaryViewController"];
+        controller.loaded = YES;
+        /*[controller initFromGroupID:userInfo[@"group_id"] andVoteID:userInfo[@"vote_id"]];
+        [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:controller animated:YES completion:^(void) {
+        
+        }];*/
     }
     
     return YES;
@@ -84,45 +75,18 @@ typedef enum accessType
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-    
-    NSLog(@"Received notification: %@", userInfo);
-    
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
-    
-    NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
-    //NSMutableString *notificationType = [aps objectForKey:@"type"];
-    
-    //NSLog(@"notification type is = %@", notificationType);
-    
-    UIViewController *uvc;
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    /*if([notificationType isEqualToString:@"FirstInvited"]){
-        SummaryViewController *summaryvc = (SummaryViewController*)[mainStoryboard
-                                                                 instantiateViewControllerWithIdentifier: @"SummaryViewController"];
-        HootLobby *newHootLobby = [HootLobby new];
-    
-        newHootLobby.groupid = userInfo[@"group_id"];
-        newHootLobby.voteid = userInfo[@"vote_id"];
-    
-        summaryvc.loaded = YES;
-        summaryvc.isFromMain = YES;
-        summaryvc.currentLobby = newHootLobby;
-        summaryvc.accessType = FRIEND_FIRST;
-        uvc = summaryvc;*/
-    //} else if ([notificationType isEqualToString:@"FirstInvited"]) {
-        //SummaryViewController *summaryvc = (SummaryViewController*)[mainStoryboard
-                                                               // instantiateViewControllerWithIdentifier:
-                                                               //     @"SummaryViewController"];
-    
-        //uvc = summaryvc;
-    
-
-    //self.window.rootViewController = summaryvc;
-    
-    //}
-   // [self.window makeKeyAndVisible];
-   // [self.window.rootViewController presentViewController:summaryvc animated:YES completion:NULL];
+    NSLog(@"push!!: %@", userInfo);
+    if([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive)
+    {
+        NSLog(@"load up application from inactive state");
+        
+    }
+    else {
+        NSLog(@"loaded and active");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateVoteCount" object:self];
+        //SummaryViewController *vc = (SummaryViewController *)((UINavigationController*)self.window.rootViewController);
+       //[vc updateVoteCount];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application

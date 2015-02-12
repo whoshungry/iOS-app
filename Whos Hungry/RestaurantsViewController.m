@@ -81,9 +81,10 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters =
                                 @{@"location": [NSString stringWithFormat:@"%f,%f", _currentCentre.latitude,                     _currentCentre.longitude],
-                                 @"radius":@"1000",
+                                 //@"radius":@"1000",
                                  @"types":googleType,
                                  @"key":GOOGLE_API_KEY_TWO,
+                                  @"rankby":@"distance"
                                  };
     [manager GET:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableDictionary* emptyVotingDict = [NSMutableDictionary new];
@@ -179,7 +180,7 @@
         });
     });
     */
-    if (restImages.count > 0) {
+    if (restImages.count > 0 && indexPath.row < restImages.count) {
         cell.image.image = restImages[indexPath.row];
     }
     cell.name.text = chosenResponse[@"name"];
