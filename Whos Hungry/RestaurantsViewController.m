@@ -36,9 +36,20 @@
     _restaurantRatingArray = [NSMutableArray new];
     restImages = [NSMutableArray new];
     _allPlaces = [NSMutableArray new];
-    
+    [self.restaurantsTable.tableHeaderView setFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0,self.view.frame.size.width, 44)];
+    self.restaurantsTable.tableHeaderView = searchBar;
     
     [self initRestaurants];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    CGPoint contentOffset = self.restaurantsTable.contentOffset;
+    contentOffset.y += CGRectGetHeight(self.restaurantsTable.tableHeaderView.frame);
+    self.restaurantsTable.contentOffset = contentOffset;
 }
 
 - (void)initRestaurants{
