@@ -70,6 +70,7 @@ typedef enum accessType
         }];*/
     }
     
+    [[Ubertesters shared] initialize];
     return YES;
 }
 

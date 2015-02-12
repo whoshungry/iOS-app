@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <UbertestersSDK/Ubertesters.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+-(void)initializeWithOptions:(Ubertesters*)options;
 
 @end
 

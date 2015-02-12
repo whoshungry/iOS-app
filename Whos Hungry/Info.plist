@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ubertesters_organization_token</key>
+	<string>e6317930-b1ab-11e4-9780-22000ac44c54
+e6317930-b1ab-11e4-9780-22000ac44c54
+</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -32,7 +36,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>0.0.1</string>
 	<key>FacebookAppID</key>
 	<string>786164954778080</string>
 	<key>FacebookDisplayName</key>
