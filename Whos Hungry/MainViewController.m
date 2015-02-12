@@ -14,6 +14,8 @@
 #import "SummaryViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
+
+
 static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
 
 @interface MainViewController () {
@@ -69,8 +71,18 @@ typedef enum accessType {
     lobbies = [NSMutableArray new];
     hostImages = [NSMutableArray new];
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.backgroundColor = [UIColor purpleColor];
+
+    [self.refreshControl addTarget:_tableView
+                            action:@selector(loadGroups)
+                  forControlEvents:UIControlEventValueChanged];
+
+    
+
     [self loadGroups];
 }
+
 
 -(void) loadGroups {
     [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
