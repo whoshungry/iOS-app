@@ -40,7 +40,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>EXTRA DETAILS ABOUT LOCATION</string>
+	<string>Your location will only be public to your friends starting 20 mins before the meetup</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.xib</string>
 	<key>UIMainStoryboardFile</key>

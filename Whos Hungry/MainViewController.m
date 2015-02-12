@@ -22,6 +22,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     HootLobby *chosenHoot;
     __block BOOL isAdmin;
     
+    
     __block NSString *facebookID;
 }
 

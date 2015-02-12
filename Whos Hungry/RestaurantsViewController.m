@@ -70,6 +70,13 @@
     _allPlaces = [NSMutableArray new];
 }
 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    if (([scrollView contentOffset].y + scrollView.frame.size.height) >= [scrollView contentSize].height){
+        NSLog(@"Load more!!");
+    }
+}
+
 -(void)getRestInfo:(NSString *)googleType {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters =

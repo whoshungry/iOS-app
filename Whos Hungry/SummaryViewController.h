@@ -52,8 +52,11 @@
 
 @property (strong, nonatomic) IBOutlet UIView *votingIncompleteView;
 
+@property BOOL updatingVotes;
+
 @property BOOL isLobbyDone;
 @property NSMutableArray* voteArray;
+@property NSMutableArray* totalVoteArray;
 @property NSMutableArray* voteStatusArray;
 
 @property BOOL isInitWithHootLobby;
@@ -64,5 +67,7 @@
 
 @property (strong, nonatomic) NSString* groupid;
 @property (strong, nonatomic) NSString* voteid;
+
+-(void) updateVoteCount;
 
 @end
