@@ -190,14 +190,18 @@ typedef enum accessType {
 }
 
 - (IBAction)chooseWhenDate:(id)sender {
-    [ActionSheetDatePicker showPickerWithTitle:@"" datePickerMode:UIDatePickerModeTime selectedDate:_whenDate doneBlock:^(ActionSheetDatePicker *picker, id selectionDate, id origin) {
+    [ActionSheetDatePicker showPickerWithTitle:@"" datePickerMode:UIDatePickerModeDateAndTime selectedDate:_whenDate doneBlock:^(ActionSheetDatePicker *picker, id selectionDate, id origin) {
         NSLog(@"when date is %@", selectionDate);
         _whenDate = (NSDate *)selectionDate;
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"hh:mm"];
-        NSString *formattedDateString = [dateFormatter stringFromDate:_whenDate];
-        NSLog(@"formattedDateString: %@", formattedDateString);
-        [_whenButton setTitle:[NSString stringWithFormat:@"When: %@", formattedDateString] forState:UIControlStateNormal];
+        if([_whenDate timeIntervalSinceDate:[NSDate new]] > 0) {
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"hh:mm"];
+            NSString *formattedDateString = [dateFormatter stringFromDate:_whenDate];
+            NSLog(@"formattedDateString: %@", formattedDateString);
+            [_whenButton setTitle:[NSString stringWithFormat:@"When: %@", formattedDateString] forState:UIControlStateNormal];
+        } else {
+            [_whenButton setTitle:@"When: Invalid time..." forState:UIControlStateNormal];
+        }
     } cancelBlock:nil origin:sender];
     
     
