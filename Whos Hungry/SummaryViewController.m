@@ -164,15 +164,25 @@ typedef enum accessType
     
     //Map initialization and authorization
     /***************************************************************************************/
+    
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
-    {
-        [locationManager requestAlwaysAuthorization];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
         [locationManager requestWhenInUseAuthorization];
+        [locationManager requestAlwaysAuthorization];
     }
+    
+    CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
+    if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
+        authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [locationManager startUpdatingLocation];
+    }
+    [locationManager startUpdatingLocation];
+    
+    
+
     self.mapView.delegate = self;
 
     
@@ -205,6 +215,15 @@ typedef enum accessType
     [_restaurantTable reloadData];
     
     viewload = YES;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    NSLog(@"%@", [locations lastObject]);
+    _currentLocation = locations[0];
+    NSLog(@"current location is %f and %f",_currentLocation.coordinate.latitude, _currentLocation.coordinate.longitude);
+    [_restaurantTable reloadData];
+    [locationManager stopUpdatingLocation];
 }
 
 -(void) makeVote:(NSNotification *)note {
@@ -450,14 +469,6 @@ typedef enum accessType
                              };
     NSLog(@"params for create vote :%@", params);
     NSLog(@"EXPIRATION TIME IS %@",_currentLobby.expirationTime);
-    
-    /////////
-    //Temporary solution to date issue
-    /*PFObject *expObject = [PFObject objectWithClassName:@"GroupExpiration"];
-    expObject[@"expirationTime"] = _currentLobby.expirationTime;
-    expObject[@"groupId"] = groupId;
-    [expObject saveInBackground];*/
-    /////////
 
     [manager POST:[NSString stringWithFormat:@"%@apis/create_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"create vote is :%@", responseObject);
