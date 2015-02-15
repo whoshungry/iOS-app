@@ -11,7 +11,8 @@
 @implementation RSVPFriendsTableViewCell
 
 - (void)awakeFromNib {
-    // Initialization code
+    _firstImage.layer.cornerRadius = 25.0;
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

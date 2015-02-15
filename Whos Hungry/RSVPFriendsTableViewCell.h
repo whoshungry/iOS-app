@@ -18,5 +18,6 @@
 @property (strong, nonatomic) IBOutlet UIImageView *secondImage;
 @property (strong, nonatomic) IBOutlet UIImageView *thirdImage;
 @property (strong, nonatomic) IBOutlet UIImageView *fourthImage;
+@property (strong, nonatomic) IBOutlet UILabel *extraLabel;
 @property BOOL isOpen;
 @end

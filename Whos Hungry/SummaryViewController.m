@@ -811,20 +811,29 @@ typedef enum accessType
         cell.delegate = self;
         cell.isGoing = 0;
         if (_currentLobby.rsvpArray.count > 0) {
+            int extraCount = 0;
+            int imageIndex = 0;
             for (int i = 0; i < _currentLobby.rsvpArray.count; i++) {
                 NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:_currentLobby.rsvpArray[i][@"picture"]]];
-                if (i == 0){
-                    
-                    [cell.firstImage setImage:[UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)]];
-                }
-                if (i == 1) {
-                    [cell.secondImage setImage:[UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)]];
-                }
-                if (i == 2) {
-                    [cell.thirdImage setImage:[UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)]];
-                }
-                if (i == 3) {
-                    [cell.fourthImage setImage:[UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)]];
+                UIImage* tempImage = [UIImage new];
+                tempImage = [self resizeImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] newSize:CGSizeMake(50.0, 50.0)];
+                if ([_currentLobby.rsvpArray[i][@"go"] integerValue] == 1) {
+                    if (imageIndex == 0){
+                        [cell.firstImage setImage:tempImage];
+                        [cell.firstImage.layer setCornerRadius:cell.firstImage.image.size.width / 2.0];
+                    }
+                    if (imageIndex == 1) {
+                        cell.secondImage.layer.cornerRadius = cell.secondImage.image.size.width / 2.0;
+                        [cell.secondImage setImage:tempImage];
+                    }
+                    if (imageIndex == 2) {
+                        cell.thirdImage.layer.cornerRadius = cell.thirdImage.image.size.width / 2.0;
+                        [cell.thirdImage setImage:tempImage];
+                    }
+                    if (imageIndex > 2) {
+                        cell.extraLabel.text = [NSString stringWithFormat:@"+%d",imageIndex];
+                    }
+                    imageIndex++;
                 }
             }
         }
@@ -832,6 +841,31 @@ typedef enum accessType
         return cell;
     }
     return 0;
+}
+
+- (UIImage *)resizeImage:(UIImage*)image newSize:(CGSize)newSize {
+    CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
+    CGImageRef imageRef = image.CGImage;
+    
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    // Set the quality level to use when rescaling
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+    CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height);
+    
+    CGContextConcatCTM(context, flipVertical);
+    // Draw into the context; this scales the image
+    CGContextDrawImage(context, newRect, imageRef);
+    
+    // Get the resized image from the context and a UIImage
+    CGImageRef newImageRef = CGBitmapContextCreateImage(context);
+    UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+    
+    CGImageRelease(newImageRef);
+    UIGraphicsEndImageContext();
+    
+    return newImage;
 }
 
 - (NSArray *)rightButtons{
