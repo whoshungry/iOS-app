@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>0.0.2</string>
 	<key>FacebookAppID</key>
 	<string>786164954778080</string>
 	<key>FacebookDisplayName</key>
@@ -60,5 +60,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>ubertesters_organization_token</key>
+	<string>e6317930-b1ab-11e4-9780-22000ac44c54</string>
 </dict>
 </plist>

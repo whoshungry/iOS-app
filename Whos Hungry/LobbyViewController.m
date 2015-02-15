@@ -191,6 +191,7 @@ typedef enum accessType {
 
 - (IBAction)chooseWhenDate:(id)sender {
     [ActionSheetDatePicker showPickerWithTitle:@"" datePickerMode:UIDatePickerModeDateAndTime selectedDate:_whenDate doneBlock:^(ActionSheetDatePicker *picker, id selectionDate, id origin) {
+        picker.minimumDate = [NSDate new];
         NSLog(@"when date is %@", selectionDate);
         _whenDate = (NSDate *)selectionDate;
         if([_whenDate timeIntervalSinceDate:[NSDate new]] > 0) {
