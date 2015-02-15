@@ -150,6 +150,24 @@ typedef enum accessType
     
     [self setSummaryTitle];
     
+    //Loads RSVP of users
+    /***************************************************************************************/
+    if (_currentLobby.voteid){
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *params = @{
+                                 @"vote_id": _currentLobby.voteid};
+        [manager POST:[NSString stringWithFormat:@"%@apis/show_rsvp", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"JSON: %@", responseObject);
+            NSDictionary *results = (NSDictionary *) responseObject;
+            _currentLobby.rsvpArray = results[@"rsvps"];
+            [_friendsGoingTable reloadData];
+            NSLog(@"Dictionary %@",results);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
+        
+    }
+    
     //Get picture of user
     /***************************************************************************************/
     if (FBSession.activeSession.isOpen)
@@ -277,12 +295,13 @@ typedef enum accessType
     [locationManager stopUpdatingLocation];
     [self.theTimer invalidate];
     self.theTimer = nil;
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    if (![_currentLobby.rsvpArray containsObject:_facebookID]) {
+
+    if (_currentLobby.rsvpArray.count < 1) {
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         NSDictionary *params = @{
-                                 @"user_id": _currentLobby.facebookId,
+                                 @"user_id": _facebookID,
                                  @"vote_id": _currentLobby.voteid,
-                                 @"go": @1};
+                                 @"go": [NSNumber numberWithInt:_rsvpCell.isGoing]};
         [manager POST:[NSString stringWithFormat:@"%@apis/make_rsvp", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);
             NSDictionary *results = (NSDictionary *) responseObject;
@@ -290,6 +309,9 @@ typedef enum accessType
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
         }];
+    }
+    if (![_currentLobby.rsvpArray containsObject:_facebookID]) {
+       
     }
 
     
@@ -788,21 +810,25 @@ typedef enum accessType
         cell.rightUtilityButtons = [self rightButtons];
         cell.delegate = self;
         cell.isGoing = 0;
-        _rsvpCell = cell;
-        if (_currentLobby.voteid){
-            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-            NSDictionary *params = @{
-                                     @"vote_id": _currentLobby.voteid};
-            [manager POST:[NSString stringWithFormat:@"%@apis/show_rsvp", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"JSON: %@", responseObject);
-                NSDictionary *results = (NSDictionary *) responseObject;
-                _currentLobby.rsvpArray = results[@"rsvps"];
-                NSLog(@"Dictionary %@",results);
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"Error: %@", error);
-            }];
-            
+        if (_currentLobby.rsvpArray.count > 0) {
+            for (int i = 0; i < _currentLobby.rsvpArray.count; i++) {
+                NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:_currentLobby.rsvpArray[i][@"picture"]]];
+                if (i == 0){
+                    
+                    [cell.firstImage setImage:[UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)]];
+                }
+                if (i == 1) {
+                    [cell.secondImage setImage:[UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)]];
+                }
+                if (i == 2) {
+                    [cell.thirdImage setImage:[UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)]];
+                }
+                if (i == 3) {
+                    [cell.fourthImage setImage:[UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)]];
+                }
+            }
         }
+        _rsvpCell = cell;
         return cell;
     }
     return 0;
@@ -875,8 +901,46 @@ typedef enum accessType
     switch (index) {
         case 0:
         {
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            NSDictionary *params = @{
+                                     @"user_id": _facebookID,
+                                     @"vote_id": _currentLobby.voteid,
+                                     @"go": @1};
+            [manager POST:[NSString stringWithFormat:@"%@apis/make_rsvp", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"JSON: %@", responseObject);
+                NSDictionary *results = (NSDictionary *) responseObject;
+                NSLog(@"Dictionary %@",results);
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"Error: %@", error);
+            }];
+            /*
+            BOOL isInList = FALSE;
+            if (_currentLobby.rsvpArray) {
+                for (int i = 0; i < _currentLobby.rsvpArray.count; i++) {
+                    if ([_facebookID isEqualToString:_currentLobby.rsvpArray[i][@"user_fbid"] ]) {
+                        isInList = TRUE;
+                    }
+                }
+                if (!isInList) {
+                    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+                    NSDictionary *params = @{
+                                             @"user_id": _facebookID,
+                                             @"vote_id": _currentLobby.voteid,
+                                             @"go": @1};
+                    [manager POST:[NSString stringWithFormat:@"%@apis/make_rsvp", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        NSLog(@"JSON: %@", responseObject);
+                        NSDictionary *results = (NSDictionary *) responseObject;
+                        NSLog(@"Dictionary %@",results);
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        NSLog(@"Error: %@", error);
+                    }];
+                }
+
+            }
+            */
             NSLog(@"Going button was pressed");
             _rsvpCell.isGoing = 1;
+            
             [_rsvpCell.rsvpButton setImage:[UIImage imageNamed:@"GoingIcon(who'shungry).png"] forState:UIControlStateNormal];
             [_rsvpCell.rsvpButton setBackgroundColor:[UIColor whiteColor]];
             [_rsvpCell.arrowButton setBackgroundColor:[UIColor colorWithRed:(121.0/255.0) green:(231.0/255.0) blue:(175.0/255.0) alpha:1.0]];
@@ -886,6 +950,42 @@ typedef enum accessType
         }
         case 1:
         {
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            NSDictionary *params = @{
+                                     @"user_id": _facebookID,
+                                     @"vote_id": _currentLobby.voteid,
+                                     @"go": @-1};
+            [manager POST:[NSString stringWithFormat:@"%@apis/make_rsvp", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"JSON: %@", responseObject);
+                NSDictionary *results = (NSDictionary *) responseObject;
+                NSLog(@"Dictionary %@",results);
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"Error: %@", error);
+            }];
+            /*
+            BOOL isInList = FALSE;
+            if (_currentLobby.rsvpArray) {
+                for (int i = 0; i < _currentLobby.rsvpArray.count; i++) {
+                    if ([_facebookID isEqualToString:_currentLobby.rsvpArray[i][@"user_fbid"]]) {
+                        isInList = TRUE;
+                    }
+                }
+                if (!isInList) {
+                    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+                    NSDictionary *params = @{
+                                             @"user_id": _facebookID,
+                                             @"vote_id": _currentLobby.voteid,
+                                             @"go": @-1};
+                    [manager POST:[NSString stringWithFormat:@"%@apis/make_rsvp", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        NSLog(@"JSON: %@", responseObject);
+                        NSDictionary *results = (NSDictionary *) responseObject;
+                        NSLog(@"Dictionary %@",results);
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        NSLog(@"Error: %@", error);
+                    }];
+                }
+            }
+            */
             NSLog(@"Not Going button was pressed");
             _rsvpCell.isGoing = -1;
             [_rsvpCell.rsvpButton setImage:[UIImage imageNamed:@"06_notgoingwithtext_icon-19.png"] forState:UIControlStateNormal];
