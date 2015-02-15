@@ -129,6 +129,8 @@
 		C3A9988D1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3A9988C1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png */; };
 		C3A9988F1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3A9988E1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png */; };
 		C3ABAC661A8C67E50041B421 /* BackorExitIcon(who'shungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3ABAC651A8C67E50041B421 /* BackorExitIcon(who'shungry).png */; };
+		C3ABAC681A8DC0A80041B421 /* GoingIcon(who'shungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3ABAC671A8DC0A80041B421 /* GoingIcon(who'shungry).png */; };
+		C3ABAC6A1A8E95F00041B421 /* 06_notgoingwithtext_icon-19.png in Resources */ = {isa = PBXBuildFile; fileRef = C3ABAC691A8E95F00041B421 /* 06_notgoingwithtext_icon-19.png */; };
 		C3B1D4A11A6617C4006CEDD5 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B1D4A01A6617C4006CEDD5 /* libsqlite3.dylib */; };
 		C3B1D4A31A6617CF006CEDD5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B1D4A21A6617CF006CEDD5 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
@@ -317,6 +319,8 @@
 		C3A9988C1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownvoteIcon(Who'sHungry).png"; sourceTree = "<group>"; };
 		C3A9988E1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UpvoteIcon(Who'sHungry).png"; sourceTree = "<group>"; };
 		C3ABAC651A8C67E50041B421 /* BackorExitIcon(who'shungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackorExitIcon(who'shungry).png"; sourceTree = SOURCE_ROOT; };
+		C3ABAC671A8DC0A80041B421 /* GoingIcon(who'shungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GoingIcon(who'shungry).png"; sourceTree = "<group>"; };
+		C3ABAC691A8E95F00041B421 /* 06_notgoingwithtext_icon-19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "06_notgoingwithtext_icon-19.png"; sourceTree = "<group>"; };
 		C3B1D4A01A6617C4006CEDD5 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		C3B1D4A21A6617CF006CEDD5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -381,6 +385,8 @@
 		1B9713CA1A0B35F500A2F46E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C3ABAC691A8E95F00041B421 /* 06_notgoingwithtext_icon-19.png */,
+				C3ABAC671A8DC0A80041B421 /* GoingIcon(who'shungry).png */,
 				C3247BB21A3DD944007BDC36 /* logosquare_transparent.png */,
 				C3247BB01A3D7AB7007BDC36 /* logosquare copy.png */,
 				C3247BA81A3CE1B3007BDC36 /* CoffeeIcon(who'shungry).png */,
@@ -750,6 +756,7 @@
 				1BD42CF51A213206008796F9 /* bae5.jpeg in Resources */,
 				1BF5C6391A0EF10B006D4D00 /* jennifer.jpg in Resources */,
 				C3247BB11A3D7AB7007BDC36 /* logosquare copy.png in Resources */,
+				C3ABAC681A8DC0A80041B421 /* GoingIcon(who'shungry).png in Resources */,
 				1BD700801A2115F000D32F95 /* bae3.jpeg in Resources */,
 				1BF5C63B1A0EF2A1006D4D00 /* chipotle.JPG in Resources */,
 				1BD700811A2115F000D32F95 /* bae4.jpg in Resources */,
@@ -772,6 +779,7 @@
 				C36C41421A0B206600F37668 /* Images.xcassets in Resources */,
 				C398740E1A3930020009FC3E /* GetDirectionsIcon(who'shungry).png in Resources */,
 				1B9713D21A0B362700A2F46E /* login-button-small-pressed.png in Resources */,
+				C3ABAC6A1A8E95F00041B421 /* 06_notgoingwithtext_icon-19.png in Resources */,
 				1B9713D51A0B362700A2F46E /* login-button-small@2x.png in Resources */,
 				1BD42CF71A21353D008796F9 /* rightarrow.png in Resources */,
 				1BD7009D1A211C1A00D32F95 /* cross@2x.png in Resources */,

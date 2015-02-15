@@ -20,4 +20,18 @@
     // Configure the view for the selected state
 }
 
+- (IBAction)openOptions:(id)sender {
+    if (_isOpen) {
+        [super hideUtilityButtonsAnimated:TRUE];
+        _isOpen = FALSE;
+        NSLog(@"It is closed");
+    }
+    else{
+        [super showRightUtilityButtonsAnimated:TRUE];
+        _isOpen = TRUE;
+        NSLog(@"It is open");
+    }
+}
+
+
 @end

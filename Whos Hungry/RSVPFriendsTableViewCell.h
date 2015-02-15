@@ -10,5 +10,9 @@
 #import "SWTableViewCell.h"
 
 @interface RSVPFriendsTableViewCell : SWTableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *arrow;
+@property (strong, nonatomic) IBOutlet UIButton *rsvpButton;
+- (IBAction)openOptions:(id)sender;
+@property (strong, nonatomic) IBOutlet UIButton *arrowButton;
+@property int isGoing;
+@property BOOL isOpen;
 @end

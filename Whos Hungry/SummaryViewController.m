@@ -8,7 +8,7 @@
 
 #import "SummaryViewController.h"
 #import "UIImage+Resize.h"
-#import "RSVPFriendsTableViewCell.h"
+
 #import "AFNetworking.h"
 #import "AFHTTPRequestOperation.h"
 
@@ -156,6 +156,9 @@ typedef enum accessType
     {
         [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/me/picture?type=large&return_ssl_resources=1"]];
+            // Success! Include your code to handle the results here
+            NSLog(@"user info: %@", result);
+            _facebookID = [NSString stringWithFormat:@"%@", result[@"id"]];
             selfImage = [UIImage imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL]] scaledToSize:CGSizeMake(30.0, 30.0)];
         }];
     }
@@ -190,6 +193,8 @@ typedef enum accessType
     self.friendsGoingTable.delegate = self;
     self.friendsGoingTable.dataSource = self;
     self.friendsGoingTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    self.friendsGoingTable.allowsSelection = NO;
+
     
 
 
@@ -272,6 +277,21 @@ typedef enum accessType
     [locationManager stopUpdatingLocation];
     [self.theTimer invalidate];
     self.theTimer = nil;
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if (![_currentLobby.rsvpArray containsObject:_facebookID]) {
+        NSDictionary *params = @{
+                                 @"user_id": _currentLobby.facebookId,
+                                 @"vote_id": _currentLobby.voteid,
+                                 @"go": @1};
+        [manager POST:[NSString stringWithFormat:@"%@apis/make_rsvp", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"JSON: %@", responseObject);
+            NSDictionary *results = (NSDictionary *) responseObject;
+            NSLog(@"Dictionary %@",results);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
+    }
+
     
     [self saveVotingPrefs];
 
@@ -767,7 +787,22 @@ typedef enum accessType
         cell.leftUtilityButtons = [self leftButtons];
         cell.rightUtilityButtons = [self rightButtons];
         cell.delegate = self;
-        
+        cell.isGoing = 0;
+        _rsvpCell = cell;
+        if (_currentLobby.voteid){
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            NSDictionary *params = @{
+                                     @"vote_id": _currentLobby.voteid};
+            [manager POST:[NSString stringWithFormat:@"%@apis/show_rsvp", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"JSON: %@", responseObject);
+                NSDictionary *results = (NSDictionary *) responseObject;
+                _currentLobby.rsvpArray = results[@"rsvps"];
+                NSLog(@"Dictionary %@",results);
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"Error: %@", error);
+            }];
+            
+        }
         return cell;
     }
     return 0;
@@ -776,12 +811,11 @@ typedef enum accessType
 - (NSArray *)rightButtons{
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
     [rightUtilityButtons sw_addUtilityButtonWithColor:
-     [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0]
-                                                title:@"More"];
+     [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0]
+                                                 icon:[UIImage imageNamed:@"GoingIcon(who'shungry).png"]];
     [rightUtilityButtons sw_addUtilityButtonWithColor:
-     [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
-                                                title:@"Delete"];
-    
+     [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0]
+                                                 icon:[UIImage imageNamed:@"06_notgoingwithtext_icon-19.png"]];
     return rightUtilityButtons;
 }
 
@@ -827,11 +861,9 @@ typedef enum accessType
     switch (index) {
         case 0:
             NSLog(@"RVSP YES was pressed");
-            theCell.arrow.image = [UIImage imageNamed:@"greenarrow.png"];
             break;
         case 1:
             NSLog(@"RSVP NO was pressed");
-            theCell.arrow.image = [UIImage imageNamed:@"redarrow.png"];
             break;
         default:
             break;
@@ -843,20 +875,24 @@ typedef enum accessType
     switch (index) {
         case 0:
         {
-            NSLog(@"More button was pressed");
-            UIAlertView *alertTest = [[UIAlertView alloc] initWithTitle:@"Hello" message:@"More more more" delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
-            [alertTest show];
-            
+            NSLog(@"Going button was pressed");
+            _rsvpCell.isGoing = 1;
+            [_rsvpCell.rsvpButton setImage:[UIImage imageNamed:@"GoingIcon(who'shungry).png"] forState:UIControlStateNormal];
+            [_rsvpCell.rsvpButton setBackgroundColor:[UIColor whiteColor]];
+            [_rsvpCell.arrowButton setBackgroundColor:[UIColor colorWithRed:(121.0/255.0) green:(231.0/255.0) blue:(175.0/255.0) alpha:1.0]];
+            _rsvpCell.isOpen = FALSE;
             [cell hideUtilityButtonsAnimated:YES];
             break;
         }
         case 1:
         {
-            // Delete button was pressed
-            /*NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
-            
-            [_testArray[cellIndexPath.section] removeObjectAtIndex:cellIndexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationLeft];*/
+            NSLog(@"Not Going button was pressed");
+            _rsvpCell.isGoing = -1;
+            [_rsvpCell.rsvpButton setImage:[UIImage imageNamed:@"06_notgoingwithtext_icon-19.png"] forState:UIControlStateNormal];
+            [_rsvpCell.rsvpButton setBackgroundColor:[UIColor whiteColor]];
+            [_rsvpCell.arrowButton setBackgroundColor:[UIColor colorWithRed:(240.0/255.0) green:(110.0/255.0) blue:(52.0/255.0) alpha:1.0]];
+            _rsvpCell.isOpen = FALSE;
+            [cell hideUtilityButtonsAnimated:YES];
             break;
         }
         default:
@@ -877,11 +913,11 @@ typedef enum accessType
     switch (state) {
         case 1:
             // set to NO to disable all left utility buttons appearing
-            return YES;
+            return NO;
             break;
         case 2:
             // set to NO to disable all right utility buttons appearing
-            return NO;
+            return YES;
             break;
         default:
             break;
