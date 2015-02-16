@@ -125,6 +125,19 @@
 		C36C416C1A0B2B7000F37668 /* HootGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C36C416A1A0B2B7000F37668 /* HootGroupCell.m */; };
 		C36C416D1A0B2B7000F37668 /* HootGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */; };
 		C36C416F1A0B3B3100F37668 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C36C416E1A0B3B3100F37668 /* FacebookSDK.framework */; };
+		C38DC5281A913A4500C437CF /* CHANGELOG in Resources */ = {isa = PBXBuildFile; fileRef = C38DC51D1A913A4500C437CF /* CHANGELOG */; };
+		C38DC5291A913A4500C437CF /* de.bitstadium.HockeySDK-iOS-3.6.2.docset in Resources */ = {isa = PBXBuildFile; fileRef = C38DC51E1A913A4500C437CF /* de.bitstadium.HockeySDK-iOS-3.6.2.docset */; };
+		C38DC52A1A913A4500C437CF /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38DC5201A913A4500C437CF /* HockeySDK.framework */; };
+		C38DC52B1A913A4500C437CF /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C38DC5221A913A4500C437CF /* HockeySDK.xcconfig */; };
+		C38DC52C1A913A4500C437CF /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C38DC5231A913A4500C437CF /* HockeySDKResources.bundle */; };
+		C38DC52D1A913A4500C437CF /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38DC5251A913A4500C437CF /* HockeySDK.framework */; };
+		C38DC52E1A913A4500C437CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C38DC5261A913A4500C437CF /* LICENSE */; };
+		C38DC52F1A913A4500C437CF /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = C38DC5271A913A4500C437CF /* README.md */; };
+		C38DC5311A913A9200C437CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38DC5301A913A9200C437CF /* AssetsLibrary.framework */; };
+		C38DC5331A913A9C00C437CF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38DC5321A913A9C00C437CF /* CoreText.framework */; };
+		C38DC5351A913AAE00C437CF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38DC5341A913AAE00C437CF /* Foundation.framework */; };
+		C38DC5371A913ABE00C437CF /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38DC5361A913ABE00C437CF /* QuickLook.framework */; };
+		C38DC5391A913AD000C437CF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C38DC5381A913AD000C437CF /* UIKit.framework */; };
 		C398740E1A3930020009FC3E /* GetDirectionsIcon(who'shungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C398740D1A3930020009FC3E /* GetDirectionsIcon(who'shungry).png */; };
 		C3A9988D1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3A9988C1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png */; };
 		C3A9988F1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png in Resources */ = {isa = PBXBuildFile; fileRef = C3A9988E1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png */; };
@@ -315,6 +328,19 @@
 		C36C416A1A0B2B7000F37668 /* HootGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HootGroupCell.m; sourceTree = "<group>"; };
 		C36C416B1A0B2B7000F37668 /* HootGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HootGroupCell.xib; sourceTree = "<group>"; };
 		C36C416E1A0B3B3100F37668 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		C38DC51D1A913A4500C437CF /* CHANGELOG */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG; sourceTree = "<group>"; };
+		C38DC51E1A913A4500C437CF /* de.bitstadium.HockeySDK-iOS-3.6.2.docset */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "de.bitstadium.HockeySDK-iOS-3.6.2.docset"; sourceTree = "<group>"; };
+		C38DC5201A913A4500C437CF /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		C38DC5221A913A4500C437CF /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
+		C38DC5231A913A4500C437CF /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
+		C38DC5251A913A4500C437CF /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		C38DC5261A913A4500C437CF /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		C38DC5271A913A4500C437CF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		C38DC5301A913A9200C437CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		C38DC5321A913A9C00C437CF /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		C38DC5341A913AAE00C437CF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C38DC5361A913ABE00C437CF /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		C38DC5381A913AD000C437CF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C398740D1A3930020009FC3E /* GetDirectionsIcon(who'shungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GetDirectionsIcon(who'shungry).png"; sourceTree = "<group>"; };
 		C3A9988C1A302AC9001BD883 /* DownvoteIcon(Who'sHungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownvoteIcon(Who'sHungry).png"; sourceTree = "<group>"; };
 		C3A9988E1A302BAB001BD883 /* UpvoteIcon(Who'sHungry).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UpvoteIcon(Who'sHungry).png"; sourceTree = "<group>"; };
@@ -330,10 +356,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C38DC52A1A913A4500C437CF /* HockeySDK.framework in Frameworks */,
+				C38DC5391A913AD000C437CF /* UIKit.framework in Frameworks */,
+				C38DC5371A913ABE00C437CF /* QuickLook.framework in Frameworks */,
+				C38DC5351A913AAE00C437CF /* Foundation.framework in Frameworks */,
+				C38DC5331A913A9C00C437CF /* CoreText.framework in Frameworks */,
+				C38DC5311A913A9200C437CF /* AssetsLibrary.framework in Frameworks */,
 				C3B1D4A31A6617CF006CEDD5 /* StoreKit.framework in Frameworks */,
 				C3B1D4A11A6617C4006CEDD5 /* libsqlite3.dylib in Frameworks */,
 				1B9713C91A0B335300A2F46E /* SystemConfiguration.framework in Frameworks */,
 				1B9713C51A0B334200A2F46E /* Security.framework in Frameworks */,
+				C38DC52D1A913A4500C437CF /* HockeySDK.framework in Frameworks */,
 				1B9713C31A0B333C00A2F46E /* QuartzCore.framework in Frameworks */,
 				1B9713C11A0B333400A2F46E /* MobileCoreServices.framework in Frameworks */,
 				1B9713BF1A0B332D00A2F46E /* libz.dylib in Frameworks */,
@@ -360,6 +393,12 @@
 		1B9713991A0B2A3600A2F46E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C38DC5381A913AD000C437CF /* UIKit.framework */,
+				C38DC5361A913ABE00C437CF /* QuickLook.framework */,
+				C38DC5341A913AAE00C437CF /* Foundation.framework */,
+				C38DC5321A913A9C00C437CF /* CoreText.framework */,
+				C38DC5301A913A9200C437CF /* AssetsLibrary.framework */,
+				C38DC51C1A913A4500C437CF /* HockeySDK-iOS */,
 				C3B1D4A21A6617CF006CEDD5 /* StoreKit.framework */,
 				C3B1D4A01A6617C4006CEDD5 /* libsqlite3.dylib */,
 				1BD700401A21129100D32F95 /* SWTableViewCell */,
@@ -636,6 +675,46 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		C38DC51C1A913A4500C437CF /* HockeySDK-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				C38DC51D1A913A4500C437CF /* CHANGELOG */,
+				C38DC51E1A913A4500C437CF /* de.bitstadium.HockeySDK-iOS-3.6.2.docset */,
+				C38DC51F1A913A4500C437CF /* HockeySDK.embeddedframework */,
+				C38DC5241A913A4500C437CF /* HockeySDKCrashOnly */,
+				C38DC5261A913A4500C437CF /* LICENSE */,
+				C38DC5271A913A4500C437CF /* README.md */,
+			);
+			name = "HockeySDK-iOS";
+			path = "Whos Hungry/HockeySDK-iOS";
+			sourceTree = "<group>";
+		};
+		C38DC51F1A913A4500C437CF /* HockeySDK.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				C38DC5201A913A4500C437CF /* HockeySDK.framework */,
+				C38DC5211A913A4500C437CF /* Resources */,
+			);
+			path = HockeySDK.embeddedframework;
+			sourceTree = "<group>";
+		};
+		C38DC5211A913A4500C437CF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C38DC5221A913A4500C437CF /* HockeySDK.xcconfig */,
+				C38DC5231A913A4500C437CF /* HockeySDKResources.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C38DC5241A913A4500C437CF /* HockeySDKCrashOnly */ = {
+			isa = PBXGroup;
+			children = (
+				C38DC5251A913A4500C437CF /* HockeySDK.framework */,
+			);
+			path = HockeySDKCrashOnly;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -745,12 +824,14 @@
 				1BF5C6281A0EDD42006D4D00 /* drinks.png in Resources */,
 				1B9713D31A0B362700A2F46E /* login-button-small-pressed@2x.png in Resources */,
 				1BF5C6291A0EDD42006D4D00 /* lunch.gif in Resources */,
+				C38DC52E1A913A4500C437CF /* LICENSE in Resources */,
 				C3247BA71A3CDAAF007BDC36 /* logosquare_title.png in Resources */,
 				C36C416D1A0B2B7000F37668 /* HootGroupCell.xib in Resources */,
 				C3247BAE1A3CE1B3007BDC36 /* DrinksIcon(who'shungry).png in Resources */,
 				1BF5C4EF1A0EAD17006D4D00 /* nickcage.jpg in Resources */,
 				1BED85A51A22657D0092C69E /* greenarrow.png in Resources */,
 				1BF5C6261A0EDD42006D4D00 /* coffee.jpeg in Resources */,
+				C38DC5291A913A4500C437CF /* de.bitstadium.HockeySDK-iOS-3.6.2.docset in Resources */,
 				C3247BC31A3E93E1007BDC36 /* owl_try_1.png in Resources */,
 				C3ABAC661A8C67E50041B421 /* BackorExitIcon(who'shungry).png in Resources */,
 				1BD42CF51A213206008796F9 /* bae5.jpeg in Resources */,
@@ -758,6 +839,8 @@
 				C3247BB11A3D7AB7007BDC36 /* logosquare copy.png in Resources */,
 				C3ABAC681A8DC0A80041B421 /* GoingIcon(who'shungry).png in Resources */,
 				1BD700801A2115F000D32F95 /* bae3.jpeg in Resources */,
+				C38DC52B1A913A4500C437CF /* HockeySDK.xcconfig in Resources */,
+				C38DC52C1A913A4500C437CF /* HockeySDKResources.bundle in Resources */,
 				1BF5C63B1A0EF2A1006D4D00 /* chipotle.JPG in Resources */,
 				1BD700811A2115F000D32F95 /* bae4.jpg in Resources */,
 				1BF5C4F11A0EAD8D006D4D00 /* friendsicon.png in Resources */,
@@ -789,6 +872,7 @@
 				1B9713D41A0B362700A2F46E /* login-button-small.png in Resources */,
 				C3247BB31A3DD944007BDC36 /* logosquare_transparent.png in Resources */,
 				1BEFBB4C1A2ECF7800773567 /* Main.storyboard in Resources */,
+				C38DC5281A913A4500C437CF /* CHANGELOG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -814,6 +898,7 @@
 				C36C413D1A0B206600F37668 /* LoginViewController.m in Sources */,
 				1BF5C6151A0EB7D0006D4D00 /* AFSecurityPolicy.m in Sources */,
 				1BD700AF1A211E5D00D32F95 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
+				C38DC52F1A913A4500C437CF /* README.md in Sources */,
 				C36C416C1A0B2B7000F37668 /* HootGroupCell.m in Sources */,
 				1BF5C61F1A0EB7D0006D4D00 /* UIProgressView+AFNetworking.m in Sources */,
 				1BD700AE1A211E5D00D32F95 /* SWTableViewCell.m in Sources */,
@@ -975,6 +1060,12 @@
 					"$(inherited)",
 					/Users/gilad/Documents/FacebookSDK,
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Whos",
+					"Hungry/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Whos",
+					"Hungry/HockeySDK-iOS/HockeySDKCrashOnly",
+					"$(PROJECT_DIR)/Whos",
+					"Hungry/HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
 				IBC_ERRORS = NO;
 				IBC_NOTICES = NO;
@@ -1001,6 +1092,12 @@
 					"$(inherited)",
 					/Users/gilad/Documents/FacebookSDK,
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Whos",
+					"Hungry/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Whos",
+					"Hungry/HockeySDK-iOS/HockeySDKCrashOnly",
+					"$(PROJECT_DIR)/Whos",
+					"Hungry/HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
 				IBC_ERRORS = NO;
 				IBC_NOTICES = NO;

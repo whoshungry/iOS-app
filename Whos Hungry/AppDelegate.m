@@ -10,6 +10,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <AVFoundation/AVAudioPlayer.h>
 #import "SummaryViewController.h"
+#import <HockeySDK/HockeySDK.h>
+
 
 
 @interface AppDelegate ()
@@ -70,7 +72,10 @@ typedef enum accessType
         }];*/
     }
     
-    //[[Ubertesters shared] initialize];
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"b5f3387e3b70eb1a1e30e6b315865c1f"];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+
     return YES;
 }
 
