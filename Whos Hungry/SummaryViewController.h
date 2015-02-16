@@ -19,6 +19,7 @@
 #import "AFHTTPRequestOperation.h"
 #import "UpDownVoteView.h"
 #import "SWTableViewCell.h"
+#import "RSVPFriendsTableViewCell.h"
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
@@ -26,6 +27,8 @@
 @interface SummaryViewController : UIViewController<CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate, SWTableViewCellDelegate> {
     CLLocationManager *locationManager;
 }
+
+@property __block NSString *facebookID;
 
 @property (nonatomic, retain) NSTimer *theTimer;
 @property (weak, nonatomic) IBOutlet UILabel *winningRestaurantLabel;
@@ -37,6 +40,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *whenTimeLbl;
 
+@property (strong, nonatomic) RSVPFriendsTableViewCell* rsvpCell;
 @property (weak, nonatomic) IBOutlet UILabel *summaryTitleLbl;
 @property (strong, nonatomic) HootLobby* currentLobby;
 @property (strong, nonatomic) NSMutableArray* allPlaces;

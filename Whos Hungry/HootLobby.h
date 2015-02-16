@@ -37,6 +37,7 @@
 
 @property (strong, nonatomic) NSString* name;
 
+@property (strong, nonatomic) NSMutableArray* rsvpArray;
 @property (nonatomic, assign) BOOL didAdminCreate;
 
 @end

@@ -71,20 +71,24 @@ typedef enum accessType {
     lobbies = [NSMutableArray new];
     hostImages = [NSMutableArray new];
     
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    self.refreshControl.backgroundColor = [UIColor purpleColor];
-
-    [self.refreshControl addTarget:_tableView
-                            action:@selector(loadGroups)
-                  forControlEvents:UIControlEventValueChanged];
-
+    UITableViewController *tableViewController = [[UITableViewController alloc] init];
+    tableViewController.tableView = _tableView;
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(loadGroups) forControlEvents:UIControlEventValueChanged];
+    tableViewController.refreshControl = self.refreshControl;
+    self.refreshControl.tintColor = [UIColor colorWithRed:(254/255.0) green:(153/255.0) blue:(0/255.0) alpha:1];
 
     [self loadGroups];
 }
 
 
 -(void) loadGroups {
+    [lobbies removeAllObjects];
+    _coverView.hidden = NO;
+    _tableView.allowsSelection = NO;
+    [_coverIndicator startAnimating];
+    [self.refreshControl endRefreshing];
     [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
             // Success! Include your code to handle the results here
@@ -97,6 +101,8 @@ typedef enum accessType {
         }
     }];
 }
+
+
 
 - (void)viewWillDisappear:(BOOL)animated{
     NSLog(@"BYEBYE");
@@ -226,37 +232,39 @@ typedef enum accessType {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"HootGroupCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
     }
-    
-    HootLobby *chosenLobby = (HootLobby *)lobbies[indexPath.row];
-    NSLog(@"chosen lobby is :::::: %@", chosenLobby);
-    //cell.whereLabel.text = @"Chipotle"; //winner restaurant
-    cell.backgroundImage.image = [UIImage imageNamed:@"chipotle.jpg"]; //winner restaurant pic
-
-    //when isn't working :(
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"hh:mm"];
-    NSString *formattedWhenTime = [dateFormatter stringFromDate:chosenLobby.expirationTime];
-    cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
-    
-    cell.whereLabel.text = chosenLobby.winnerRestName;
-    if (chosenLobby.voteType == nil)
-        chosenLobby.voteType = @"";
-    cell.titleLabel.text = [NSString stringWithFormat:@"%@", chosenLobby.voteType];
-    
-    //If user is the Admin then the subtitle will say something different
-    if ([chosenLobby.facebookId isEqualToString:facebookID]) {
-        cell.subtitleLabel.text = [NSString stringWithFormat:@"Your friends have been notified"];
+    if (lobbies.count > 0){
+        HootLobby *chosenLobby = (HootLobby *)lobbies[indexPath.row];
+        NSLog(@"chosen lobby is :::::: %@", chosenLobby);
+        //cell.whereLabel.text = @"Chipotle"; //winner restaurant
+        cell.backgroundImage.image = [UIImage imageNamed:@"chipotle.jpg"]; //winner restaurant pic
+        
+        //when isn't working :(
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"hh:mm"];
+        NSString *formattedWhenTime = [dateFormatter stringFromDate:chosenLobby.expirationTime];
+        cell.whenLabel.text = [NSString stringWithFormat:@"%@", formattedWhenTime];
+        
+        cell.whereLabel.text = chosenLobby.winnerRestName;
+        if (chosenLobby.voteType == nil)
+            chosenLobby.voteType = @"";
+        cell.titleLabel.text = [NSString stringWithFormat:@"%@", chosenLobby.voteType];
+        
+        //If user is the Admin then the subtitle will say something different
+        if ([chosenLobby.facebookId isEqualToString:facebookID]) {
+            cell.subtitleLabel.text = [NSString stringWithFormat:@"Your friends have been notified"];
+        }
+        else{
+            cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you", chosenLobby.facebookName];
+            
+        }
+        cell.friendsImage.image = hostImages[indexPath.row];
+        cell.friendsImage.layer.cornerRadius = cell.friendsImage.image.size.width / 2 - 5.0;
+        cell.friendsImage.clipsToBounds = YES;
+        cell.friendsImage.layer.borderWidth = 2.0f;
+        cell.friendsImage.layer.borderColor = [UIColor colorWithRed:134.0/255.0 green:191.0/255.0 blue:163.0/255.0 alpha:1.0].CGColor;
+        //cell.hostImage.image = hostImages[indexPath.row];
     }
-    else{
-        cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ invited you", chosenLobby.facebookName];
-
-    }
-    cell.friendsImage.image = hostImages[indexPath.row];
-    cell.friendsImage.layer.cornerRadius = cell.friendsImage.image.size.width / 2 - 5.0;
-    cell.friendsImage.clipsToBounds = YES;
-    cell.friendsImage.layer.borderWidth = 2.0f;
-    cell.friendsImage.layer.borderColor = [UIColor colorWithRed:134.0/255.0 green:191.0/255.0 blue:163.0/255.0 alpha:1.0].CGColor;
-    //cell.hostImage.image = hostImages[indexPath.row];
+ 
     return cell;
 }
 
@@ -320,6 +328,7 @@ typedef enum accessType {
 {
     if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
         NSLog(@"END OF LOADING");
+        _tableView.allowsSelection = YES;
         [_coverIndicator stopAnimating];
         [UIView animateWithDuration:0.75 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
             _coverView.alpha = 0.0;
