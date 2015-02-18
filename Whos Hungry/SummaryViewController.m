@@ -336,10 +336,8 @@ typedef enum accessType
     if (![_currentLobby.rsvpArray containsObject:_facebookID]) {
        
     }
-
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self saveVotingPrefs];
-
 }
 
 -(void) saveVotingPrefs {
