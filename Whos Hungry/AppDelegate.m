@@ -78,7 +78,7 @@ typedef enum accessType
     }
     else {
         NSLog(@"loaded and active");
-        //[[NSNotificationCenter defaultCenter] postNotificationName:@"updateVoteCount" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateVoteCount" object:self];
 
     }
 }
