@@ -63,10 +63,6 @@ typedef enum accessType
         SummaryViewController *controller = (SummaryViewController*)[mainStoryboard
                                                                      instantiateViewControllerWithIdentifier: @"SummaryViewController"];
         controller.loaded = YES;
-        /*[controller initFromGroupID:userInfo[@"group_id"] andVoteID:userInfo[@"vote_id"]];
-        [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:controller animated:YES completion:^(void) {
-        
-        }];*/
     }
 
     return YES;
@@ -82,9 +78,8 @@ typedef enum accessType
     }
     else {
         NSLog(@"loaded and active");
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateVoteCount" object:self];
-        //SummaryViewController *vc = (SummaryViewController *)((UINavigationController*)self.window.rootViewController);
-       //[vc updateVoteCount];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"updateVoteCount" object:self];
+
     }
 }
 

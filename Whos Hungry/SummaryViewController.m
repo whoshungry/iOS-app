@@ -99,6 +99,7 @@ typedef enum accessType
     _voteArray = [NSMutableArray new];
     _totalVoteArray = [NSMutableArray new];
     _voteStatusArray = [NSMutableArray new];
+    _totalVoteArray = [NSMutableArray new];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:_currentLobby.voteid forKey:@"voteid"];
@@ -121,9 +122,7 @@ typedef enum accessType
         NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
         _voteArray = [prefs mutableArrayValueForKey:strFromInt];
         _voteStatusArray = [prefs mutableArrayValueForKey:strFromInt];
-        for (int i = 0; i < _voteArray.count; i++) {
-            [_totalVoteArray addObject:@(0)];
-        }
+        [self loadVotes];
     }
     
     //This is accessed by ADMIN_RETURNS
@@ -131,18 +130,14 @@ typedef enum accessType
         NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
         _voteArray = [prefs mutableArrayValueForKey:strFromInt];
         _voteStatusArray = [prefs mutableArrayValueForKey:strFromInt];
-        for (int i = 0; i < _voteArray.count; i++) {
-            NSLog(@"VOTE ARRAY #%d is : %@", i, _voteArray[i]);
-            [_totalVoteArray addObject:@(0)];
-        }
+        [self loadVotes];
+
     }
     else if (_accessType == FRIEND_RETURNS){
         NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
         _voteArray = [prefs mutableArrayValueForKey:strFromInt];
         _voteStatusArray = [prefs mutableArrayValueForKey:strFromInt];
-        for (int i = 0; i < _voteArray.count; i++) {
-            [_totalVoteArray addObject:@(0)];
-        }
+        [self loadVotes];
     }
 
     
@@ -238,6 +233,34 @@ typedef enum accessType
     viewload = YES;
 }
 
+-(void) loadVotes {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSLog(@"vote id of show single vote is %@", _currentLobby.voteid);
+    NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
+    [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *results = (NSDictionary *)responseObject;
+        NSLog(@"results from FINISHED THING: %@", results);
+        
+        for (int i = 0; i < [results[@"choices"] count]; i++) {
+            [_totalVoteArray addObject:results[@"choices"][i][@"count"]];
+        }
+        
+        if (_totalVoteArray.count == 0) {
+            NSArray *arr = @[@(0), @(0), @(0)];
+            _totalVoteArray = [arr copy];
+        }
+        
+        [_restaurantTable reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        {
+            NSLog(@"FUCK DIS SHIT!");
+        }
+    }];
+
+}
+
+
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     NSLog(@"%@", [locations lastObject]);
@@ -313,10 +336,8 @@ typedef enum accessType
     if (![_currentLobby.rsvpArray containsObject:_facebookID]) {
        
     }
-
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self saveVotingPrefs];
-
 }
 
 -(void) saveVotingPrefs {
