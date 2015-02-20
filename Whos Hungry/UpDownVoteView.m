@@ -12,6 +12,7 @@
 
 - (IBAction)voteUp:(id)sender {
     self.stateInt++;
+    self.stateInt = MIN(self.stateInt, 1);
     if (self.stateInt == 0) {
         self.votes++;
         self.upBtn.enabled = YES;
@@ -30,6 +31,7 @@
 
 - (IBAction)voteDown:(id)sender {
     self.stateInt--;
+    self.stateInt = MAX(self.stateInt, -1);
     if (self.stateInt == -1) {
         self.upBtn.enabled = YES;
         self.downBtn.enabled = NO;

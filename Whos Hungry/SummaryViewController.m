@@ -94,12 +94,8 @@ typedef enum accessType
     
     NSLog(@"currnet loggy: %@", _currentLobby);
     
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    
-    _voteArray = [NSMutableArray new];
-    _totalVoteArray = [NSMutableArray new];
-    _voteStatusArray = [NSMutableArray new];
-    _totalVoteArray = [NSMutableArray new];
+    _totalVoteArray = [[NSMutableArray alloc] initWithObjects:@0,@0,@0,nil]; //max number of restaurants able to be chosen (3 places)
+    _voteStatusArray = [[NSMutableArray alloc] initWithObjects:@0,@0,@0,nil];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:_currentLobby.voteid forKey:@"voteid"];
@@ -110,36 +106,29 @@ typedef enum accessType
         
         _currentLobby = [self loadCustomObjectWithKey:LOBBY_KEY];
         [self createAPIGroup];
-        _voteArray = nil;
-        _totalVoteArray = nil;
-        _voteStatusArray = nil;
         _isTimerReadyToBeActivated = TRUE;
         //_isExpirationUpdated = TRUE;
         
     }
     else if (_accessType == ADMIN_RETURNS){
         
-        NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
-        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
-        _voteStatusArray = [prefs mutableArrayValueForKey:strFromInt];
-        [self loadVotes];
     }
     
     //This is accessed by ADMIN_RETURNS
     else if (_accessType == FRIEND_FIRST){
-        NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
-        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
-        _voteStatusArray = [prefs mutableArrayValueForKey:strFromInt];
-        [self loadVotes];
-
+        
     }
     else if (_accessType == FRIEND_RETURNS){
-        NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
-        _voteArray = [prefs mutableArrayValueForKey:strFromInt];
-        _voteStatusArray = [prefs mutableArrayValueForKey:strFromInt];
-        [self loadVotes];
+        
     }
 
+    
+    if (_accessType != ADMIN_FIRST) {
+        NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
+        _voteStatusArray = [defaults mutableArrayValueForKey:strFromInt];
+        
+        [self updateVoteCount];
+    }
     
     _loaded = NO;
     
@@ -228,7 +217,6 @@ typedef enum accessType
     
     self.restaurantTable.delegate = self;
     self.restaurantTable.dataSource = self;
-    [_restaurantTable reloadData];
     
     viewload = YES;
 }
@@ -341,20 +329,18 @@ typedef enum accessType
 }
 
 -(void) saveVotingPrefs {
-    _voteArray = [NSMutableArray new];
     _voteStatusArray = [NSMutableArray new];
     _totalVoteArray = [NSMutableArray new];
     
     NSArray* tableCellArray = [self cellsForTableView:_restaurantTable];
     for (int i = 0; i < tableCellArray.count; i++) {
-        [_voteArray addObject:@([tableCellArray[i] votes])];
+        [_totalVoteArray addObject:@([tableCellArray[i] votes])];
         [_voteStatusArray addObject:@([tableCellArray[i] stateInt])];
     }
     
     //Update array with group ID key
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    if (_voteArray && _voteStatusArray) {
-        [prefs setObject:_voteArray forKey:[NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue]];
+    if (_voteStatusArray) {
         [prefs setObject:_voteStatusArray forKey:[NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue]];
         [prefs setObject:@-1 forKey:@"voteid"];
         [prefs synchronize];
@@ -694,49 +680,27 @@ typedef enum accessType
         
         [_restaurantTable reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        {
             NSLog(@"FUCK DIS SHIT!");
-        }
     }];
     
 }
 
 -(void) updateVoteCount {
-    _voteArray = [NSMutableArray new];
-    _totalVoteArray = [NSMutableArray new];
-    _voteStatusArray = [NSMutableArray new];
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:_currentLobby.voteid forKey:@"voteid"];
-    [defaults synchronize];
-    
     NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
-    _voteArray = [defaults mutableArrayValueForKey:strFromInt];
-    _voteStatusArray = [defaults mutableArrayValueForKey:strFromInt];
-    for (int i = 0; i < _currentLobby.placesIdArray.count; i++) {
-        [_totalVoteArray addObject:@(0)];
-    }
-
-    NSLog(@"ajsfa: %@", _totalVoteArray);
-    NSNumber *currentPageVoteId = [[NSUserDefaults standardUserDefaults] objectForKey:@"voteid"];
-    if (currentPageVoteId != nil || [currentPageVoteId isEqual:@-1]) {
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        NSLog(@"vote id of show single vote is %@", currentPageVoteId);
-        NSDictionary *params = @{@"vote_id": currentPageVoteId};
-        [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSDictionary *results = (NSDictionary *)responseObject;
-            NSLog(@"results from FINISHED THING: %@", results);
-            NSArray *choices = results[@"choices"];
-            for (int i  = 0; i < choices.count; i++) {
-                _totalVoteArray[i] = choices[i][@"count"];
-            }
-            [_restaurantTable reloadData];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            {
-                NSLog(@"FUCK DIS SHIT!");
-            }
-        }];
-    }
+    //_voteStatusArray = [defaults mutableArrayValueForKey:strFromInt];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
+    [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *results = (NSDictionary *)responseObject;
+        NSArray *choices = results[@"choices"];
+        for (int i  = 0; i < choices.count; i++) {
+            _totalVoteArray[i] = choices[i][@"count"];
+        }
+        [_restaurantTable reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"FUCK DIS SHIT!");
+    }];
 }
 
 #pragma mark - Table View methods
@@ -792,15 +756,13 @@ typedef enum accessType
                 NSLog(@"Current row is %d", (int)indexPath.row);
                 cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
                 cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
-                //&& _voteStatusArray
-                if (_totalVoteArray && indexPath.row < _totalVoteArray.count) {
+                
+                if (_voteStatusArray && _totalVoteArray && indexPath.row < _voteStatusArray.count && indexPath.row < _totalVoteArray.count) {
                     cell.votes = [_totalVoteArray[indexPath.row] intValue];
-                    if (_voteStatusArray && _voteStatusArray.count > 0 && indexPath.row < _voteStatusArray.count)
-                        cell.stateInt = [[NSString stringWithFormat:@"%@",_voteStatusArray[indexPath.row]] intValue];
+                    cell.stateInt = [_voteStatusArray[indexPath.row] intValue];
                     cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
                     [cell enableDisable];
-                }
-                else{
+                } else {
                     cell.voteLbl.text = @"0";
                 }
             }
@@ -809,14 +771,12 @@ typedef enum accessType
             float distance = [placeLocation distanceFromLocation:_currentLocation] / 1609.0;
             cell.distanceLabel.text = [NSString stringWithFormat:@"%1.2f mi.",distance];
             cell.restaurantLabel.text = _currentLobby.placesNamesArray[indexPath.row];
-            if (_totalVoteArray && indexPath.row < _totalVoteArray.count) {
+            if (_voteStatusArray && _totalVoteArray && indexPath.row < _voteStatusArray.count && indexPath.row < _totalVoteArray.count) {
                 cell.votes = [_totalVoteArray[indexPath.row] intValue];
-                if (_voteStatusArray && _voteStatusArray.count > 0 && indexPath.row < _voteStatusArray.count)
-                    cell.stateInt = [[NSString stringWithFormat:@"%@",_voteStatusArray[indexPath.row]] intValue];
+                cell.stateInt = [_voteStatusArray[indexPath.row] intValue];
                 cell.voteLbl.text = [NSString stringWithFormat:@"%i", cell.votes];
                 [cell enableDisable];
-            }
-            else{
+            } else {
                 cell.voteLbl.text = @"0";
             }
         }
