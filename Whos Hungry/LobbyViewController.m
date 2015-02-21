@@ -81,6 +81,15 @@ typedef enum accessType {
     [_imageView removeFromSuperview];
 }
 
+-(NSDate*)dateByAddingMinutes:(NSInteger)minutes toDate:(NSDate*)date
+{
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    [components setMinute:minutes];
+    
+    return [[NSCalendar currentCalendar]
+            dateByAddingComponents:components toDate:date options:0];
+}
+
 -(IBAction)inviteFriends:(id)sender {
     //Transfer WhenTime to HootLobby
     //Transfer voteType to HootLobby
@@ -89,18 +98,33 @@ typedef enum accessType {
     NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
     //[dateComponents setDay:-1];
     NSDate *realWhenDate = [[NSCalendar currentCalendar] dateByAddingComponents:dateComponents toDate:_whenDate options:0];
+    double secondsInAMinute = 60;
+    tempLobby.expirationTime = _whenDate;
+    NSLog(@"time before is %@",tempLobby.expirationTime);
+
+    if ([realWhenDate timeIntervalSinceDate:[NSDate date]] / secondsInAMinute > 40) {
+        NSDate *newDate = [tempLobby.expirationTime dateByAddingTimeInterval:-60*20];
+        tempLobby.expirationTime = newDate;
+        NSLog(@"time is %@",tempLobby.expirationTime);
+
+    }
+    else{
+        NSDate *newDate = [tempLobby.expirationTime dateByAddingTimeInterval:(-60*([realWhenDate timeIntervalSinceDate:[NSDate date]] / secondsInAMinute) / 2)];
+        tempLobby.expirationTime = newDate;
+        NSLog(@"time is %@",tempLobby.expirationTime);
+    }
     
     if (!tempLobby) {
         tempLobby = [HootLobby new];
         NSLog(@"Current Lobby is empty");
-        tempLobby.expirationTime = realWhenDate;
+        tempLobby.meetingTime = realWhenDate;
         tempLobby.voteType = _voteType;
         tempLobby.name = self.nameOfEvent.text;
         [self saveCustomObject:tempLobby];
     }
     else{
         NSLog(@"Current Lobby has DATA!");
-        tempLobby.expirationTime = realWhenDate;
+        tempLobby.meetingTime = realWhenDate;
         tempLobby.voteType = _voteType;
         tempLobby.name = self.nameOfEvent.text;
         [self saveCustomObject:tempLobby];

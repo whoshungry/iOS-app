@@ -26,6 +26,7 @@
 @property (strong, nonatomic) NSMutableArray* placesRankingArray;
 
 @property (strong, nonatomic) NSDate* expirationTime;
+@property (strong, nonatomic) NSDate* meetingTime;
 @property (strong, nonatomic) NSString* voteType;
 @property (strong, nonatomic) NSNumber* voteid;
 

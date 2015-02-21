@@ -235,9 +235,19 @@ typedef enum accessType {
     if (lobbies.count > 0){
         HootLobby *chosenLobby = (HootLobby *)lobbies[indexPath.row];
         NSLog(@"chosen lobby is :::::: %@", chosenLobby);
-        //cell.whereLabel.text = @"Chipotle"; //winner restaurant
-        cell.backgroundImage.image = [UIImage imageNamed:@"chipotle.jpg"]; //winner restaurant pic
-        
+        //winner restaurant pic
+        if ([chosenLobby.voteType isEqualToString:@"lunch"]){
+            cell.backgroundImage.image = [UIImage imageNamed:@"01_lunch_photograph.jpg"];
+        }
+        else if ([chosenLobby.voteType isEqualToString:@"dinner"]){
+            cell.backgroundImage.image = [UIImage imageNamed:@"01_dinner_photograph.jpg"];
+        }
+        else if ([chosenLobby.voteType isEqualToString:@"cafe"]){
+            cell.backgroundImage.image = [UIImage imageNamed:@"01_coffee_photograph.jpg"];
+        }
+        else{
+            cell.backgroundImage.image = [UIImage imageNamed:@"01_drinks_photograph.jpg"];
+        }
         //when isn't working :(
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"hh:mm"];
