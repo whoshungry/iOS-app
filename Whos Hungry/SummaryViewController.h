@@ -57,7 +57,6 @@
 @property (strong, nonatomic) IBOutlet UIView *votingIncompleteView;
 
 @property BOOL isLobbyDone;
-@property NSMutableArray* voteArray;
 @property NSMutableArray* totalVoteArray;
 @property NSMutableArray* voteStatusArray;
 
