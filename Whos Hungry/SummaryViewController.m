@@ -89,7 +89,7 @@ typedef enum accessType
      object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateVoteCount)
+                                             selector:@selector(updateVoteCount:)
                                                  name:@"updateVoteCount"
                                                object:nil];
     
@@ -97,10 +97,6 @@ typedef enum accessType
     
     _totalVoteArray = [[NSMutableArray alloc] initWithObjects:@0,@0,@0,nil]; //max number of restaurants able to be chosen (3 places)
     _voteStatusArray = [[NSMutableArray alloc] initWithObjects:@0,@0,@0,nil];
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:_currentLobby.voteid forKey:@"voteid"];
-    [defaults synchronize];
     
     if (_accessType == ADMIN_FIRST) {
         //Initialize all the groups and create vote
@@ -122,13 +118,16 @@ typedef enum accessType
     else if (_accessType == FRIEND_RETURNS){
         
     }
-
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:_currentLobby.voteid forKey:@"voteid"];
+    [defaults synchronize];
     
     if (_accessType != ADMIN_FIRST) {
         NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
         _voteStatusArray = [defaults mutableArrayValueForKey:strFromInt];
         
-        [self updateVoteCount];
+        [self updateVoteCount:nil];
     }
     
     _loaded = NO;
@@ -686,12 +685,16 @@ typedef enum accessType
     
 }
 
--(void) updateVoteCount {
+-(void) updateVoteCount:(NSNotification *)noti {
     NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
     //_voteStatusArray = [defaults mutableArrayValueForKey:strFromInt];
     
+    int vid = (int)_currentLobby.voteid;
+    if (noti != nil)
+        vid = (int)[[noti userInfo][@"vote_id"] intValue];
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
+    NSDictionary *params = @{@"vote_id": @(vid)};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *results = (NSDictionary *)responseObject;
         NSArray *choices = results[@"choices"];
