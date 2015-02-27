@@ -30,7 +30,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     self.loginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     self.loginButton.delegate = self;
     
-    foundPushToken = NO;
+    foundPushToken = YES;
     
     /*NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];*/
@@ -68,6 +68,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     if (pushToken != nil) {
         foundPushToken = YES;
         foundUser = user;
+        
         [self.locationManager startUpdatingLocation];
     } else {
         [self performSegueWithIdentifier:@"mainScreenSegue" sender:self];

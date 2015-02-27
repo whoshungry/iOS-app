@@ -69,6 +69,6 @@
 @property (strong, nonatomic) NSString* groupid;
 @property (strong, nonatomic) NSString* voteid;
 
--(void) updateVoteCount;
+-(void) updateVoteCount:(NSNotification *)noti;
 
 @end

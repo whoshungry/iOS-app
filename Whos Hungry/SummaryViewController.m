@@ -89,7 +89,7 @@ typedef enum accessType
      object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateVoteCount)
+                                             selector:@selector(updateVoteCount:)
                                                  name:@"updateVoteCount"
                                                object:nil];
     
@@ -97,10 +97,6 @@ typedef enum accessType
     
     _totalVoteArray = [[NSMutableArray alloc] initWithObjects:@0,@0,@0,nil]; //max number of restaurants able to be chosen (3 places)
     _voteStatusArray = [[NSMutableArray alloc] initWithObjects:@0,@0,@0,nil];
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:_currentLobby.voteid forKey:@"voteid"];
-    [defaults synchronize];
     
     if (_accessType == ADMIN_FIRST) {
         //Initialize all the groups and create vote
@@ -122,13 +118,16 @@ typedef enum accessType
     else if (_accessType == FRIEND_RETURNS){
         
     }
-
     
     if (_accessType != ADMIN_FIRST) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:_currentLobby.voteid forKey:@"voteid"];
+        [defaults synchronize];
+        
         NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
         _voteStatusArray = [defaults mutableArrayValueForKey:strFromInt];
         
-        [self updateVoteCount];
+        [self updateVoteCount:nil];
     }
     
     _loaded = NO;
@@ -290,17 +289,21 @@ typedef enum accessType
 
 -(NSArray *)cellsForTableView:(UITableView *)tableView
 {
-    NSInteger sections = tableView.numberOfSections;
-    NSMutableArray *cells = [[NSMutableArray alloc]  init];
-    for (int section = 0; section < sections; section++) {
-        NSInteger rows =  [tableView numberOfRowsInSection:section];
-        for (int row = 0; row < rows; row++) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
-            UpDownVoteView *cell = (UpDownVoteView*)[self.restaurantTable cellForRowAtIndexPath:indexPath];//**here, for those cells not in current screen, cell is nil**
-            [cells addObject:cell];
+    if ([tableView isEqual:self.restaurantTable]) {
+        NSInteger sections = tableView.numberOfSections;
+        NSMutableArray *cells = [[NSMutableArray alloc]  init];
+        for (int section = 0; section < sections; section++) {
+            NSInteger rows =  [tableView numberOfRowsInSection:section];
+            for (int row = 0; row < rows; row++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+                UpDownVoteView *cell = (UpDownVoteView*)[self.restaurantTable cellForRowAtIndexPath:indexPath];//**here, for those cells not in current screen, cell is nil**
+                if (cell != nil)
+                    [cells addObject:cell];
+            }
         }
+        return cells;
     }
-    return cells;
+    return nil;
 }
 
 - (IBAction)goHome:(id)sender {
@@ -310,6 +313,7 @@ typedef enum accessType
 
     if (_currentLobby.rsvpArray.count < 1) {
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        if (_currentLobby.voteid != nil) {
         NSDictionary *params = @{
                                  @"user_id": _facebookID,
                                  @"vote_id": _currentLobby.voteid,
@@ -321,6 +325,7 @@ typedef enum accessType
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
         }];
+        }
     }
     if (![_currentLobby.rsvpArray containsObject:_facebookID]) {
        
@@ -527,6 +532,9 @@ typedef enum accessType
         NSLog(@"create vote is :%@", responseObject);
         NSDictionary *results = (NSDictionary *) responseObject;
         _currentLobby.voteid = results[@"vote_id"];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:_currentLobby.voteid forKey:@"voteid"];
+        [defaults synchronize];
         NSLog(@"vote id assigned is :%@", _currentLobby.voteid);
         [self setSummaryTitle];
         [self.restaurantTable reloadData];
@@ -686,12 +694,20 @@ typedef enum accessType
     
 }
 
--(void) updateVoteCount {
+-(void) updateVoteCount:(NSNotification *)noti {
     NSString *strFromInt = [NSString stringWithFormat:@"%d",_currentLobby.groupid.intValue];
     //_voteStatusArray = [defaults mutableArrayValueForKey:strFromInt];
     
+    NSLog(@"noti :%@", noti);
+    NSNumber *vid = _currentLobby.voteid;
+    
+    if (_currentLobby.voteid == nil)
+        vid = [[NSUserDefaults standardUserDefaults] objectForKey:@"voteid"];
+    if (vid == nil)
+        vid = [noti userInfo][@"vote_id"];
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *params = @{@"vote_id": _currentLobby.voteid};
+    NSDictionary *params = @{@"vote_id": vid};
     [manager POST:[NSString stringWithFormat:@"%@apis/show_single_vote", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *results = (NSDictionary *)responseObject;
         NSArray *choices = results[@"choices"];
