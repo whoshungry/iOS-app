@@ -70,5 +70,6 @@
 @property (strong, nonatomic) NSString* voteid;
 
 -(void) updateVoteCount:(NSNotification *)noti;
+- (IBAction)suggestAPlace:(id)sender;
 
 @end

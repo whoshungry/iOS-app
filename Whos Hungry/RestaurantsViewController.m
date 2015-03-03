@@ -92,17 +92,16 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters =
                                 @{@"location": [NSString stringWithFormat:@"%f,%f", _currentCentre.latitude,                     _currentCentre.longitude],
-                                 //@"radius":@"1000",
                                  @"types":googleType,
                                  @"key":GOOGLE_API_KEY_TWO,
-                                  @"rankby":@"distance"
+                                  @"rankby":@"distance",
                                  };
     [manager GET:@"https://maps.googleapis.com/maps/api/place/nearbysearch/json" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableDictionary* emptyVotingDict = [NSMutableDictionary new];
         NSDictionary *googlePlacesResults = (NSDictionary *)responseObject;
         NSArray *placesData = googlePlacesResults[@"results"];
-        int amount = 15;
-            if (placesData.count < 15)
+        int amount = 20;
+            if (placesData.count < 20)
                 amount = (int)placesData.count;
         for (int i = 0; i < amount; i++) {
             NSDictionary *currentPlace = placesData[i];

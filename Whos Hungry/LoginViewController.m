@@ -97,8 +97,7 @@ static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
     [manager POST:[NSString stringWithFormat:@"%@apis/register", BaseURLString] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *results = (NSDictionary *)responseObject;
         NSLog(@"resultssS:S %@", results);
-        [[NSUserDefaults standardUserDefaults] setObject:user.name forKey:@"username"];
-        [[NSUserDefaults standardUserDefaults] setObject:user.name forKey:@"id"];
+        [[NSUserDefaults standardUserDefaults] setObject:user forKey:@"fbuser"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         registered = YES;
         [self.locationManager stopUpdatingLocation];
