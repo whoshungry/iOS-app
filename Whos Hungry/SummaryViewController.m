@@ -12,6 +12,7 @@
 
 #import "AFNetworking.h"
 #import "AFHTTPRequestOperation.h"
+#import "RestaurantsViewControllerGeneric.h"
 
 #define LOBBY_KEY  @"currentlobby"
 static NSString * const BaseURLString = @"http://54.215.240.73:3000/";
@@ -717,7 +718,19 @@ typedef enum accessType
         [_restaurantTable reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"FUCK DIS SHIT!");
+        
     }];
+}
+
+- (IBAction)suggestAPlace:(id)sender {
+    [self performSegueWithIdentifier:@"suggestaplace" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:@"suggestaplace"]) {
+        RestaurantsViewControllerGeneric *restVC = (RestaurantsViewControllerGeneric *)segue.destinationViewController;
+        restVC.voteTypes = @[@"museum"];
+    }
 }
 
 #pragma mark - Table View methods
@@ -739,6 +752,8 @@ typedef enum accessType
         return 75;
     }
 }
+
+
 
 #pragma mark - UIScrollViewDelegate
 
